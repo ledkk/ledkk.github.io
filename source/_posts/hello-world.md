@@ -1,5 +1,5 @@
 ---
-title: Hello World
+title: hexo使用
 ---
 Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
 
@@ -8,7 +8,7 @@ Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [docume
 ### Create a new post
 
 ``` bash
-$ hexo new "My New Post"
+$ hexo new "使用Rust写一个LSMTree的存储结构"
 ```
 
 More info: [Writing](https://hexo.io/docs/writing.html)
@@ -16,14 +16,16 @@ More info: [Writing](https://hexo.io/docs/writing.html)
 ### Run server
 
 ``` bash
+# 本地开启Server 服务器，本地查看情况
 $ hexo server
 ```
 
 More info: [Server](https://hexo.io/docs/server.html)
-
+<!--  -->
 ### Generate static files
 
 ``` bash
+# 生成静态文件
 $ hexo generate
 ```
 
@@ -32,6 +34,7 @@ More info: [Generating](https://hexo.io/docs/generating.html)
 ### Deploy to remote sites
 
 ``` bash
+# 部署到远端github上
 $ hexo deploy
 ```
 
