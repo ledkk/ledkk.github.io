@@ -71,6 +71,67 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/12/28/hello-world/" class="article-date">
+  <time class="dt-published" datetime="2022-12-28T14:20:25.964Z" itemprop="datePublished">2022-12-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/12/28/hello-world/">hexo使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;使用Rust写一个LSMTree的存储结构&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 本地开启Server 服务器，本地查看情况</span></span><br><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<!--  -->
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成静态文件</span></span><br><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 部署到远端github上</span></span><br><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>比较简单的方法为，自定义一个bat脚本，将generate和deploy合并在一起</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"></span><br><span class="line"><span class="keyword">call</span> hexo clean </span><br><span class="line"></span><br><span class="line"><span class="keyword">call</span> hexo generate</span><br><span class="line"></span><br><span class="line"><span class="keyword">call</span> hexo deploy</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>使用<code>vscode</code> 写markdown，推荐的插件列表有：</p>
+<ul>
+<li><code>Paste Image</code> ， 可以快速从剪切板上复制图片保存在本地</li>
+<li><code>Markdonw all in one</code> ， markdown相关的插件</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ledkk.github.io/2022/12/28/hello-world/" data-id="clc7qw9zd0001qcvc6ie7654q" data-title="hexo使用" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-docker-usage" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/12/08/docker-usage/" class="article-date">
@@ -98,151 +159,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://ledkk.github.io/2022/12/08/docker-usage/" data-id="clc7qu4ds00003svc9os75ugz" data-title="docker_usage" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-sth-abuout-socks5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/11/01/sth-abuout-socks5/" class="article-date">
-  <time class="dt-published" datetime="2022-11-01T07:20:13.000Z" itemprop="datePublished">2022-11-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/11/01/sth-abuout-socks5/">sth abuout socks5</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="关于Socks5"><a href="#关于Socks5" class="headerlink" title="关于Socks5"></a>关于Socks5</h1><p>Socks是一个比较常见的http代理协议，利用shadowsocks、v2ray等常见的代理软件均借用了socks相关的协议，网络上开放了很多公开的socks5协议</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://spys.one/en/socks-proxy-list/">https://spys.one/en/socks-proxy-list/</a></li>
-</ul>
-<p><img src="/../../images/f19e5b4fdbb82409b1ce0feb3242c7e21a08c9c0c22b2db907bd0adfafd063d0.png" alt="图 1">  </p>
-<ul>
-<li>一个简单的echo server ， 后面会利用echo server 来测试代理的流程<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">echo_server</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">u32</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">listener</span> = TcpListener::<span class="title function_ invoke__">bind</span>(<span class="string">&quot;0.0.0.0:9999&quot;</span>).<span class="keyword">await</span>?;</span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> (<span class="keyword">mut</span> stream, _) = listener.<span class="title function_ invoke__">accept</span>().<span class="keyword">await</span>?;</span><br><span class="line">        </span><br><span class="line">        tokio::<span class="title function_ invoke__">spawn</span>(<span class="keyword">async</span> <span class="keyword">move</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> (<span class="keyword">mut</span> reader, <span class="keyword">mut</span> writer) = stream.<span class="title function_ invoke__">split</span>();</span><br><span class="line">            <span class="title function_ invoke__">copy</span>(&amp;<span class="keyword">mut</span> reader, &amp;<span class="keyword">mut</span> writer).<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#[test]</span></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">test_echo_server</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">run_time</span> = Runtime::<span class="title function_ invoke__">new</span>()?;</span><br><span class="line">    </span><br><span class="line">    run_time.<span class="title function_ invoke__">block_on</span>(<span class="title function_ invoke__">echo_server</span>());</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(())</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>常用的网络编程模型如下所示</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#[cfg(test)]</span></span><br><span class="line"><span class="keyword">mod</span> tests &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">use</span> std::io::Cursor;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">use</span> bytes::&#123;Bytes, BytesMut&#125;;</span><br><span class="line">    <span class="keyword">use</span> tokio::&#123;</span><br><span class="line">        io::&#123;AsyncBufRead, AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader, BufWriter&#125;,</span><br><span class="line">        net::TcpListener,</span><br><span class="line">        runtime::Runtime,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">use</span> website::<span class="type">Result</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#[test]</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">test_socks</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;()&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">runtime</span> = Runtime::<span class="title function_ invoke__">new</span>()?;</span><br><span class="line">        runtime.<span class="title function_ invoke__">block_on</span>(<span class="title function_ invoke__">test_socks_lib</span>());</span><br><span class="line"></span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">test_socks_lib</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;()&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">listener</span> = TcpListener::<span class="title function_ invoke__">bind</span>(<span class="string">&quot;0.0.0.0:8080&quot;</span>).<span class="keyword">await</span>?;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">loop</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> (<span class="keyword">mut</span> tcp_stream, sk) = listener.<span class="title function_ invoke__">accept</span>().<span class="keyword">await</span>?;</span><br><span class="line"></span><br><span class="line">            tokio::<span class="title function_ invoke__">spawn</span>(<span class="keyword">async</span> <span class="keyword">move</span> &#123;</span><br><span class="line">                <span class="keyword">loop</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">buf_writer</span> = BufWriter::<span class="title function_ invoke__">new</span>(&amp;<span class="keyword">mut</span> tcp_stream);</span><br><span class="line">                    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">buffer_cursor</span> = Cursor::<span class="title function_ invoke__">new</span>(<span class="string">&quot;hello world &quot;</span>);</span><br><span class="line">                    <span class="keyword">let</span> <span class="variable">result</span> = buf_writer.<span class="title function_ invoke__">write_all_buf</span>(&amp;<span class="keyword">mut</span> buffer_cursor).<span class="keyword">await</span>;</span><br><span class="line">                    buf_writer.<span class="title function_ invoke__">flush</span>().<span class="keyword">await</span>;</span><br><span class="line">                    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">buffer</span> = BytesMut::<span class="title function_ invoke__">with_capacity</span>(<span class="number">1024</span>);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// rust 走出block块后，生命周期结束，就会自动回收, 因此需要保持该块的持续</span></span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Ok</span>(n) = tcp_stream.<span class="title function_ invoke__">read_buf</span>(&amp;<span class="keyword">mut</span> buffer).<span class="keyword">await</span> &#123;</span><br><span class="line">                        <span class="built_in">println!</span>(</span><br><span class="line">                            <span class="string">&quot;write sth success !!! &#123;&#125;, &#123;&#125;, &#123;:?&#125;, &#123;:?&#125;&quot;</span>,</span><br><span class="line">                            sk.<span class="title function_ invoke__">ip</span>(),</span><br><span class="line">                            sk.<span class="title function_ invoke__">port</span>(),</span><br><span class="line">                            result,</span><br><span class="line">                            &amp;buffer[..n]</span><br><span class="line">                        )</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://ledkk.github.io/2022/11/01/sth-abuout-socks5/" data-id="cla15zgcl0000mcvceqzg49mv" data-title="sth abuout socks5" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/10/29/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2022-10-28T16:00:25.960Z" itemprop="datePublished">2022-10-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/10/29/hello-world/">hexo使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;使用Rust写一个LSMTree的存储结构&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 本地开启Server 服务器，本地查看情况</span></span><br><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<!--  -->
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成静态文件</span></span><br><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 部署到远端github上</span></span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://ledkk.github.io/2022/10/29/hello-world/" data-id="cl9ip9bf20000lgvc75cfd99g" data-title="hexo使用" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-clap-demo" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/10/28/clap-demo/" class="article-date">
-  <time class="dt-published" datetime="2022-10-28T15:48:27.000Z" itemprop="datePublished">2022-10-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/10/28/clap-demo/">clap demo</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="Clap-使用记录"><a href="#Clap-使用记录" class="headerlink" title="Clap 使用记录"></a>Clap 使用记录</h1><p>Rust工程中，添加clap依赖</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加clap依赖</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">cargo add clap</span> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">rpc_server_config</span> = RpcServerConfig::<span class="title function_ invoke__">parse</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">addr</span> = rpc_server_config.addr.<span class="title function_ invoke__">unwrap_or</span>(<span class="string">&quot;127.0.0.1&quot;</span>.<span class="title function_ invoke__">to_owned</span>());</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">port</span> = rpc_server_config.port.<span class="title function_ invoke__">unwrap_or</span>(<span class="number">9999</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#[derive(Debug, Parser)]</span></span><br><span class="line"><span class="meta">#[clap(name = <span class="string">&quot;rpcServer&quot;</span>, version, author, about = <span class="string">&quot;a rpc server&quot;</span>)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">RpcServerConfig</span> &#123;</span><br><span class="line">    <span class="meta">#[clap(short, long)]</span></span><br><span class="line">    addr: <span class="type">Option</span>&lt;<span class="type">String</span>&gt;,</span><br><span class="line">    <span class="meta">#[clap(short, long)]</span></span><br><span class="line">    port: <span class="type">Option</span>&lt;<span class="type">u32</span>&gt;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>输出结果</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">PS D:\code\website\target\debug&gt; .\rpc-server.exe -h</span><br><span class="line">a rpc server</span><br><span class="line"></span><br><span class="line">Usage: rpc-server.exe [OPTIONS]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -a, --addr &lt;ADDR&gt;</span><br><span class="line">  -p, --port &lt;PORT&gt;</span><br><span class="line">  -h, --help         Print help information</span><br><span class="line">  -V, --version      Print version information</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://ledkk.github.io/2022/10/28/clap-demo/" data-id="cl9socugx0000j4vcbe8sfuu9" data-title="clap demo" class="article-share-link">Share</a>
+      <a data-url="https://ledkk.github.io/2022/12/08/docker-usage/" data-id="clc7qw9z90000qcvce5hv35pc" data-title="docker_usage" class="article-share-link">Share</a>
       
       
       
@@ -272,7 +189,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li></ul>
     </div>
   </div>
 
@@ -285,19 +202,11 @@
       <ul>
         
           <li>
+            <a href="/2022/12/28/hello-world/">hexo使用</a>
+          </li>
+        
+          <li>
             <a href="/2022/12/08/docker-usage/">docker_usage</a>
-          </li>
-        
-          <li>
-            <a href="/2022/11/01/sth-abuout-socks5/">sth abuout socks5</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/29/hello-world/">hexo使用</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/28/clap-demo/">clap demo</a>
           </li>
         
       </ul>
