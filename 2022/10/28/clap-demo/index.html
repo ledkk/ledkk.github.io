@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>clap demo | 小站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Clap 使用记录Rust工程中，添加clap依赖 123# 添加clap依赖$cargo add clap   12345678910111213141516171819fn main() &amp;#123;    let rpc_server_config &#x3D; RpcServerConfig::parse();    let addr &#x3D; rpc_server_config.addr.unwrap_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="clap demo">
+<meta property="og:url" content="https://ledkk.github.io/2022/10/28/clap-demo/index.html">
+<meta property="og:site_name" content="小站">
+<meta property="og:description" content="Clap 使用记录Rust工程中，添加clap依赖 123# 添加clap依赖$cargo add clap   12345678910111213141516171819fn main() &amp;#123;    let rpc_server_config &#x3D; RpcServerConfig::parse();    let addr &#x3D; rpc_server_config.addr.unwrap_">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-10-28T15:48:27.000Z">
+<meta property="article:modified_time" content="2022-12-28T14:22:07.526Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="小站" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">小站</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ledkk.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-clap-demo" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/10/28/clap-demo/" class="article-date">
+  <time class="dt-published" datetime="2022-10-28T15:48:27.000Z" itemprop="datePublished">2022-10-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      clap demo
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Clap-使用记录"><a href="#Clap-使用记录" class="headerlink" title="Clap 使用记录"></a>Clap 使用记录</h1><p>Rust工程中，添加clap依赖</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加clap依赖</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">cargo add clap</span> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">rpc_server_config</span> = RpcServerConfig::<span class="title function_ invoke__">parse</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">addr</span> = rpc_server_config.addr.<span class="title function_ invoke__">unwrap_or</span>(<span class="string">&quot;127.0.0.1&quot;</span>.<span class="title function_ invoke__">to_owned</span>());</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">port</span> = rpc_server_config.port.<span class="title function_ invoke__">unwrap_or</span>(<span class="number">9999</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#[derive(Debug, Parser)]</span></span><br><span class="line"><span class="meta">#[clap(name = <span class="string">&quot;rpcServer&quot;</span>, version, author, about = <span class="string">&quot;a rpc server&quot;</span>)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">RpcServerConfig</span> &#123;</span><br><span class="line">    <span class="meta">#[clap(short, long)]</span></span><br><span class="line">    addr: <span class="type">Option</span>&lt;<span class="type">String</span>&gt;,</span><br><span class="line">    <span class="meta">#[clap(short, long)]</span></span><br><span class="line">    port: <span class="type">Option</span>&lt;<span class="type">u32</span>&gt;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">PS D:\code\website\target\debug&gt; .\rpc-server.exe -h</span><br><span class="line">a rpc server</span><br><span class="line"></span><br><span class="line">Usage: rpc-server.exe [OPTIONS]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -a, --addr &lt;ADDR&gt;</span><br><span class="line">  -p, --port &lt;PORT&gt;</span><br><span class="line">  -h, --help         Print help information</span><br><span class="line">  -V, --version      Print version information</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ledkk.github.io/2022/10/28/clap-demo/" data-id="clcao3ntd0000c8vchpf8908k" data-title="clap demo" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/11/01/sth-abuout-socks5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          sth abuout socks5
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/12/30/strace-for-linux/">strace_for_linux</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/28/hello-world/">hexo使用</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/08/docker-usage/">docker_usage</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/01/sth-abuout-socks5/">sth abuout socks5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/28/clap-demo/">clap demo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

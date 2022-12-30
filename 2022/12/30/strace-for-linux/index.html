@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>strace_for_linux | 小站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="近期在研究Linux相关的内容，比如透明大页对系统性能的影响，以及一些Linux程序的运行情况。由于对C以及Linux并不是特别熟悉，在学习一些程序的时候，总是有一种云里雾里的感觉，因此想找到一些观测工具，能看到Linux系统下程序的执行情况。类似java生态里的Arthas、btrace的工具。经过几番查找，找到了可能有用的几个工具：strace、ebpf 、systemtap、kprobe,从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="strace_for_linux">
+<meta property="og:url" content="https://ledkk.github.io/2022/12/30/strace-for-linux/index.html">
+<meta property="og:site_name" content="小站">
+<meta property="og:description" content="近期在研究Linux相关的内容，比如透明大页对系统性能的影响，以及一些Linux程序的运行情况。由于对C以及Linux并不是特别熟悉，在学习一些程序的时候，总是有一种云里雾里的感觉，因此想找到一些观测工具，能看到Linux系统下程序的执行情况。类似java生态里的Arthas、btrace的工具。经过几番查找，找到了可能有用的几个工具：strace、ebpf 、systemtap、kprobe,从">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-12-30T14:31:39.000Z">
+<meta property="article:modified_time" content="2022-12-30T15:07:15.927Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="小站" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">小站</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ledkk.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-strace-for-linux" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/12/30/strace-for-linux/" class="article-date">
+  <time class="dt-published" datetime="2022-12-30T14:31:39.000Z" itemprop="datePublished">2022-12-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      strace_for_linux
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>近期在研究Linux相关的内容，比如透明大页对系统性能的影响，以及一些Linux程序的运行情况。由于对C以及Linux并不是特别熟悉，在学习一些程序的时候，总是有一种云里雾里的感觉，因此想找到一些观测工具，能看到Linux系统下程序的执行情况。类似java生态里的Arthas、btrace的工具。经过几番查找，找到了可能有用的几个工具：<code>strace</code>、<code>ebpf</code> 、<code>systemtap</code>、<code>kprobe</code>,从网上看了比较多的内容，但还是一知半解，因此决定逐个击破，今天先看看<code>strace</code>相关的内容。最终目的是熟悉linux下的观测工具，比能熟练解决linux下的系统问题。</p>
+<h1 id="strace-是什么"><a href="#strace-是什么" class="headerlink" title="strace 是什么"></a>strace 是什么</h1><pre><code>strace 是一个非常有用的诊断、debug工具。针对无法找到源码的程序，如果想要观察这个程序的执行过程时，strace可以很方便的跟踪程序的执行过程。
+</code></pre>
+<p>使用方式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">strace [-ACdffhikqqrtttTvVwxxyyzZ] [-I n] [-b execve] [-e expr]... [-a column] [-o file] [-s strsize] [-X format]</span><br><span class="line">             [-P path]... [-p pid]... [--seccomp-bpf] &#123; -p pid | [-DDD] [-E var[=val]]... [-u username] command [args] &#125;</span><br><span class="line"></span><br><span class="line">      strace -c [-dfwzZ] [-I n] [-b execve] [-e expr]... [-O overhead] [-S sortby] [-P path]... [-p pid]... [--seccomp-bpf] &#123;</span><br><span class="line">             -p pid | [-DDD] [-E var[=val]]... [-u username] command [args] &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> sudo apt install strace</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">johnzb@ubuntu:~$ strace ./a.out</span><br><span class="line">execve(&quot;./a.out&quot;, [&quot;./a.out&quot;], 0x7ffd938259d0 /* 23 vars */) = 0</span><br><span class="line">brk(NULL)                               = 0x55e35ace7000</span><br><span class="line">arch_prctl(0x3001 /* ARCH_??? */, 0x7ffcccdee110) = -1 EINVAL (Invalid argument)</span><br><span class="line">access(&quot;/etc/ld.so.preload&quot;, R_OK)      = -1 ENOENT (No such file or directory)</span><br><span class="line">openat(AT_FDCWD, &quot;/etc/ld.so.cache&quot;, O_RDONLY|O_CLOEXEC) = 3</span><br><span class="line">fstat(3, &#123;st_mode=S_IFREG|0644, st_size=75093, ...&#125;) = 0</span><br><span class="line">mmap(NULL, 75093, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb422051000</span><br><span class="line">close(3)                                = 0</span><br><span class="line">openat(AT_FDCWD, &quot;/lib/x86_64-linux-gnu/libc.so.6&quot;, O_RDONLY|O_CLOEXEC) = 3</span><br><span class="line">read(3, &quot;\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0&gt;\0\1\0\0\0\300A\2\0\0\0\0\0&quot;..., 832) = 832</span><br><span class="line">pread64(3, &quot;\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0&quot;..., 784, 64) = 784</span><br><span class="line">pread64(3, &quot;\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0&quot;, 32, 848) = 32</span><br><span class="line">pread64(3, &quot;\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\30x\346\264ur\f|Q\226\236i\253-&#x27;o&quot;..., 68, 880) = 68</span><br><span class="line">fstat(3, &#123;st_mode=S_IFREG|0755, st_size=2029592, ...&#125;) = 0</span><br><span class="line">mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fb42204f000</span><br><span class="line">pread64(3, &quot;\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0&quot;..., 784, 64) = 784</span><br><span class="line">pread64(3, &quot;\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0&quot;, 32, 848) = 32</span><br><span class="line">pread64(3, &quot;\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\30x\346\264ur\f|Q\226\236i\253-&#x27;o&quot;..., 68, 880) = 68</span><br><span class="line">mmap(NULL, 2037344, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fb421e5d000</span><br><span class="line">mmap(0x7fb421e7f000, 1540096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x22000) = 0x7fb421e7f000</span><br><span class="line">mmap(0x7fb421ff7000, 319488, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19a000) = 0x7fb421ff7000</span><br><span class="line">mmap(0x7fb422045000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e7000) = 0x7fb422045000</span><br><span class="line">mmap(0x7fb42204b000, 13920, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7fb42204b000</span><br><span class="line">close(3)                                = 0</span><br><span class="line">arch_prctl(ARCH_SET_FS, 0x7fb422050540) = 0</span><br><span class="line">mprotect(0x7fb422045000, 16384, PROT_READ) = 0</span><br><span class="line">mprotect(0x55e358d2c000, 4096, PROT_READ) = 0</span><br><span class="line">mprotect(0x7fb422091000, 4096, PROT_READ) = 0</span><br><span class="line">munmap(0x7fb422051000, 75093)           = 0</span><br><span class="line">brk(NULL)                               = 0x55e35ace7000</span><br><span class="line">brk(0x55e35ad08000)                     = 0x55e35ad08000</span><br><span class="line">openat(AT_FDCWD, &quot;strace_demo.txt&quot;, O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3</span><br><span class="line">fstat(3, &#123;st_mode=S_IFREG|0664, st_size=0, ...&#125;) = 0</span><br><span class="line">write(3, &quot;Write this to the file&quot;, 22)  = 22</span><br><span class="line">close(3)                                = 0</span><br><span class="line">exit_group(0)                           = ?</span><br><span class="line">+++ exited with 0 +++</span><br><span class="line">johnzb@ubuntu:~$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p> strace -e trace&#x3D;process .&#x2F;a.out</p>
+<p>strace -e trace&#x3D;file .&#x2F;a.out<br>strace -e trace&#x3D;network .&#x2F;a.out</p>
+<p>strace -e trace&#x3D;file -T -tt .&#x2F;a.out</p>
+<p>strace -e trace&#x3D;file -C -w -d .&#x2F;a.out</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ledkk.github.io/2022/12/30/strace-for-linux/" data-id="clcao3ntl0002c8vc7naobkpm" data-title="strace_for_linux" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/12/28/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">hexo使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/12/30/strace-for-linux/">strace_for_linux</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/28/hello-world/">hexo使用</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/08/docker-usage/">docker_usage</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/01/sth-abuout-socks5/">sth abuout socks5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/28/clap-demo/">clap demo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
