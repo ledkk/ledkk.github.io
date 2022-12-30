@@ -14,7 +14,7 @@
 <meta property="og:description" content="近期在研究Linux相关的内容，比如透明大页对系统性能的影响，以及一些Linux程序的运行情况。由于对C以及Linux并不是特别熟悉，在学习一些程序的时候，总是有一种云里雾里的感觉，因此想找到一些观测工具，能看到Linux系统下程序的执行情况。类似java生态里的Arthas、btrace的工具。经过几番查找，找到了可能有用的几个工具：strace、ebpf 、systemtap、kprobe,从">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-12-30T14:31:39.000Z">
-<meta property="article:modified_time" content="2022-12-30T15:07:15.927Z">
+<meta property="article:modified_time" content="2022-12-30T15:28:23.214Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -108,6 +108,7 @@
 <p>strace -e trace&#x3D;file .&#x2F;a.out<br>strace -e trace&#x3D;network .&#x2F;a.out</p>
 <p>strace -e trace&#x3D;file -T -tt .&#x2F;a.out</p>
 <p>strace -e trace&#x3D;file -C -w -d .&#x2F;a.out</p>
+<p><a target="_blank" rel="noopener" href="https://www.howtogeek.com/732736/how-to-use-strace-to-monitor-linux-system-calls/">https://www.howtogeek.com/732736/how-to-use-strace-to-monitor-linux-system-calls/</a></p>
 
       
     </div>
