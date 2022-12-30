@@ -75,3 +75,7 @@ strace -e trace=network ./a.out
 strace -e trace=file -T -tt ./a.out
 
 strace -e trace=file -C -w -d ./a.out
+
+
+
+https://www.howtogeek.com/732736/how-to-use-strace-to-monitor-linux-system-calls/
