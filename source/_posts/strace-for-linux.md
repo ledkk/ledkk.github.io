@@ -19,9 +19,11 @@ tags:
 
 ```shell
 
+# 安装strace 
  sudo apt install strace
 
 
+# 查看程序的系统调用情况
 johnzb@ubuntu:~$ strace ./a.out
 execve("./a.out", ["./a.out"], 0x7ffd938259d0 /* 23 vars */) = 0
 brk(NULL)                               = 0x55e35ace7000
@@ -60,23 +62,50 @@ write(3, "Write this to the file", 22)  = 22
 close(3)                                = 0
 exit_group(0)                           = ?
 +++ exited with 0 +++
-johnzb@ubuntu:~$
-
-```
-
-
- strace -e trace=process ./a.out
 
 
 
+
+# 查看创建进程相关的系统调用
+strace -e trace=process ./a.out
+
+
+# 查看文件相关的系统调用
 strace -e trace=file ./a.out
+
+# 查看网络相关的系统调用
 strace -e trace=network ./a.out
 
+# 查看文件相关的系统调用，并打印时间及耗时
 strace -e trace=file -T -tt ./a.out
 
+# 打印系统调用的统计信息，并打印strace的debug信息。
 strace -e trace=file -C -w -d ./a.out
 
 
+# 打印程序的系统调用情况
+johnzb@johnzb-GK45:~/code/linux_std$ strace -c ./a.out
+hello world !
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+  0.00    0.000000           0         1           read
+  0.00    0.000000           0         1           write
+  0.00    0.000000           0         2           close
+  0.00    0.000000           0         3           fstat
+  0.00    0.000000           0         7           mmap
+  0.00    0.000000           0         3           mprotect
+  0.00    0.000000           0         1           munmap
+  0.00    0.000000           0         3           brk
+  0.00    0.000000           0         6           pread64
+  0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         1           execve
+  0.00    0.000000           0         2         1 arch_prctl
+  0.00    0.000000           0         2           openat
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.000000                    33         2 total
+
+
+```
 
 https://www.howtogeek.com/732736/how-to-use-strace-to-monitor-linux-system-calls/
 
@@ -291,3 +320,4 @@ sudo su -c "\
 - Debugging the kernel using Ftrace – part 1  http://lwn.net/Articles/365835/
 - Debugging the kernel using Ftrace – part 2	http://lwn.net/Articles/366796/
 - Secrets of the Ftrace function tracer http://lwn.net/Articles/370423/
+
