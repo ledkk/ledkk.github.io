@@ -100,7 +100,8 @@ HugePages_Rsvd:        0
 HugePages_Surp:        0
 Hugepagesize:       2048 kB
 Hugetlb:               0 kB
-root@ubuntu:/sys/kernel/debug/tracing#
+
+
 
 ```
 
