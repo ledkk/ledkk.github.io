@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>prometheus_granfana_mysql_exporter | 小站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="安装prometheus、granfana1234sudo apt install prometheussudo apt install granfana  配置mysql数据源1234567johnzb@ubuntu:~&#x2F;mysqld_exporter-0.14.0.linux-amd64$ cat my.cnf[client]port&#x3D;3306host&#x3D;127.0.0.1user&#x3D;grafan">
+<meta property="og:type" content="article">
+<meta property="og:title" content="prometheus_granfana_mysql_exporter">
+<meta property="og:url" content="https://ledkk.github.io/2023/01/06/prometheus-granfana-mysql-exporter/index.html">
+<meta property="og:site_name" content="小站">
+<meta property="og:description" content="安装prometheus、granfana1234sudo apt install prometheussudo apt install granfana  配置mysql数据源1234567johnzb@ubuntu:~&#x2F;mysqld_exporter-0.14.0.linux-amd64$ cat my.cnf[client]port&#x3D;3306host&#x3D;127.0.0.1user&#x3D;grafan">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-06T14:49:56.000Z">
+<meta property="article:modified_time" content="2023-01-06T15:17:52.354Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="小站" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">小站</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ledkk.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-prometheus-granfana-mysql-exporter" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/01/06/prometheus-granfana-mysql-exporter/" class="article-date">
+  <time class="dt-published" datetime="2023-01-06T14:49:56.000Z" itemprop="datePublished">2023-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      prometheus_granfana_mysql_exporter
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="安装prometheus、granfana"><a href="#安装prometheus、granfana" class="headerlink" title="安装prometheus、granfana"></a>安装prometheus、granfana</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install prometheus</span><br><span class="line"></span><br><span class="line">sudo apt install granfana</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="配置mysql数据源"><a href="#配置mysql数据源" class="headerlink" title="配置mysql数据源"></a>配置mysql数据源</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ cat my.cnf</span><br><span class="line">[client]</span><br><span class="line">port=3306</span><br><span class="line">host=127.0.0.1</span><br><span class="line">user=grafanaReader</span><br><span class="line">password=grafanaReader</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>对应的账号需要必要的权限</p>
+<ul>
+<li><code>grant process, replication client , select on *.* to &#39;grafanaReader&#39;@&#39;%&#39;;</code></li>
+<li><code>flush privileges;</code></li>
+</ul>
+<h1 id="启动mysqld-exporter"><a href="#启动mysqld-exporter" class="headerlink" title="启动mysqld_exporter"></a>启动mysqld_exporter</h1><pre><code>使用如下脚本在本机启动mysqld_exporter，启动后，mysqld_exporter会监听9104端口， 通过`curl &#39;http://127.0.0.1:9104/metrics&#39;` 可以看到exporter吐出的信息。
+</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">./mysqld_exporter --config.my-cnf=./my.cnf</span><br><span class="line"></span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ ./mysqld_exporter --config.my-cnf=./my.cnf</span><br><span class="line">ts=2023-01-06T12:30:52.566Z caller=mysqld_exporter.go:277 level=info msg=&quot;Starting mysqld_exporter&quot; version=&quot;(version=0.14.0, branch=HEAD, revision=ca1b9af82a471c849c529eb8aadb1aac73e7b68c)&quot;</span><br><span class="line">ts=2023-01-06T12:30:52.566Z caller=mysqld_exporter.go:278 level=info msg=&quot;Build context&quot; (gogo1.17.8,userroot@401d370ca42e,date20220304-16:25:15)=(MISSING)</span><br><span class="line">ts=2023-01-06T12:30:52.566Z caller=mysqld_exporter.go:293 level=info msg=&quot;Scraper enabled&quot; scraper=global_status</span><br><span class="line">ts=2023-01-06T12:30:52.566Z caller=mysqld_exporter.go:293 level=info msg=&quot;Scraper enabled&quot; scraper=global_variables</span><br><span class="line">ts=2023-01-06T12:30:52.566Z caller=mysqld_exporter.go:293 level=info msg=&quot;Scraper enabled&quot; scraper=slave_status</span><br><span class="line">ts=2023-01-06T12:30:52.566Z caller=mysqld_exporter.go:293 level=info msg=&quot;Scraper enabled&quot; scraper=info_schema.innodb_cmp</span><br><span class="line">ts=2023-01-06T12:30:52.566Z caller=mysqld_exporter.go:293 level=info msg=&quot;Scraper enabled&quot; scraper=info_schema.innodb_cmpmem</span><br><span class="line">ts=2023-01-06T12:30:52.566Z caller=mysqld_exporter.go:293 level=info msg=&quot;Scraper enabled&quot; scraper=info_schema.query_response_time</span><br><span class="line">ts=2023-01-06T12:30:52.566Z caller=mysqld_exporter.go:303 level=info msg=&quot;Listening on address&quot; address=:9104</span><br></pre></td></tr></table></figure>
+
+<h1 id="配置prometheus，采集mysqld-exporter吐出的metrics信息"><a href="#配置prometheus，采集mysqld-exporter吐出的metrics信息" class="headerlink" title="配置prometheus，采集mysqld_exporter吐出的metrics信息"></a>配置prometheus，采集mysqld_exporter吐出的metrics信息</h1><pre><code>配置prometheus的采集job，采集job会定时将对应的数据采集到prometheus中存储（prometheus本身是一个时序数据库）
+</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ sudo vim /etc/prometheus/prometheus.yml</span><br><span class="line"></span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ sudo service prometheus restart</span><br><span class="line"></span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ cat /etc/prometheus/prometheus.yml</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Sample config <span class="keyword">for</span> Prometheus.</span></span><br><span class="line"></span><br><span class="line">global:</span><br><span class="line">  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.</span><br><span class="line">  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.</span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">scrape_timeout is <span class="built_in">set</span> to the global default (10s).</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">Attach these labels to any time series or alerts when communicating with</span></span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">external systems (federation, remote storage, Alertmanager).</span></span><br><span class="line">  external_labels:</span><br><span class="line">      monitor: &#x27;example&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Alertmanager configuration</span></span><br><span class="line">alerting:</span><br><span class="line">  alertmanagers:</span><br><span class="line">  - static_configs:</span><br><span class="line">    - targets: [&#x27;localhost:9093&#x27;]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Load rules once and periodically evaluate them according to the global <span class="string">&#x27;evaluation_interval&#x27;</span>.</span></span><br><span class="line">rule_files:</span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">- <span class="string">&quot;first_rules.yml&quot;</span></span></span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">- <span class="string">&quot;second_rules.yml&quot;</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">A scrape configuration containing exactly one endpoint to scrape:</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Here it<span class="string">&#x27;s Prometheus itself.</span></span></span><br><span class="line">scrape_configs:</span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash"><span class="string">The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span></span></span><br><span class="line">  - job_name: &#x27;prometheus&#x27;</span><br><span class="line"></span><br><span class="line">    # Override the global default and scrape targets from this job every 5 seconds.</span><br><span class="line">    scrape_interval: 5s</span><br><span class="line">    scrape_timeout: 5s</span><br><span class="line"></span><br><span class="line">    # metrics_path defaults to &#x27;/metrics&#x27;</span><br><span class="line">    # scheme defaults to &#x27;http&#x27;.</span><br><span class="line"></span><br><span class="line">    static_configs:</span><br><span class="line">      - targets: [&#x27;localhost:9090&#x27;]</span><br><span class="line"></span><br><span class="line">  - job_name: node</span><br><span class="line">    # If prometheus-node-exporter is installed, grab stats about the local</span><br><span class="line">    # machine by default.</span><br><span class="line">    static_configs:</span><br><span class="line">      - targets: [&#x27;localhost:9100&#x27;]</span><br><span class="line"></span><br><span class="line">  - job_name: &#x27;mysqld_exporter&#x27;</span><br><span class="line">    static_configs:</span><br><span class="line">      - targets: [&#x27;localhost:9104&#x27;]</span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="granfana上配置Prometheus数据源"><a href="#granfana上配置Prometheus数据源" class="headerlink" title="granfana上配置Prometheus数据源"></a>granfana上配置Prometheus数据源</h1><ol>
+<li>config datasource –&gt; add prometheus datasource </li>
+<li>import via granfana config json  <code>https://grafana.com/grafana/dashboards/7362</code> , 配置prometheus的数据源</li>
+<li>生成Mysql Overview视图</li>
+</ol>
+<h1 id="利用systemd管理mysqld-explorter"><a href="#利用systemd管理mysqld-explorter" class="headerlink" title="利用systemd管理mysqld_explorter"></a>利用systemd管理mysqld_explorter</h1><ol>
+<li><p>添加mysqld_exporter.service 配置文件 <code>vim /etc/systemd/system/mysqld_exporter.service</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ cat /etc/systemd/system/mysqld_exporter.service</span><br><span class="line">[Unit]</span><br><span class="line">Description= Prometheus MySQL Exporter</span><br><span class="line">Wants=network-online.target</span><br><span class="line">After=network-online.target</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">User=johnzb</span><br><span class="line">Group=johnzb</span><br><span class="line">Type=simple</span><br><span class="line">Restart=always</span><br><span class="line">ExecStart=/home/johnzb/mysqld_exporter-0.14.0.linux-amd64/mysqld_exporter \</span><br><span class="line">--config.my-cnf /home/johnzb/mysqld_exporter-0.14.0.linux-amd64/my.cnf \</span><br><span class="line">--collect.auto_increment.columns \</span><br><span class="line">--collect.binlog_size \</span><br><span class="line">--collect.engine_innodb_status \</span><br><span class="line">--collect.engine_tokudb_status \</span><br><span class="line">--collect.global_status</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重新加载systemd的配置文件 <code>sudo systemctl daemon-reload</code></p>
+</li>
+<li><p><code> systemctl status mysqld_exporter</code> 查看mysqld_exporter的状态</p>
+</li>
+<li><p><code>systemctl start mysqld_exporter</code> 启动mysqld_exporter服务</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">johnzb@ubuntu:/etc/systemd/system$ systemctl status mysqld_exporter</span><br><span class="line">● mysqld_exporter.service - Prometheus MySQL Exporter</span><br><span class="line">     Loaded: loaded (/etc/systemd/system/mysqld_exporter.service; disabled; vendor preset: enabled)</span><br><span class="line">     Active: inactive (dead)</span><br><span class="line">johnzb@ubuntu:/etc/systemd/system$ systemctl start mysqld_exporter</span><br><span class="line">==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===</span><br><span class="line">Authentication is required to start &#x27;mysqld_exporter.service&#x27;.</span><br><span class="line">Authenticating as: Ubuntu2123qwe,,, (johnzb)</span><br><span class="line">Password:</span><br><span class="line">==== AUTHENTICATION COMPLETE ===</span><br><span class="line">johnzb@ubuntu:/etc/systemd/system$ systemctl status mysqld_exporter</span><br><span class="line">● mysqld_exporter.service - Prometheus MySQL Exporter</span><br><span class="line">     Loaded: loaded (/etc/systemd/system/mysqld_exporter.service; disabled; vendor preset: enabled)</span><br><span class="line">     Active: active (running) since Fri 2023-01-06 07:12:34 PST; 10s ago</span><br><span class="line">   Main PID: 8890 (mysqld_exporter)</span><br><span class="line">      Tasks: 6 (limit: 9413)</span><br><span class="line">     Memory: 5.8M</span><br><span class="line">     CGroup: /system.slice/mysqld_exporter.service</span><br><span class="line">             └─8890 /home/johnzb/mysqld_exporter-0.14.0.linux-amd64/mysqld_exporter --config.my-cnf /h&gt;</span><br><span class="line"></span><br><span class="line">Jan 06 07:12:34 ubuntu mysqld_exporter[8890]: ts=2023-01-06T15:12:34.412Z caller=mysqld_exporter.go:29&gt;</span><br><span class="line">Jan 06 07:12:34 ubuntu mysqld_exporter[8890]: ts=2023-01-06T15:12:34.412Z caller=mysqld_exporter.go:29&gt;</span><br><span class="line">Jan 06 07:12:34 ubuntu mysqld_exporter[8890]: ts=2023-01-06T15:12:34.412Z caller=mysqld_exporter.go:29&gt;</span><br><span class="line">Jan 06 07:12:34 ubuntu mysqld_exporter[8890]: ts=2023-01-06T15:12:34.412Z caller=mysqld_exporter.go:29&gt;</span><br><span class="line">Jan 06 07:12:34 ubuntu mysqld_exporter[8890]: ts=2023-01-06T15:12:34.412Z caller=mysqld_exporter.go:29&gt;</span><br><span class="line">Jan 06 07:12:34 ubuntu mysqld_exporter[8890]: ts=2023-01-06T15:12:34.412Z caller=mysqld_exporter.go:29&gt;</span><br><span class="line">Jan 06 07:12:34 ubuntu mysqld_exporter[8890]: ts=2023-01-06T15:12:34.412Z caller=mysqld_exporter.go:29&gt;</span><br><span class="line">Jan 06 07:12:34 ubuntu mysqld_exporter[8890]: ts=2023-01-06T15:12:34.412Z caller=mysqld_exporter.go:30&gt;</span><br><span class="line">Jan 06 07:12:34 ubuntu mysqld_exporter[8890]: ts=2023-01-06T15:12:34.413Z caller=tls_config.go:195 lev&gt;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ledkk.github.io/2023/01/06/prometheus-granfana-mysql-exporter/" data-id="clcknwj17000060vc71pzeuf9" data-title="prometheus_granfana_mysql_exporter" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/01/04/huge-page/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">huge_page</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/01/06/prometheus-granfana-mysql-exporter/">prometheus_granfana_mysql_exporter</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/04/huge-page/">huge_page</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/31/mysql-profile-monitor/">mysql-profile-monitor</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/30/strace-for-linux/">strace_for_linux</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/28/hello-world/">hexo使用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
