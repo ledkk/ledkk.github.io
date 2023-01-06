@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>proxy_on_console | 小站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="配置1234$ cat ~&#x2F;.bash_aliasesalias proxyon&#x3D;&quot;export http_proxy&#x3D;socks5:&#x2F;&#x2F;192.168.0.46:1080;export https_proxy&#x3D;socks5:&#x2F;&#x2F;192.168.0.46:1080;&quot;alias proxyoff&#x3D;&quot;export http_proxy&#x3D;&amp;#x27;&amp;#x27;;expo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="proxy_on_console">
+<meta property="og:url" content="https://ledkk.github.io/2023/01/06/proxy-on-console/index.html">
+<meta property="og:site_name" content="小站">
+<meta property="og:description" content="配置1234$ cat ~&#x2F;.bash_aliasesalias proxyon&#x3D;&quot;export http_proxy&#x3D;socks5:&#x2F;&#x2F;192.168.0.46:1080;export https_proxy&#x3D;socks5:&#x2F;&#x2F;192.168.0.46:1080;&quot;alias proxyoff&#x3D;&quot;export http_proxy&#x3D;&amp;#x27;&amp;#x27;;expo">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-06T15:36:40.000Z">
+<meta property="article:modified_time" content="2023-01-06T15:43:16.758Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="小站" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">小站</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ledkk.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-proxy-on-console" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/01/06/proxy-on-console/" class="article-date">
+  <time class="dt-published" datetime="2023-01-06T15:36:40.000Z" itemprop="datePublished">2023-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      proxy_on_console
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cat</span> ~/.bash_aliases</span></span><br><span class="line">alias proxyon=&quot;export http_proxy=socks5://192.168.0.46:1080;export https_proxy=socks5://192.168.0.46:1080;&quot;</span><br><span class="line">alias proxyoff=&quot;export http_proxy=&#x27;&#x27;;export https_proxy=&#x27;&#x27;;&quot;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ proxyoff</span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ curl &#x27;http://www.google.com&#x27; -I</span><br><span class="line">^C</span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ ls^C</span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ proxyon</span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ curl &#x27;http://www.google.com&#x27; -I</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Type: text/html; charset=ISO-8859-1</span><br><span class="line">Cross-Origin-Opener-Policy-Report-Only: same-origin-allow-popups; report-to=&quot;gws&quot;</span><br><span class="line">Report-To: &#123;&quot;group&quot;:&quot;gws&quot;,&quot;max_age&quot;:2592000,&quot;endpoints&quot;:[&#123;&quot;url&quot;:&quot;https://csp.withgoogle.com/csp/report-to/gws/other&quot;&#125;]&#125;</span><br><span class="line">P3P: CP=&quot;This is not a P3P policy! See g.co/p3phelp for more info.&quot;</span><br><span class="line">Date: Fri, 06 Jan 2023 15:36:20 GMT</span><br><span class="line">Server: gws</span><br><span class="line">X-XSS-Protection: 0</span><br><span class="line">X-Frame-Options: SAMEORIGIN</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Expires: Fri, 06 Jan 2023 15:36:20 GMT</span><br><span class="line">Cache-Control: private</span><br><span class="line">Set-Cookie: 1P_JAR=2023-01-06-15; expires=Sun, 05-Feb-2023 15:36:20 GMT; path=/; domain=.google.com; Secure</span><br><span class="line">Set-Cookie: AEC=AakniGO59ggmF3pyLwO78sM7mqVwm3lHUXga4zSJhKeoWoseCCHXnX-KiPU; expires=Wed, 05-Jul-2023 15:36:20 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax</span><br><span class="line">Set-Cookie: NID=511=hvX-lQ5BTnjX_gt62kQtMAbEshFXr0f9JhzXGgEelHCP6dcgfw7M-OfzZ5oE9Zl5VGk0whTW2y9lZ_xVt0UvzRrw_ffFXbszSfonzcVuuZYoPz1qJmmw5KGaAQSnbmLd-xOxXPM2Fzh-cTgoEoDn11UhSa8kBOuSfUIBk0g8R-U; expires=Sat, 08-Jul-2023 15:36:20 GMT; path=/; domain=.google.com; HttpOnly</span><br><span class="line"></span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><p>使用过程中，发现wget无法识别socks5的代理，这个时候可以通过curl 代替，但还有其他替代方式，暂时未有时间尝试，参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/483868947">https://zhuanlan.zhihu.com/p/483868947</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ledkk.github.io/2023/01/06/proxy-on-console/" data-id="clckovhmg0000t4vc2i4jhdjp" data-title="proxy_on_console" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/01/06/script-for-windows/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          script_for_windows
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/01/06/prometheus-granfana-mysql-exporter/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">prometheus_granfana_mysql_exporter</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/01/06/script-for-windows/">script_for_windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/06/proxy-on-console/">proxy_on_console</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/06/prometheus-granfana-mysql-exporter/">prometheus_granfana_mysql_exporter</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/04/huge-page/">huge_page</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/31/mysql-profile-monitor/">mysql-profile-monitor</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

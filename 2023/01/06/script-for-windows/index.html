@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>script_for_windows | 小站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="windows机器下的常用脚本，用作记录，都是内网ip，风险可控 windows复制到虚拟机的脚本1234567891011PS D:\tools\bat&gt; cat .\rcp.batscp -r %1 johnzb@192.168.0.68:&#x2F;home&#x2F;johnzb&#x2F;PS D:\tools\bat&gt;PS C:\Users\john.zb&gt; rcp test1C:\Users\j">
+<meta property="og:type" content="article">
+<meta property="og:title" content="script_for_windows">
+<meta property="og:url" content="https://ledkk.github.io/2023/01/06/script-for-windows/index.html">
+<meta property="og:site_name" content="小站">
+<meta property="og:description" content="windows机器下的常用脚本，用作记录，都是内网ip，风险可控 windows复制到虚拟机的脚本1234567891011PS D:\tools\bat&gt; cat .\rcp.batscp -r %1 johnzb@192.168.0.68:&#x2F;home&#x2F;johnzb&#x2F;PS D:\tools\bat&gt;PS C:\Users\john.zb&gt; rcp test1C:\Users\j">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-06T15:43:33.000Z">
+<meta property="article:modified_time" content="2023-01-06T15:45:12.247Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="小站" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">小站</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ledkk.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-script-for-windows" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/01/06/script-for-windows/" class="article-date">
+  <time class="dt-published" datetime="2023-01-06T15:43:33.000Z" itemprop="datePublished">2023-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      script_for_windows
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>windows机器下的常用脚本，用作记录，都是内网ip，风险可控</p>
+<h1 id="windows复制到虚拟机的脚本"><a href="#windows复制到虚拟机的脚本" class="headerlink" title="windows复制到虚拟机的脚本"></a>windows复制到虚拟机的脚本</h1><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">PS D:\tools\bat&gt; cat .\rcp.bat</span><br><span class="line">scp -r %<span class="number">1</span> johnzb@<span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.<span class="number">68</span>:/home/johnzb/</span><br><span class="line">PS D:\tools\bat&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\Users\john.zb&gt; rcp test1</span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">john.zb</span>&gt;<span class="title">scp</span> -<span class="title">r</span> <span class="title">test1</span> <span class="title">johnzb</span>@192.168.0.68:/<span class="title">home</span>/<span class="title">johnzb</span>/</span></span><br><span class="line"><span class="function"><span class="title">test1</span>                                                               100% 2513<span class="title">KB</span> 103.2<span class="title">MB</span>/<span class="title">s</span>   00:00</span></span><br><span class="line"><span class="function"><span class="title">PS</span> <span class="title">C</span>:\<span class="title">Users</span>\<span class="title">john.zb</span>&gt;</span></span><br><span class="line"><span class="function"></span></span><br></pre></td></tr></table></figure>
+
+<h1 id="登录虚拟机的脚本"><a href="#登录虚拟机的脚本" class="headerlink" title="登录虚拟机的脚本"></a>登录虚拟机的脚本</h1><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">PS D:\tools\bat&gt; cat .\ubt.bat</span><br><span class="line">ssh johnzb@<span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.<span class="number">68</span></span><br><span class="line">PS D:\tools\bat&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="登录NAS的脚本"><a href="#登录NAS的脚本" class="headerlink" title="登录NAS的脚本"></a>登录NAS的脚本</h1><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS D:\tools\bat&gt; cat .\nas.bat</span><br><span class="line">ssh admin@<span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.<span class="number">11</span></span><br><span class="line">PS D:\tools\bat&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ledkk.github.io/2023/01/06/script-for-windows/" data-id="clckovhmj0001t4vc0ndn9jq3" data-title="script_for_windows" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/01/06/proxy-on-console/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">proxy_on_console</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/01/06/script-for-windows/">script_for_windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/06/proxy-on-console/">proxy_on_console</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/06/prometheus-granfana-mysql-exporter/">prometheus_granfana_mysql_exporter</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/04/huge-page/">huge_page</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/31/mysql-profile-monitor/">mysql-profile-monitor</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

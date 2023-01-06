@@ -71,6 +71,93 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-script-for-windows" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/01/06/script-for-windows/" class="article-date">
+  <time class="dt-published" datetime="2023-01-06T15:43:33.000Z" itemprop="datePublished">2023-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/01/06/script-for-windows/">script_for_windows</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>windows机器下的常用脚本，用作记录，都是内网ip，风险可控</p>
+<h1 id="windows复制到虚拟机的脚本"><a href="#windows复制到虚拟机的脚本" class="headerlink" title="windows复制到虚拟机的脚本"></a>windows复制到虚拟机的脚本</h1><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">PS D:\tools\bat&gt; cat .\rcp.bat</span><br><span class="line">scp -r %<span class="number">1</span> johnzb@<span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.<span class="number">68</span>:/home/johnzb/</span><br><span class="line">PS D:\tools\bat&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\Users\john.zb&gt; rcp test1</span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">john.zb</span>&gt;<span class="title">scp</span> -<span class="title">r</span> <span class="title">test1</span> <span class="title">johnzb</span>@192.168.0.68:/<span class="title">home</span>/<span class="title">johnzb</span>/</span></span><br><span class="line"><span class="function"><span class="title">test1</span>                                                               100% 2513<span class="title">KB</span> 103.2<span class="title">MB</span>/<span class="title">s</span>   00:00</span></span><br><span class="line"><span class="function"><span class="title">PS</span> <span class="title">C</span>:\<span class="title">Users</span>\<span class="title">john.zb</span>&gt;</span></span><br><span class="line"><span class="function"></span></span><br></pre></td></tr></table></figure>
+
+<h1 id="登录虚拟机的脚本"><a href="#登录虚拟机的脚本" class="headerlink" title="登录虚拟机的脚本"></a>登录虚拟机的脚本</h1><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">PS D:\tools\bat&gt; cat .\ubt.bat</span><br><span class="line">ssh johnzb@<span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.<span class="number">68</span></span><br><span class="line">PS D:\tools\bat&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="登录NAS的脚本"><a href="#登录NAS的脚本" class="headerlink" title="登录NAS的脚本"></a>登录NAS的脚本</h1><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS D:\tools\bat&gt; cat .\nas.bat</span><br><span class="line">ssh admin@<span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.<span class="number">11</span></span><br><span class="line">PS D:\tools\bat&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ledkk.github.io/2023/01/06/script-for-windows/" data-id="clckovhmj0001t4vc0ndn9jq3" data-title="script_for_windows" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-proxy-on-console" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/01/06/proxy-on-console/" class="article-date">
+  <time class="dt-published" datetime="2023-01-06T15:36:40.000Z" itemprop="datePublished">2023-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/01/06/proxy-on-console/">proxy_on_console</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cat</span> ~/.bash_aliases</span></span><br><span class="line">alias proxyon=&quot;export http_proxy=socks5://192.168.0.46:1080;export https_proxy=socks5://192.168.0.46:1080;&quot;</span><br><span class="line">alias proxyoff=&quot;export http_proxy=&#x27;&#x27;;export https_proxy=&#x27;&#x27;;&quot;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ proxyoff</span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ curl &#x27;http://www.google.com&#x27; -I</span><br><span class="line">^C</span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ ls^C</span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ proxyon</span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$ curl &#x27;http://www.google.com&#x27; -I</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Type: text/html; charset=ISO-8859-1</span><br><span class="line">Cross-Origin-Opener-Policy-Report-Only: same-origin-allow-popups; report-to=&quot;gws&quot;</span><br><span class="line">Report-To: &#123;&quot;group&quot;:&quot;gws&quot;,&quot;max_age&quot;:2592000,&quot;endpoints&quot;:[&#123;&quot;url&quot;:&quot;https://csp.withgoogle.com/csp/report-to/gws/other&quot;&#125;]&#125;</span><br><span class="line">P3P: CP=&quot;This is not a P3P policy! See g.co/p3phelp for more info.&quot;</span><br><span class="line">Date: Fri, 06 Jan 2023 15:36:20 GMT</span><br><span class="line">Server: gws</span><br><span class="line">X-XSS-Protection: 0</span><br><span class="line">X-Frame-Options: SAMEORIGIN</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Expires: Fri, 06 Jan 2023 15:36:20 GMT</span><br><span class="line">Cache-Control: private</span><br><span class="line">Set-Cookie: 1P_JAR=2023-01-06-15; expires=Sun, 05-Feb-2023 15:36:20 GMT; path=/; domain=.google.com; Secure</span><br><span class="line">Set-Cookie: AEC=AakniGO59ggmF3pyLwO78sM7mqVwm3lHUXga4zSJhKeoWoseCCHXnX-KiPU; expires=Wed, 05-Jul-2023 15:36:20 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax</span><br><span class="line">Set-Cookie: NID=511=hvX-lQ5BTnjX_gt62kQtMAbEshFXr0f9JhzXGgEelHCP6dcgfw7M-OfzZ5oE9Zl5VGk0whTW2y9lZ_xVt0UvzRrw_ffFXbszSfonzcVuuZYoPz1qJmmw5KGaAQSnbmLd-xOxXPM2Fzh-cTgoEoDn11UhSa8kBOuSfUIBk0g8R-U; expires=Sat, 08-Jul-2023 15:36:20 GMT; path=/; domain=.google.com; HttpOnly</span><br><span class="line"></span><br><span class="line">johnzb@ubuntu:~/mysqld_exporter-0.14.0.linux-amd64$</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><p>使用过程中，发现wget无法识别socks5的代理，这个时候可以通过curl 代替，但还有其他替代方式，暂时未有时间尝试，参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/483868947">https://zhuanlan.zhihu.com/p/483868947</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ledkk.github.io/2023/01/06/proxy-on-console/" data-id="clckovhmg0000t4vc2i4jhdjp" data-title="proxy_on_console" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-prometheus-granfana-mysql-exporter" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/01/06/prometheus-granfana-mysql-exporter/" class="article-date">
@@ -568,6 +655,14 @@
       <ul>
         
           <li>
+            <a href="/2023/01/06/script-for-windows/">script_for_windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/06/proxy-on-console/">proxy_on_console</a>
+          </li>
+        
+          <li>
             <a href="/2023/01/06/prometheus-granfana-mysql-exporter/">prometheus_granfana_mysql_exporter</a>
           </li>
         
@@ -577,14 +672,6 @@
         
           <li>
             <a href="/2022/12/31/mysql-profile-monitor/">mysql-profile-monitor</a>
-          </li>
-        
-          <li>
-            <a href="/2022/12/30/strace-for-linux/">strace_for_linux</a>
-          </li>
-        
-          <li>
-            <a href="/2022/12/28/hello-world/">hexo使用</a>
           </li>
         
       </ul>
