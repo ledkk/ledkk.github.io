@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>springboot_influx_micrometer_granfana | 小站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="spring-boot-actuator 内部提供了很多autoconfiguration的实现，只要引入响应的jar包，就可以直接进行使用，这里分析Influx的使用方式  InfluxMetricsExportAutoConfiguration 提供了InfluxMetricsExport的配置引入, 进而提供了InfluxMeterRegistry的初始化 12345678910111213">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springboot_influx_micrometer_granfana">
+<meta property="og:url" content="https://ledkk.github.io/2023/01/08/springboot-influx-micrometer-granfana/index.html">
+<meta property="og:site_name" content="小站">
+<meta property="og:description" content="spring-boot-actuator 内部提供了很多autoconfiguration的实现，只要引入响应的jar包，就可以直接进行使用，这里分析Influx的使用方式  InfluxMetricsExportAutoConfiguration 提供了InfluxMetricsExport的配置引入, 进而提供了InfluxMeterRegistry的初始化 12345678910111213">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-08T12:07:08.000Z">
+<meta property="article:modified_time" content="2023-01-08T13:25:10.755Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="小站" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">小站</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ledkk.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-springboot-influx-micrometer-granfana" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/01/08/springboot-influx-micrometer-granfana/" class="article-date">
+  <time class="dt-published" datetime="2023-01-08T12:07:08.000Z" itemprop="datePublished">2023-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      springboot_influx_micrometer_granfana
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>spring-boot-actuator 内部提供了很多autoconfiguration的实现，只要引入响应的jar包，就可以直接进行使用，这里分析Influx的使用方式</p>
+<ol>
+<li><p>InfluxMetricsExportAutoConfiguration 提供了InfluxMetricsExport的配置引入, 进而提供了<code>InfluxMeterRegistry</code>的初始化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@AutoConfiguration(</span></span><br><span class="line"><span class="meta">		before = &#123; CompositeMeterRegistryAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class &#125;,</span></span><br><span class="line"><span class="meta">		after = MetricsAutoConfiguration.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnBean(Clock.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(InfluxMeterRegistry.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnEnabledMetricsExport(&quot;influx&quot;)</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties(InfluxProperties.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">InfluxMetricsExportAutoConfiguration</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> InfluxProperties properties;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">InfluxMetricsExportAutoConfiguration</span><span class="params">(InfluxProperties properties)</span> &#123;</span><br><span class="line">		<span class="built_in">this</span>.properties = properties;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@ConditionalOnMissingBean</span></span><br><span class="line">	<span class="keyword">public</span> InfluxConfig <span class="title function_">influxConfig</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">InfluxPropertiesConfigAdapter</span>(<span class="built_in">this</span>.properties);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@ConditionalOnMissingBean</span></span><br><span class="line">	<span class="keyword">public</span> InfluxMeterRegistry <span class="title function_">influxMeterRegistry</span><span class="params">(InfluxConfig influxConfig, Clock clock)</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> InfluxMeterRegistry.builder(influxConfig).clock(clock).httpClient(</span><br><span class="line">				<span class="keyword">new</span> <span class="title class_">HttpUrlConnectionSender</span>(<span class="built_in">this</span>.properties.getConnectTimeout(), <span class="built_in">this</span>.properties.getReadTimeout()))</span><br><span class="line">				.build();</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>InfluxMeterRegistry</code> 内部提供了线程池，会按照InfluxProperties 配置的相关参数，定时发布相关的指标到Influx中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="title function_">InfluxMeterRegistry</span><span class="params">(InfluxConfig config, Clock clock, ThreadFactory threadFactory, HttpSender httpClient)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(config, clock);</span><br><span class="line">    config().namingConvention(<span class="keyword">new</span> <span class="title class_">InfluxNamingConvention</span>());</span><br><span class="line">    <span class="built_in">this</span>.config = config;</span><br><span class="line">    <span class="built_in">this</span>.httpClient = httpClient;</span><br><span class="line">    start(threadFactory);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>metrics发布相关的处理逻辑</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">publish</span><span class="params">()</span> &#123;</span><br><span class="line">        createDatabaseIfNecessary();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">influxEndpoint</span> <span class="operator">=</span> config.apiVersion().writeEndpoint(config);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (List&lt;Meter&gt; batch : MeterPartition.partition(<span class="built_in">this</span>, config.batchSize())) &#123;</span><br><span class="line">                HttpSender.Request.<span class="type">Builder</span> <span class="variable">requestBuilder</span> <span class="operator">=</span> httpClient.post(influxEndpoint)</span><br><span class="line">                        .withBasicAuthentication(config.userName(), config.password());</span><br><span class="line">                config.apiVersion().addHeaderToken(config, requestBuilder);</span><br><span class="line">                <span class="comment">// @formatter:off</span></span><br><span class="line">                requestBuilder</span><br><span class="line">                        .withPlainText(batch.stream()</span><br><span class="line">                                .flatMap(m -&gt; m.match(</span><br><span class="line">                                        gauge -&gt; writeGauge(gauge.getId(), gauge.value()),</span><br><span class="line">                                        counter -&gt; writeCounter(counter.getId(), counter.count()),</span><br><span class="line">                                        <span class="built_in">this</span>::writeTimer,</span><br><span class="line">                                        <span class="built_in">this</span>::writeSummary,</span><br><span class="line">                                        <span class="built_in">this</span>::writeLongTaskTimer,</span><br><span class="line">                                        gauge -&gt; writeGauge(gauge.getId(), gauge.value(getBaseTimeUnit())),</span><br><span class="line">                                        counter -&gt; writeCounter(counter.getId(), counter.count()),</span><br><span class="line">                                        <span class="built_in">this</span>::writeFunctionTimer,</span><br><span class="line">                                        <span class="built_in">this</span>::writeMeter))</span><br><span class="line">                                .collect(joining(<span class="string">&quot;\n&quot;</span>)))</span><br><span class="line">                        .compressWhen(config::compressed)</span><br><span class="line">                        .send()</span><br><span class="line">                        .onSuccess(response -&gt; &#123;</span><br><span class="line">                            logger.debug(<span class="string">&quot;successfully sent &#123;&#125; metrics to InfluxDB.&quot;</span>, batch.size());</span><br><span class="line">                            databaseExists = <span class="literal">true</span>;</span><br><span class="line">                        &#125;)</span><br><span class="line">                        .onError(response -&gt; logger.error(<span class="string">&quot;failed to send metrics to influx: &#123;&#125;&quot;</span>, response.body()));</span><br><span class="line">                <span class="comment">// @formatter:on</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (MalformedURLException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(</span><br><span class="line">                    <span class="string">&quot;Malformed InfluxDB publishing endpoint, see &#x27;&quot;</span> + config.prefix() + <span class="string">&quot;.uri&#x27;&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;failed to send metrics to influx&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>实际使用过程中，springboot会自动注入<code>InfluxMeterRegistry</code>，利用该对象可以注册新的指标数据</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MicrometerTestController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> MeterRegistry registry;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//自动注入InfluxMeterRegistry</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MicrometerTestController</span><span class="params">(MeterRegistry registry)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.registry = registry;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;api/greet&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">greet</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//数据计数</span></span><br><span class="line">        registry.counter(<span class="string">&quot;custom.greet&quot;</span>,<span class="string">&quot;appname&quot;</span>,<span class="string">&quot;BUYERS_APP&quot;</span>,<span class="string">&quot;ip&quot;</span>,<span class="string">&quot;192.168.0.68&quot;</span>).increment();</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;hello &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="Meter的类型"><a href="#Meter的类型" class="headerlink" title="Meter的类型"></a>Meter的类型</h1><ol>
+<li>计数器<br>计数器用来表示计数类监控项目，比如“控制器的访问次数”，“方法的调用次数”等等，这类监控信息都是只增不减的，且和次数有关</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 利用Register获取Counter对象，并计数</span></span><br><span class="line">registry.counter(<span class="string">&quot;custom.greet&quot;</span>,<span class="string">&quot;appname&quot;</span>,<span class="string">&quot;test&quot;</span>,<span class="string">&quot;ip&quot;</span>,<span class="string">&quot;192.168.0.68&quot;</span>).increment();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Counter builder 进行创建</span></span><br><span class="line">Counter.builder(<span class="string">&quot;custom.greet&quot;</span>).tag(<span class="string">&quot;appname&quot;</span>,<span class="string">&quot;test&quot;</span>).tag(<span class="string">&quot;ip&quot;</span>,<span class="string">&quot;192.168.0.68&quot;</span>).register(registry).increment();</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>计量器</li>
+</ol>
+<p>计量器用于持续计量类的任务，比如“集合长度”、“加载了类的个数”、“最大访问时间”等等。</p>
+<p>registry.gauge(“db.cpu”,Math.random());</p>
+<p>ref ： <a target="_blank" rel="noopener" href="https://www.cnblogs.com/cjsblog/p/11556029.html">https://www.cnblogs.com/cjsblog/p/11556029.html</a></p>
+<h1 id="阿里云数据访问"><a href="#阿里云数据访问" class="headerlink" title="阿里云数据访问"></a>阿里云数据访问</h1><p>接口调用基本已经可以使用了，主要遇到时间格式的问题，时间格式需要注意为UTC时间</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RdsServiceTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RdsService rdsService;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">String</span> <span class="variable">instanceId</span> <span class="operator">=</span> <span class="string">&quot;rm-bp13k1gnlgt9g8365&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">describeDBInstancePerformance</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">Date</span> <span class="variable">startTime</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>(System.currentTimeMillis() - <span class="number">1</span>*<span class="number">60</span>*<span class="number">60</span>*<span class="number">1000</span>);</span><br><span class="line">        <span class="type">Date</span> <span class="variable">endTime</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>(System.currentTimeMillis());</span><br><span class="line">        <span class="comment">// SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&#x27;T&#x27;HH:mm&#x27;Z&#x27;&quot;);</span></span><br><span class="line">        <span class="comment">// sdf.setTimeZone(SimpleTimeZone.getTimeZone(&quot;UTC&quot;));</span></span><br><span class="line">        <span class="comment">// sdf.format(startTime)</span></span><br><span class="line">        List&lt;String&gt; performanceKeys = Lists.newArrayList(<span class="string">&quot;MySQL_NetworkTraffic&quot;</span>,<span class="string">&quot;MySQL_InnoDBBufferRatio&quot;</span>,<span class="string">&quot;MySQL_IOPS&quot;</span>,<span class="string">&quot;MySQL_DetailedSpaceUsage&quot;</span>);</span><br><span class="line">        <span class="type">DescribeDBInstancePerformanceResponse</span> <span class="variable">describeDBInstancePerformanceResponse</span> <span class="operator">=</span> rdsService.describeDBInstancePerformance(instanceId,performanceKeys, startTime, endTime);</span><br><span class="line">        System.out.println(describeDBInstancePerformanceResponse.body);</span><br><span class="line">        System.out.println(<span class="keyword">new</span> <span class="title class_">Gson</span>().toJson(describeDBInstancePerformanceResponse));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">describeDBInstanceAttribute</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">DescribeDBInstanceAttributeResponse</span> <span class="variable">describeDBInstanceAttributeResponse</span> <span class="operator">=</span> rdsService.describeDBInstanceAttribute(instanceId);</span><br><span class="line">        System.out.println(<span class="keyword">new</span> <span class="title class_">Gson</span>().toJson(describeDBInstanceAttributeResponse));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">describeResourceUsage</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">DescribeResourceUsageResponse</span> <span class="variable">describeResourceUsageResponse</span> <span class="operator">=</span> rdsService.describeResourceUsage(instanceId);</span><br><span class="line">        System.out.println(<span class="keyword">new</span> <span class="title class_">Gson</span>().toJson(describeResourceUsageResponse));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ledkk.github.io/2023/01/08/springboot-influx-micrometer-granfana/" data-id="clcnerdwd0000x4vcdac7cir0" data-title="springboot_influx_micrometer_granfana" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/01/06/script-for-windows/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">script_for_windows</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/01/08/springboot-influx-micrometer-granfana/">springboot_influx_micrometer_granfana</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/06/script-for-windows/">script_for_windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/06/proxy-on-console/">proxy_on_console</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/06/prometheus-granfana-mysql-exporter/">prometheus_granfana_mysql_exporter</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/04/huge-page/">huge_page</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
