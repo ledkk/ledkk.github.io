@@ -103,5 +103,6 @@ theme: shoka
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: 'git'
+  extend_dirs: ./
   repo:
     github: git@github.com:ledkk/ledkk.github.io.git,main
