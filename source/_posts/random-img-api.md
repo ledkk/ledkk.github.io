@@ -13,7 +13,28 @@ tags:
 	curl -s  'https://cn.bing.com/'  | egrep 'preload" href="[^"]+"' -o  | egrep 'https[^"]+' -o
 	# 上述脚本会将bing首页展示的背景图片的地址扣出来，随机图片服务就利用这个原理，达到了图片随机的效果。
 	# https://s.cn.bing.net/th?id=OHR.HautBarr_ZH-CN8274813404_1920x1080.webp&amp;qlt=50
-
 ```
 
 对于网络上的图床，其效果也是类似的效果，比如某一个业务有图片上传能力，那么一个简单的图床就产生了，对这个业务的上传接口做包装，图片上传后的地址就作为可以外链访问的地址即可。
+
+
+## but...
+实际尝试下来，不同的页面访问bing的首页，返回的页面格式存在差异，重新分析了下bing的返回内容以及接口，发现了一个比较合适的接口，简单的代码片段如下, 实际可以访问的地址为`http://www.royjo.ltd/bing_img`
+
+```rust
+
+    if let Ok(client) = reqwest::ClientBuilder::new().connect_timeout(Duration::from_secs(5)).build(){
+        let t = client.get("https://cn.bing.com/hp/api/v1/imagegallery?format=json").send().await.unwrap().json::<serde_json::Value>().await.unwrap();
+        let v :Vec<String> = t["data"]["images"].as_array().unwrap().iter().map(|k|{
+            let m = &k["imageUrls"]["landscape"]["highDef"];
+            format!("https://cn.bing.com{}", m.as_str().unwrap())
+        }).collect::<Vec<String>>();
+        let i  = random::<usize>();
+        let index = i % v.len();
+        let rand_url = v.get(index).unwrap();
+        return Ok(Redirect::to(rand_url.clone()));
+    }
+
+```
+
+
