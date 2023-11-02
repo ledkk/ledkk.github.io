@@ -1,0 +1,475 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="小站" href="https://blog.royjo.ltd/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="小站" href="https://blog.royjo.ltd/atom.xml" />
+<link rel="alternate" type="application/json" title="小站" href="https://blog.royjo.ltd/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://blog.royjo.ltd/2023/01/08/springboot-influx-micrometer-granfana/">
+
+
+
+  <title>
+springboot_influx_micrometer_granfana |
+Yume Shoka = 小站</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">springboot_influx_micrometer_granfana
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="Created: 2023-01-08 20:07:08">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">Posted on</span>
+    <time itemprop="dateCreated datePublished" datetime="2023-01-08T20:07:08+08:00">2023-01-08</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="Toggle navigation bar">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?8495"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?702406"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?648430"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?619972"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?368997"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?880808"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">Home</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/01/08/springboot-influx-micrometer-granfana/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="John Doe">
+    <meta itemprop="description" content=", ">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小站">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <p>spring-boot-actuator 内部提供了很多autoconfiguration的实现，只要引入响应的jar包，就可以直接进行使用，这里分析Influx的使用方式</p>
+<ol>
+<li><p>InfluxMetricsExportAutoConfiguration 提供了InfluxMetricsExport的配置引入, 进而提供了<code>InfluxMeterRegistry</code>的初始化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@AutoConfiguration(</span></span><br><span class="line"><span class="meta">		before = &#123; CompositeMeterRegistryAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class &#125;,</span></span><br><span class="line"><span class="meta">		after = MetricsAutoConfiguration.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnBean(Clock.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(InfluxMeterRegistry.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnEnabledMetricsExport(&quot;influx&quot;)</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties(InfluxProperties.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">InfluxMetricsExportAutoConfiguration</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> InfluxProperties properties;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">InfluxMetricsExportAutoConfiguration</span><span class="params">(InfluxProperties properties)</span> &#123;</span><br><span class="line">		<span class="built_in">this</span>.properties = properties;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@ConditionalOnMissingBean</span></span><br><span class="line">	<span class="keyword">public</span> InfluxConfig <span class="title function_">influxConfig</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">InfluxPropertiesConfigAdapter</span>(<span class="built_in">this</span>.properties);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="meta">@ConditionalOnMissingBean</span></span><br><span class="line">	<span class="keyword">public</span> InfluxMeterRegistry <span class="title function_">influxMeterRegistry</span><span class="params">(InfluxConfig influxConfig, Clock clock)</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> InfluxMeterRegistry.builder(influxConfig).clock(clock).httpClient(</span><br><span class="line">				<span class="keyword">new</span> <span class="title class_">HttpUrlConnectionSender</span>(<span class="built_in">this</span>.properties.getConnectTimeout(), <span class="built_in">this</span>.properties.getReadTimeout()))</span><br><span class="line">				.build();</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>InfluxMeterRegistry</code> 内部提供了线程池，会按照InfluxProperties 配置的相关参数，定时发布相关的指标到Influx中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="title function_">InfluxMeterRegistry</span><span class="params">(InfluxConfig config, Clock clock, ThreadFactory threadFactory, HttpSender httpClient)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(config, clock);</span><br><span class="line">    config().namingConvention(<span class="keyword">new</span> <span class="title class_">InfluxNamingConvention</span>());</span><br><span class="line">    <span class="built_in">this</span>.config = config;</span><br><span class="line">    <span class="built_in">this</span>.httpClient = httpClient;</span><br><span class="line">    start(threadFactory);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>metrics发布相关的处理逻辑</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">publish</span><span class="params">()</span> &#123;</span><br><span class="line">        createDatabaseIfNecessary();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">influxEndpoint</span> <span class="operator">=</span> config.apiVersion().writeEndpoint(config);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (List&lt;Meter&gt; batch : MeterPartition.partition(<span class="built_in">this</span>, config.batchSize())) &#123;</span><br><span class="line">                HttpSender.Request.<span class="type">Builder</span> <span class="variable">requestBuilder</span> <span class="operator">=</span> httpClient.post(influxEndpoint)</span><br><span class="line">                        .withBasicAuthentication(config.userName(), config.password());</span><br><span class="line">                config.apiVersion().addHeaderToken(config, requestBuilder);</span><br><span class="line">                <span class="comment">// @formatter:off</span></span><br><span class="line">                requestBuilder</span><br><span class="line">                        .withPlainText(batch.stream()</span><br><span class="line">                                .flatMap(m -&gt; m.match(</span><br><span class="line">                                        gauge -&gt; writeGauge(gauge.getId(), gauge.value()),</span><br><span class="line">                                        counter -&gt; writeCounter(counter.getId(), counter.count()),</span><br><span class="line">                                        <span class="built_in">this</span>::writeTimer,</span><br><span class="line">                                        <span class="built_in">this</span>::writeSummary,</span><br><span class="line">                                        <span class="built_in">this</span>::writeLongTaskTimer,</span><br><span class="line">                                        gauge -&gt; writeGauge(gauge.getId(), gauge.value(getBaseTimeUnit())),</span><br><span class="line">                                        counter -&gt; writeCounter(counter.getId(), counter.count()),</span><br><span class="line">                                        <span class="built_in">this</span>::writeFunctionTimer,</span><br><span class="line">                                        <span class="built_in">this</span>::writeMeter))</span><br><span class="line">                                .collect(joining(<span class="string">&quot;\n&quot;</span>)))</span><br><span class="line">                        .compressWhen(config::compressed)</span><br><span class="line">                        .send()</span><br><span class="line">                        .onSuccess(response -&gt; &#123;</span><br><span class="line">                            logger.debug(<span class="string">&quot;successfully sent &#123;&#125; metrics to InfluxDB.&quot;</span>, batch.size());</span><br><span class="line">                            databaseExists = <span class="literal">true</span>;</span><br><span class="line">                        &#125;)</span><br><span class="line">                        .onError(response -&gt; logger.error(<span class="string">&quot;failed to send metrics to influx: &#123;&#125;&quot;</span>, response.body()));</span><br><span class="line">                <span class="comment">// @formatter:on</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (MalformedURLException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(</span><br><span class="line">                    <span class="string">&quot;Malformed InfluxDB publishing endpoint, see &#x27;&quot;</span> + config.prefix() + <span class="string">&quot;.uri&#x27;&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;failed to send metrics to influx&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>实际使用过程中，springboot会自动注入<code>InfluxMeterRegistry</code>，利用该对象可以注册新的指标数据</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MicrometerTestController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> MeterRegistry registry;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//自动注入InfluxMeterRegistry</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MicrometerTestController</span><span class="params">(MeterRegistry registry)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.registry = registry;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;api/greet&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">greet</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//数据计数</span></span><br><span class="line">        registry.counter(<span class="string">&quot;custom.greet&quot;</span>,<span class="string">&quot;appname&quot;</span>,<span class="string">&quot;BUYERS_APP&quot;</span>,<span class="string">&quot;ip&quot;</span>,<span class="string">&quot;192.168.0.68&quot;</span>).increment();</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;hello &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="Meter的类型"><a href="#Meter的类型" class="headerlink" title="Meter的类型"></a>Meter的类型</h1><ol>
+<li>计数器<br>计数器用来表示计数类监控项目，比如“控制器的访问次数”，“方法的调用次数”等等，这类监控信息都是只增不减的，且和次数有关</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 利用Register获取Counter对象，并计数</span></span><br><span class="line">registry.counter(<span class="string">&quot;custom.greet&quot;</span>,<span class="string">&quot;appname&quot;</span>,<span class="string">&quot;test&quot;</span>,<span class="string">&quot;ip&quot;</span>,<span class="string">&quot;192.168.0.68&quot;</span>).increment();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Counter builder 进行创建</span></span><br><span class="line">Counter.builder(<span class="string">&quot;custom.greet&quot;</span>).tag(<span class="string">&quot;appname&quot;</span>,<span class="string">&quot;test&quot;</span>).tag(<span class="string">&quot;ip&quot;</span>,<span class="string">&quot;192.168.0.68&quot;</span>).register(registry).increment();</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>计量器</li>
+</ol>
+<p>计量器用于持续计量类的任务，比如“集合长度”、“加载了类的个数”、“最大访问时间”等等。</p>
+<p>registry.gauge(“db.cpu”,Math.random());</p>
+<p>ref ： <a target="_blank" rel="noopener" href="https://www.cnblogs.com/cjsblog/p/11556029.html">https://www.cnblogs.com/cjsblog/p/11556029.html</a></p>
+<h1 id="阿里云数据访问"><a href="#阿里云数据访问" class="headerlink" title="阿里云数据访问"></a>阿里云数据访问</h1><p>接口调用基本已经可以使用了，主要遇到时间格式的问题，时间格式需要注意为UTC时间</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RdsServiceTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RdsService rdsService;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">String</span> <span class="variable">instanceId</span> <span class="operator">=</span> <span class="string">&quot;rm-bp13k1gnlgt9g8365&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">describeDBInstancePerformance</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">Date</span> <span class="variable">startTime</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>(System.currentTimeMillis() - <span class="number">1</span>*<span class="number">60</span>*<span class="number">60</span>*<span class="number">1000</span>);</span><br><span class="line">        <span class="type">Date</span> <span class="variable">endTime</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>(System.currentTimeMillis());</span><br><span class="line">        <span class="comment">// SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&#x27;T&#x27;HH:mm&#x27;Z&#x27;&quot;);</span></span><br><span class="line">        <span class="comment">// sdf.setTimeZone(SimpleTimeZone.getTimeZone(&quot;UTC&quot;));</span></span><br><span class="line">        <span class="comment">// sdf.format(startTime)</span></span><br><span class="line">        List&lt;String&gt; performanceKeys = Lists.newArrayList(<span class="string">&quot;MySQL_NetworkTraffic&quot;</span>,<span class="string">&quot;MySQL_InnoDBBufferRatio&quot;</span>,<span class="string">&quot;MySQL_IOPS&quot;</span>,<span class="string">&quot;MySQL_DetailedSpaceUsage&quot;</span>);</span><br><span class="line">        <span class="type">DescribeDBInstancePerformanceResponse</span> <span class="variable">describeDBInstancePerformanceResponse</span> <span class="operator">=</span> rdsService.describeDBInstancePerformance(instanceId,performanceKeys, startTime, endTime);</span><br><span class="line">        System.out.println(describeDBInstancePerformanceResponse.body);</span><br><span class="line">        System.out.println(<span class="keyword">new</span> <span class="title class_">Gson</span>().toJson(describeDBInstancePerformanceResponse));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">describeDBInstanceAttribute</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">DescribeDBInstanceAttributeResponse</span> <span class="variable">describeDBInstanceAttributeResponse</span> <span class="operator">=</span> rdsService.describeDBInstanceAttribute(instanceId);</span><br><span class="line">        System.out.println(<span class="keyword">new</span> <span class="title class_">Gson</span>().toJson(describeDBInstanceAttributeResponse));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">describeResourceUsage</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">DescribeResourceUsageResponse</span> <span class="variable">describeResourceUsageResponse</span> <span class="operator">=</span> rdsService.describeResourceUsage(instanceId);</span><br><span class="line">        System.out.println(<span class="keyword">new</span> <span class="title class_">Gson</span>().toJson(describeResourceUsageResponse));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">Edited on</span>
+    <time title="Modified: 2023-11-03 00:25:47" itemprop="dateModified" datetime="2023-11-03T00:25:47+08:00">2023-11-03</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>Post author:  </strong>John Doe <i class="ic i-at"><em>@</em></i>小站
+  </li>
+  <li class="link">
+    <strong>Post link: </strong>
+    <a href="https://blog.royjo.ltd/2023/01/08/springboot-influx-micrometer-granfana/" title="springboot_influx_micrometer_granfana">https://blog.royjo.ltd/2023/01/08/springboot-influx-micrometer-granfana/</a>
+  </li>
+  <li class="license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2023/01/06/script-for-windows/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?255722" title="script_for_windows">
+  <span class="type">Previous Post</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>script_for_windows</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2023/10/31/run-qemu-in-shell/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?109742" title="run-qemu-in-shell">
+  <span class="type">Next Post</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>run-qemu-in-shell</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="Contents">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Meter%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">Meter的类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%98%BF%E9%87%8C%E4%BA%91%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE"><span class="toc-number">2.</span> <span class="toc-text">阿里云数据访问</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="Related">
+      </div>
+      <div class="overview panel" data-title="Overview">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="John Doe"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">John Doe</p>
+  <div class="description" itemprop="description"></div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">13</span>
+        <span class="name">posts</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>Home</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2023/01/06/script-for-windows/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2023/10/31/run-qemu-in-shell/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>Random Posts</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/12/31/mysql-profile-monitor/" title="mysql-profile-monitor">mysql-profile-monitor</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/11/01/random-img-api/" title="random_img_api">random_img_api</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/11/01/sth-abuout-socks5/" title="sth abuout socks5">sth abuout socks5</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/11/03/hello-world/" title="hexo使用">hexo使用</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/10/28/clap-demo/" title="clap demo">clap demo</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/10/31/run-qemu-in-shell/" title="run-qemu-in-shell">run-qemu-in-shell</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/04/huge-page/" title="huge_page">huge_page</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/06/proxy-on-console/" title="proxy_on_console">proxy_on_console</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/06/script-for-windows/" title="script_for_windows">script_for_windows</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/06/prometheus-granfana-mysql-exporter/" title="prometheus_granfana_mysql_exporter">prometheus_granfana_mysql_exporter</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>Recent Comments</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    Powered by <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2023/01/08/springboot-influx-micrometer-granfana/',
+    favicon: {
+      show: "（●´3｀●）Goooood",
+      hide: "(´Д｀)Booooom"
+    },
+    search : {
+      placeholder: "Search for Posts",
+      empty: "We didn't find any results for the search: ${query}",
+      stats: "${hits} results found in ${time} ms"
+    },
+    valine: true,fancybox: true,
+    copyright: 'Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

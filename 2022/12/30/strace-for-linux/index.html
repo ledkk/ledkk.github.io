@@ -1,0 +1,511 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="小站" href="https://blog.royjo.ltd/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="小站" href="https://blog.royjo.ltd/atom.xml" />
+<link rel="alternate" type="application/json" title="小站" href="https://blog.royjo.ltd/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://blog.royjo.ltd/2022/12/30/strace-for-linux/">
+
+
+
+  <title>
+strace_for_linux |
+Yume Shoka = 小站</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">strace_for_linux
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="Created: 2022-12-30 22:31:39">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">Posted on</span>
+    <time itemprop="dateCreated datePublished" datetime="2022-12-30T22:31:39+08:00">2022-12-30</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="Toggle navigation bar">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?386526"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?491794"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?801168"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?890132"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?68484"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?336899"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">Home</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2022/12/30/strace-for-linux/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="John Doe">
+    <meta itemprop="description" content=", ">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小站">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <p>近期在研究Linux相关的内容，比如透明大页对系统性能的影响，以及一些Linux程序的运行情况。由于对C以及Linux并不是特别熟悉，在学习一些程序的时候，总是有一种云里雾里的感觉，因此想找到一些观测工具，能看到Linux系统下程序的执行情况。类似java生态里的Arthas、btrace的工具。经过几番查找，找到了可能有用的几个工具：<code>strace</code>、<code>ebpf</code> 、<code>systemtap</code>、<code>kprobe</code>,从网上看了比较多的内容，但还是一知半解，因此决定逐个击破，今天先看看<code>strace</code>相关的内容。最终目的是熟悉linux下的观测工具，比能熟练解决linux下的系统问题。</p>
+<h1 id="strace-是什么"><a href="#strace-是什么" class="headerlink" title="strace 是什么"></a>strace 是什么</h1><pre><code>strace 是一个非常有用的诊断、debug工具。针对无法找到源码的程序，如果想要观察这个程序的执行过程时，strace可以很方便的跟踪程序的执行过程。
+</code></pre>
+<p>使用方式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">strace [-ACdffhikqqrtttTvVwxxyyzZ] [-I n] [-b execve] [-e expr]... [-a column] [-o file] [-s strsize] [-X format]</span><br><span class="line">             [-P path]... [-p pid]... [--seccomp-bpf] &#123; -p pid | [-DDD] [-E var[=val]]... [-u username] command [args] &#125;</span><br><span class="line"></span><br><span class="line">      strace -c [-dfwzZ] [-I n] [-b execve] [-e expr]... [-O overhead] [-S sortby] [-P path]... [-p pid]... [--seccomp-bpf] &#123;</span><br><span class="line">             -p pid | [-DDD] [-E var[=val]]... [-u username] command [args] &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装strace</span> </span><br><span class="line"> sudo apt install strace</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看程序的系统调用情况</span></span><br><span class="line">johnzb@ubuntu:~$ strace ./a.out</span><br><span class="line">execve(&quot;./a.out&quot;, [&quot;./a.out&quot;], 0x7ffd938259d0 /* 23 vars */) = 0</span><br><span class="line">brk(NULL)                               = 0x55e35ace7000</span><br><span class="line">arch_prctl(0x3001 /* ARCH_??? */, 0x7ffcccdee110) = -1 EINVAL (Invalid argument)</span><br><span class="line">access(&quot;/etc/ld.so.preload&quot;, R_OK)      = -1 ENOENT (No such file or directory)</span><br><span class="line">openat(AT_FDCWD, &quot;/etc/ld.so.cache&quot;, O_RDONLY|O_CLOEXEC) = 3</span><br><span class="line">fstat(3, &#123;st_mode=S_IFREG|0644, st_size=75093, ...&#125;) = 0</span><br><span class="line">mmap(NULL, 75093, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb422051000</span><br><span class="line">close(3)                                = 0</span><br><span class="line">openat(AT_FDCWD, &quot;/lib/x86_64-linux-gnu/libc.so.6&quot;, O_RDONLY|O_CLOEXEC) = 3</span><br><span class="line">read(3, &quot;\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0&gt;\0\1\0\0\0\300A\2\0\0\0\0\0&quot;..., 832) = 832</span><br><span class="line">pread64(3, &quot;\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0&quot;..., 784, 64) = 784</span><br><span class="line">pread64(3, &quot;\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0&quot;, 32, 848) = 32</span><br><span class="line">pread64(3, &quot;\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\30x\346\264ur\f|Q\226\236i\253-&#x27;o&quot;..., 68, 880) = 68</span><br><span class="line">fstat(3, &#123;st_mode=S_IFREG|0755, st_size=2029592, ...&#125;) = 0</span><br><span class="line">mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fb42204f000</span><br><span class="line">pread64(3, &quot;\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0&quot;..., 784, 64) = 784</span><br><span class="line">pread64(3, &quot;\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0&quot;, 32, 848) = 32</span><br><span class="line">pread64(3, &quot;\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\30x\346\264ur\f|Q\226\236i\253-&#x27;o&quot;..., 68, 880) = 68</span><br><span class="line">mmap(NULL, 2037344, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fb421e5d000</span><br><span class="line">mmap(0x7fb421e7f000, 1540096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x22000) = 0x7fb421e7f000</span><br><span class="line">mmap(0x7fb421ff7000, 319488, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19a000) = 0x7fb421ff7000</span><br><span class="line">mmap(0x7fb422045000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e7000) = 0x7fb422045000</span><br><span class="line">mmap(0x7fb42204b000, 13920, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7fb42204b000</span><br><span class="line">close(3)                                = 0</span><br><span class="line">arch_prctl(ARCH_SET_FS, 0x7fb422050540) = 0</span><br><span class="line">mprotect(0x7fb422045000, 16384, PROT_READ) = 0</span><br><span class="line">mprotect(0x55e358d2c000, 4096, PROT_READ) = 0</span><br><span class="line">mprotect(0x7fb422091000, 4096, PROT_READ) = 0</span><br><span class="line">munmap(0x7fb422051000, 75093)           = 0</span><br><span class="line">brk(NULL)                               = 0x55e35ace7000</span><br><span class="line">brk(0x55e35ad08000)                     = 0x55e35ad08000</span><br><span class="line">openat(AT_FDCWD, &quot;strace_demo.txt&quot;, O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3</span><br><span class="line">fstat(3, &#123;st_mode=S_IFREG|0664, st_size=0, ...&#125;) = 0</span><br><span class="line">write(3, &quot;Write this to the file&quot;, 22)  = 22</span><br><span class="line">close(3)                                = 0</span><br><span class="line">exit_group(0)                           = ?</span><br><span class="line">+++ exited with 0 +++</span><br><span class="line"></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看创建进程相关的系统调用</span></span><br><span class="line">strace -e trace=process ./a.out</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看文件相关的系统调用</span></span><br><span class="line">strace -e trace=file ./a.out</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看网络相关的系统调用</span></span><br><span class="line">strace -e trace=network ./a.out</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看文件相关的系统调用，并打印时间及耗时</span></span><br><span class="line">strace -e trace=file -T -tt ./a.out</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">打印系统调用的统计信息，并打印strace的debug信息。</span></span><br><span class="line">strace -e trace=file -C -w -d ./a.out</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">打印程序的系统调用情况</span></span><br><span class="line">johnzb@johnzb-GK45:~/code/linux_std$ strace -c ./a.out</span><br><span class="line">hello world !</span><br><span class="line"><span class="meta prompt_">% </span><span class="language-bash">time     seconds  usecs/call     calls    errors syscall</span></span><br><span class="line">------ ----------- ----------- --------- --------- ----------------</span><br><span class="line">  0.00    0.000000           0         1           read</span><br><span class="line">  0.00    0.000000           0         1           write</span><br><span class="line">  0.00    0.000000           0         2           close</span><br><span class="line">  0.00    0.000000           0         3           fstat</span><br><span class="line">  0.00    0.000000           0         7           mmap</span><br><span class="line">  0.00    0.000000           0         3           mprotect</span><br><span class="line">  0.00    0.000000           0         1           munmap</span><br><span class="line">  0.00    0.000000           0         3           brk</span><br><span class="line">  0.00    0.000000           0         6           pread64</span><br><span class="line">  0.00    0.000000           0         1         1 access</span><br><span class="line">  0.00    0.000000           0         1           execve</span><br><span class="line">  0.00    0.000000           0         2         1 arch_prctl</span><br><span class="line">  0.00    0.000000           0         2           openat</span><br><span class="line">------ ----------- ----------- --------- --------- ----------------</span><br><span class="line">100.00    0.000000                    33         2 total</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.howtogeek.com/732736/how-to-use-strace-to-monitor-linux-system-calls/">https://www.howtogeek.com/732736/how-to-use-strace-to-monitor-linux-system-calls/</a></p>
+<h1 id="Ftrace"><a href="#Ftrace" class="headerlink" title="Ftrace"></a>Ftrace</h1><ol>
+<li>Lightweight, flexible function and tracepoint tracer, profiler</li>
+<li>Useful for data gathering, debugging, and performance tuning</li>
+<li>In Ubuntu 9.10 and later releases</li>
+<li>No need for kernel recompile or separate flavour!</li>
+<li>Documentation&#x2F;trace&#x2F;{ftrace.txt,ftracedesign.txt}</li>
+</ol>
+<h1 id="Ftrace’s-trick"><a href="#Ftrace’s-trick" class="headerlink" title="Ftrace’s trick"></a>Ftrace’s trick</h1><ol>
+<li>Use gprof hooks. Add mcount() call at entry of each kernel function.</li>
+<li>Require kernel to be compiled with -pg option</li>
+<li>During compilation the mcount() call-sites are recorded</li>
+<li>Convert the mcount() call to a NOP at boot time</li>
+</ol>
+<h1 id="The-Debugfs"><a href="#The-Debugfs" class="headerlink" title="The Debugfs"></a>The Debugfs</h1><ul>
+<li>Debugfs officially be mounted at   &#x2F;sys&#x2F;kernel&#x2F;debug</li>
+<li>ftrace 							   &#x2F;sys&#x2F;kernel&#x2F;debug&#x2F;tracing</li>
+</ul>
+<h1 id="The-Tracing-Directory"><a href="#The-Tracing-Directory" class="headerlink" title="The Tracing Directory"></a>The Tracing Directory</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">root@ubuntu:/sys/kernel/debug# ls tracing/</span><br><span class="line">available_events            enabled_functions         max_graph_depth      set_event_notrace_pid   stack_max_size      trace_options</span><br><span class="line">available_filter_functions  error_log                 options              set_event_pid           stack_trace         trace_pipe</span><br><span class="line">available_tracers           events                    per_cpu              set_ftrace_filter       stack_trace_filter  trace_stat</span><br><span class="line">buffer_percent              free_buffer               printk_formats       set_ftrace_notrace      synthetic_events    tracing_cpumask</span><br><span class="line">buffer_size_kb              function_profile_enabled  README               set_ftrace_notrace_pid  timestamp_mode      tracing_max_latency</span><br><span class="line">buffer_total_size_kb        hwlat_detector            saved_cmdlines       set_ftrace_pid          trace               tracing_on</span><br><span class="line">current_tracer              instances                 saved_cmdlines_size  set_graph_function      trace_clock         tracing_thresh</span><br><span class="line">dynamic_events              kprobe_events             saved_tgids          set_graph_notrace       trace_marker        uprobe_events</span><br><span class="line">dyn_ftrace_total_info       kprobe_profile            set_event            snapshot                trace_marker_raw    uprobe_profile</span><br><span class="line">root@ubuntu:/sys/kernel/debug#</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="Available-Tracers"><a href="#Available-Tracers" class="headerlink" title="Available Tracers"></a>Available Tracers</h1><ul>
+<li>blk – for blk device</li>
+<li>function – trace entry of all kernel functions</li>
+<li>function_graph – trace on both entry and exit of all functions. And provides C style of calling graph</li>
+<li>mmiotrace – In-kernel memory-mapped I&#x2F;O tracing</li>
+<li>sched_switch – context switches and wakeups between tasks</li>
+<li>nop – trace nothing</li>
+</ul>
+<h1 id="The-Function-Tracer"><a href="#The-Function-Tracer" class="headerlink" title="The Function Tracer"></a>The Function Tracer</h1><ul>
+<li><code>sudo su -c &quot;echo function &gt; current_tracer&quot;</code>  跟踪所有的内核函数</li>
+<li><code>cat trace | head -n 15	</code>   查看trace结果</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:/sys/kernel/debug/tracing# cat trace | head -n 15</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">tracer: <span class="keyword">function</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># entries-in-buffer/entries-written: 2934/2934   #P:4</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment">#                                _-----=&gt; irqs-off</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">                              / _----=&gt; need-resched</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">                             | / _---=&gt; hardirq/softirq</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">                             || / _--=&gt; preempt-depth</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">                             ||| / _-=&gt; migrate-disable</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">                             |||| /     delay</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">          TASK-PID     CPU<span class="comment">#  |||||  TIMESTAMP  FUNCTION</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">             | |         |   |||||     |         |</span></span><br><span class="line">            sshd-91001   [003] ..... 1067412.298925: tcp_poll &lt;-sock_poll</span><br><span class="line">            sshd-91001   [003] ..... 1067412.298936: tcp_stream_memory_free &lt;-tcp_poll</span><br><span class="line">            sshd-91001   [003] ..... 1067412.299042: tcp_poll &lt;-sock_poll</span><br><span class="line">root@ubuntu:/sys/kernel/debug/tracing#</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Ftrace-Filter"><a href="#Ftrace-Filter" class="headerlink" title="Ftrace Filter"></a>Ftrace Filter</h1><p><code>cat available_filter_functions | head -n 5</code> 查看可用的filter function<br><code>sudo su -c &quot;echo ext4* &gt; set_ftrace_filter&quot;</code> 设置filter function （可以使用匹配符）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:/sys/kernel/debug/tracing# cat available_filter_functions  | head -n 16</span><br><span class="line">__traceiter_initcall_level</span><br><span class="line">__traceiter_initcall_start</span><br><span class="line">__traceiter_initcall_finish</span><br><span class="line">trace_initcall_finish_cb</span><br><span class="line">initcall_blacklisted</span><br><span class="line">do_one_initcall</span><br><span class="line">do_one_initcall</span><br><span class="line">match_dev_by_label</span><br><span class="line">match_dev_by_uuid</span><br><span class="line">rootfs_init_fs_context</span><br><span class="line">name_to_dev_t</span><br><span class="line">wait_for_initramfs</span><br><span class="line">wait_for_initramfs</span><br><span class="line">calibration_delay_done</span><br><span class="line">calibrate_delay</span><br><span class="line">vdso_fault</span><br><span class="line"></span><br><span class="line">root@ubuntu:/sys/kernel/debug/tracing#  cat available_filter_functions | wc -l</span><br><span class="line">61917</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">利用匹配符，设置过滤器</span></span><br><span class="line">root@ubuntu:/sys/kernel/debug/tracing# echo ext4* &gt; set_ftrace_filter</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">匹配到多种的<span class="keyword">function</span></span></span><br><span class="line">root@ubuntu:/sys/kernel/debug/tracing# cat set_ftrace_filter  | wc -l</span><br><span class="line">621</span><br><span class="line">root@ubuntu:/sys/kernel/debug/tracing# cat set_ftrace_filter | head -n 5</span><br><span class="line">ext4_has_free_clusters</span><br><span class="line">ext4_validate_block_bitmap.part.0</span><br><span class="line">ext4_validate_block_bitmap</span><br><span class="line">ext4_get_group_no_and_offset</span><br><span class="line">ext4_get_group_number</span><br><span class="line"></span><br><span class="line">tail: trace: file truncated</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">tracer: <span class="keyword">function</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># entries-in-buffer/entries-written: 193/193   #P:4</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment">#                                _-----=&gt; irqs-off</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">                              / _----=&gt; need-resched</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">                             | / _---=&gt; hardirq/softirq</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">                             || / _--=&gt; preempt-depth</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">                             ||| / _-=&gt; migrate-disable</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">                             |||| /     delay</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">          TASK-PID     CPU<span class="comment">#  |||||  TIMESTAMP  FUNCTION</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">             | |         |   |||||     |         |</span></span><br><span class="line">  grafana-server-1770    [002] ..... 1067716.379867: ext4_file_read_iter &lt;-new_sync_read</span><br><span class="line">  grafana-server-1770    [002] ..... 1067716.379903: ext4_file_getattr &lt;-vfs_getattr_nosec</span><br><span class="line">  grafana-server-1770    [002] ..... 1067716.379912: ext4_getattr &lt;-ext4_file_getattr</span><br><span class="line">  grafana-server-1770    [002] ..... 1067716.380236: ext4_file_read_iter &lt;-new_sync_read</span><br><span class="line">  grafana-server-1770    [002] ..... 1067716.380265: ext4_file_getattr &lt;-vfs_getattr_nosec</span><br><span class="line">  grafana-server-1770    [002] ..... 1067716.380274: ext4_getattr &lt;-ext4_file_getattr</span><br><span class="line">  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Ftrace-Filter-cont"><a href="#Ftrace-Filter-cont" class="headerlink" title="Ftrace Filter (cont.)"></a>Ftrace Filter (cont.)</h1><ul>
+<li>value* 		Select all functions that begin with ”value”</li>
+<li>*value*		Select all functions that contain the text ”value”</li>
+<li>*value		Select all functions that end with ”value”</li>
+<li>set_ftrace_notrace  不对某些function进行trace</li>
+</ul>
+<h1 id="Filter-Modules"><a href="#Filter-Modules" class="headerlink" title="Filter Modules"></a>Filter Modules</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/sys/kernel/debug/tracing % sudo su -c &quot;echo :mod:nvidia &gt; set_ftrace_filter&quot;</span><br><span class="line"></span><br><span class="line">/sys/kernel/debug/tracing % cat set_ftrace_filter | head -n 10		</span><br><span class="line"></span><br><span class="line">/sys/kernel/debug/tracing % cat set_ftrace_filter | wc -l </span><br><span class="line"></span><br><span class="line">/sys/kernel/debug/tracing % sudo su -c &quot;echo function &gt; current_tracer&quot;</span><br><span class="line"></span><br><span class="line">/sys/kernel/debug/tracing % cat trace | head -n 15</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Function-Graph-Tracer"><a href="#Function-Graph-Tracer" class="headerlink" title="Function Graph Tracer"></a>Function Graph Tracer</h1><p><code>echo function_graph &gt; current_tracer</code>  开启function_graph 跟踪</p>
+<p><code>sudo su -c &quot;echo sys_read &gt; set_graph_function&quot;</code> 设置跟踪特定的function</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">打开<span class="keyword">function</span> graph （不知道什么原因，每次执行的时候，我自己的机器上都会有bug爆出来，原因未知，稍后再排查）</span></span><br><span class="line">root@ubuntu:/sys/kernel/debug/tracing# echo function_graph &gt; current_tracer</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"> kernel:[  241.341363] watchdog: BUG: soft lockup - CPU<span class="comment">#2 stuck for 22s! [bash:2592]</span></span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cat ~/bin/ftrace-me</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line">DEBUGFS=`grep debugfs /proc/mounts | awk &#x27;&#123; print $2; &#125;&#x27;`</span><br><span class="line">sudo su -c &quot; \</span><br><span class="line">    echo 0 &gt; $DEBUGFS/tracing/tracing_on; \</span><br><span class="line">    echo $$ &gt; $DEBUGFS/tracing/set_ftrace_pid; \</span><br><span class="line">    echo function_graph &gt; $DEBUGFS/tracing/current_tracer; \</span><br><span class="line">    echo 1 &gt; $DEBUGFS/tracing/tracing_on&quot;</span><br><span class="line">exec $*</span><br><span class="line">sudo su -c &quot;\</span><br><span class="line">    echo -1 &gt; $DEBUGFS/tracing/set_ftrace_pid; \</span><br><span class="line">    echo 0 &gt; $DEBUGFS/tracing/tracing_on&quot;	 </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Who-Call-Me"><a href="#Who-Call-Me" class="headerlink" title="Who Call Me"></a>Who Call Me</h1><p>&#x2F;sys&#x2F;kernel&#x2F;debug&#x2F;tracing % sudo su -c “echo kfree &gt; set_ftrace_filter”<br>&#x2F;sys&#x2F;kernel&#x2F;debug&#x2F;tracing % cat set_ftrace_filter<br>&#x2F;sys&#x2F;kernel&#x2F;debug&#x2F;tracing % sudo su -c “echo function &gt; current_tracer”<br>&#x2F;sys&#x2F;kernel&#x2F;debug&#x2F;tracing % sudo su -c “echo 1 &gt; options&#x2F;func_stack_trace”<br>&#x2F;sys&#x2F;kernel&#x2F;debug&#x2F;tracing % cat trace | tail -5<br>&#x2F;sys&#x2F;kernel&#x2F;debug&#x2F;tracing % sudo su -c “echo 0 &gt; options&#x2F;func_stack_trace”<br>&#x2F;sys&#x2F;kernel&#x2F;debug&#x2F;tracing % sudo su -c “echo &gt; set_ftrace_filter”</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li>Debugging the kernel using Ftrace – part 1  <a target="_blank" rel="noopener" href="http://lwn.net/Articles/365835/">http://lwn.net/Articles/365835/</a></li>
+<li>Debugging the kernel using Ftrace – part 2	<a target="_blank" rel="noopener" href="http://lwn.net/Articles/366796/">http://lwn.net/Articles/366796/</a></li>
+<li>Secrets of the Ftrace function tracer <a target="_blank" rel="noopener" href="http://lwn.net/Articles/370423/">http://lwn.net/Articles/370423/</a></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">Edited on</span>
+    <time title="Modified: 2023-11-03 00:25:47" itemprop="dateModified" datetime="2023-11-03T00:25:47+08:00">2023-11-03</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>Post author:  </strong>John Doe <i class="ic i-at"><em>@</em></i>小站
+  </li>
+  <li class="link">
+    <strong>Post link: </strong>
+    <a href="https://blog.royjo.ltd/2022/12/30/strace-for-linux/" title="strace_for_linux">https://blog.royjo.ltd/2022/12/30/strace-for-linux/</a>
+  </li>
+  <li class="license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2022/12/08/docker-usage/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?664714" title="docker_usage">
+  <span class="type">Previous Post</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>docker_usage</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2022/12/31/mysql-profile-monitor/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?506825" title="mysql-profile-monitor">
+  <span class="type">Next Post</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>mysql-profile-monitor</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="Contents">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#strace-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">strace 是什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ftrace"><span class="toc-number">2.</span> <span class="toc-text">Ftrace</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ftrace%E2%80%99s-trick"><span class="toc-number">3.</span> <span class="toc-text">Ftrace’s trick</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#The-Debugfs"><span class="toc-number">4.</span> <span class="toc-text">The Debugfs</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#The-Tracing-Directory"><span class="toc-number">5.</span> <span class="toc-text">The Tracing Directory</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Available-Tracers"><span class="toc-number">6.</span> <span class="toc-text">Available Tracers</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#The-Function-Tracer"><span class="toc-number">7.</span> <span class="toc-text">The Function Tracer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ftrace-Filter"><span class="toc-number">8.</span> <span class="toc-text">Ftrace Filter</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ftrace-Filter-cont"><span class="toc-number">9.</span> <span class="toc-text">Ftrace Filter (cont.)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Filter-Modules"><span class="toc-number">10.</span> <span class="toc-text">Filter Modules</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Function-Graph-Tracer"><span class="toc-number">11.</span> <span class="toc-text">Function Graph Tracer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Who-Call-Me"><span class="toc-number">12.</span> <span class="toc-text">Who Call Me</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">13.</span> <span class="toc-text">Reference</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="Related">
+      </div>
+      <div class="overview panel" data-title="Overview">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="John Doe"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">John Doe</p>
+  <div class="description" itemprop="description"></div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">13</span>
+        <span class="name">posts</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>Home</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2022/12/08/docker-usage/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2022/12/31/mysql-profile-monitor/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>Random Posts</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/06/prometheus-granfana-mysql-exporter/" title="prometheus_granfana_mysql_exporter">prometheus_granfana_mysql_exporter</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/06/script-for-windows/" title="script_for_windows">script_for_windows</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/04/huge-page/" title="huge_page">huge_page</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/06/proxy-on-console/" title="proxy_on_console">proxy_on_console</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/12/08/docker-usage/" title="docker_usage">docker_usage</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/10/28/clap-demo/" title="clap demo">clap demo</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/11/01/random-img-api/" title="random_img_api">random_img_api</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/11/03/hello-world/" title="hexo使用">hexo使用</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/10/31/run-qemu-in-shell/" title="run-qemu-in-shell">run-qemu-in-shell</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/12/31/mysql-profile-monitor/" title="mysql-profile-monitor">mysql-profile-monitor</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>Recent Comments</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    Powered by <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2022/12/30/strace-for-linux/',
+    favicon: {
+      show: "（●´3｀●）Goooood",
+      hide: "(´Д｀)Booooom"
+    },
+    search : {
+      placeholder: "Search for Posts",
+      empty: "We didn't find any results for the search: ${query}",
+      stats: "${hits} results found in ${time} ms"
+    },
+    valine: true,fancybox: true,
+    copyright: 'Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>
