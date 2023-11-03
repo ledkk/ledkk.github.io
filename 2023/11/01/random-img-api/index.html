@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?270364"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?807453"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?81590"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?874649"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?401900"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?306594"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?75247"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?943422"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?929711"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?815500"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?613758"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?969704"></li>
         </ul>
       </div>
     </header>
@@ -151,9 +151,13 @@ Yume Shoka = 小站</title>
 
     <p>在捣鼓github page的时候，学到了一个新的名词<code>random image server api </code> ， 页面可以利用这些服务随机的展示图片，丰富自己网站的表现形式。第一映像觉得很不现实，在网络上，流量费用是相当贵的，而对于一些高清的图片，费用更贵，不太可能会存在免费的提供图片下载的站点。不然就是做公益了。 基于这个问题，就想弄清楚这些网站的背后机制是什么？</p>
 <p>分析了我自己在使用的这个随机图片api后，其原理大概已经清楚了，简单来说，这些随机图片api本身并不提供图片的展示服务，其只是将客户端的请求随机的302到一个图片的地址上，而图片的地址就是用网上大范围的图片服务提供的地址即可。比较简单的一个示例如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">curl -s  &#x27;https://cn.bing.com/&#x27;  | egrep &#x27;preload&quot; href=&quot;[^&quot;]+&quot;&#x27; -o  | egrep &#x27;https[^&quot;]+&#x27; -o</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">上述脚本会将bing首页展示的背景图片的地址扣出来，随机图片服务就利用这个原理，达到了图片随机的效果。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">https://s.cn.bing.net/th?<span class="built_in">id</span>=OHR.HautBarr_ZH-CN8274813404_1920x1080.webp&amp;amp;qlt=50</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">curl -s  &#x27;https://cn.bing.com/&#x27;  | egrep &#x27;preload&quot; href=&quot;[^&quot;]+&quot;&#x27; -o  | egrep &#x27;https[^&quot;]+&#x27; -o</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">上述脚本会将bing首页展示的背景图片的地址扣出来，随机图片服务就利用这个原理，达到了图片随机的效果。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">https://s.cn.bing.net/th?<span class="built_in">id</span>=OHR.HautBarr_ZH-CN8274813404_1920x1080.webp&amp;amp;qlt=50</span></span><br></pre></td></tr></table></figure>
 
 <p>对于网络上的图床，其效果也是类似的效果，比如某一个业务有图片上传能力，那么一个简单的图床就产生了，对这个业务的上传接口做包装，图片上传后的地址就作为可以外链访问的地址即可。</p>
+<h2 id="but…"><a href="#but…" class="headerlink" title="but…"></a>but…</h2><p>实际尝试下来，不同的页面访问bing的首页，返回的页面格式存在差异，重新分析了下bing的返回内容以及接口，发现了一个比较合适的接口，简单的代码片段如下, 实际可以访问的地址为<code>http://www.royjo.ltd/bing_img</code></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Ok</span>(client) = reqwest::ClientBuilder::<span class="title function_ invoke__">new</span>().<span class="title function_ invoke__">connect_timeout</span>(Duration::<span class="title function_ invoke__">from_secs</span>(<span class="number">5</span>)).<span class="title function_ invoke__">build</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">t</span> = client.<span class="title function_ invoke__">get</span>(<span class="string">&quot;https://cn.bing.com/hp/api/v1/imagegallery?format=json&quot;</span>).<span class="title function_ invoke__">send</span>().<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>().json::&lt;serde_json::Value&gt;().<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">v</span> :<span class="type">Vec</span>&lt;<span class="type">String</span>&gt; = t[<span class="string">&quot;data&quot;</span>][<span class="string">&quot;images&quot;</span>].<span class="title function_ invoke__">as_array</span>().<span class="title function_ invoke__">unwrap</span>().<span class="title function_ invoke__">iter</span>().<span class="title function_ invoke__">map</span>(|k|&#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">m</span> = &amp;k[<span class="string">&quot;imageUrls&quot;</span>][<span class="string">&quot;landscape&quot;</span>][<span class="string">&quot;highDef&quot;</span>];</span><br><span class="line">        <span class="built_in">format!</span>(<span class="string">&quot;https://cn.bing.com&#123;&#125;&quot;</span>, m.<span class="title function_ invoke__">as_str</span>().<span class="title function_ invoke__">unwrap</span>())</span><br><span class="line">    &#125;).collect::&lt;<span class="type">Vec</span>&lt;<span class="type">String</span>&gt;&gt;();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">i</span>  = random::&lt;<span class="type">usize</span>&gt;();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">index</span> = i % v.<span class="title function_ invoke__">len</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">rand_url</span> = v.<span class="title function_ invoke__">get</span>(index).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">Ok</span>(Redirect::<span class="title function_ invoke__">to</span>(rand_url.<span class="title function_ invoke__">clone</span>()));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 
   </div>
 
@@ -165,7 +169,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-01 13:43:16" itemprop="dateModified" datetime="2023-11-01T13:43:16+08:00">2023-11-01</time>
+    <time title="Modified: 2023-11-03 10:52:17" itemprop="dateModified" datetime="2023-11-03T10:52:17+08:00">2023-11-03</time>
   </span>
 </div>
 
@@ -197,7 +201,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/10/31/hello-world/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?31652" title="hexo使用">
+  <a href="/2023/10/31/hello-world/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?579792" title="hexo使用">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>hexo使用</h3>
@@ -205,6 +209,14 @@ Yume Shoka = 小站</title>
 
     </div>
     <div class="item right">
+      
+
+  <a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?420287" title="我的重传为什么这么高">
+  <span class="type">Next Post</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>我的重传为什么这么高</h3>
+  </a>
+
     </div>
 </div>
 
@@ -221,6 +233,7 @@ Yume Shoka = 小站</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="Contents">
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#but%E2%80%A6"><span class="toc-number">1.</span> <span class="toc-text">but…</span></a></li></ol>
       </div>
       <div class="related panel pjax" data-title="Related">
       </div>
@@ -235,7 +248,7 @@ Yume Shoka = 小站</title>
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">13</span>
+        <span class="count">14</span>
         <span class="name">posts</span>
       </a>
     </div>
@@ -260,10 +273,12 @@ Yume Shoka = 小站</title>
 
   <ul id="quick">
     <li class="prev pjax">
+        <a href="/2023/10/31/hello-world/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
+        <a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -287,33 +302,6 @@ Yume Shoka = 小站</title>
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2023/01/06/script-for-windows/" title="script_for_windows">script_for_windows</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-</div>
-
-    <span><a href="/2022/10/28/clap-demo/" title="clap demo">clap demo</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-</div>
-
-    <span><a href="/2022/11/01/sth-abuout-socks5/" title="sth abuout socks5">sth abuout socks5</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-</div>
-
     <span><a href="/2023/11/01/random-img-api/" title="random_img_api">random_img_api</a></span>
   </li>
 
@@ -323,7 +311,7 @@ Yume Shoka = 小站</title>
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2023/10/31/run-qemu-in-shell/" title="run-qemu-in-shell">run-qemu-in-shell</a></span>
+    <span><a href="/2022/12/08/docker-usage/" title="docker_usage">docker_usage</a></span>
   </li>
 
       
@@ -341,7 +329,7 @@ Yume Shoka = 小站</title>
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2022/12/30/strace-for-linux/" title="strace_for_linux">strace_for_linux</a></span>
+    <span><a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" title="我的重传为什么这么高">我的重传为什么这么高</a></span>
   </li>
 
       
@@ -359,7 +347,7 @@ Yume Shoka = 小站</title>
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2023/01/06/proxy-on-console/" title="proxy_on_console">proxy_on_console</a></span>
+    <span><a href="/2023/01/06/script-for-windows/" title="script_for_windows">script_for_windows</a></span>
   </li>
 
       
@@ -368,7 +356,34 @@ Yume Shoka = 小站</title>
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2022/12/08/docker-usage/" title="docker_usage">docker_usage</a></span>
+    <span><a href="/2022/12/30/strace-for-linux/" title="strace_for_linux">strace_for_linux</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/10/28/clap-demo/" title="clap demo">clap demo</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/10/31/run-qemu-in-shell/" title="run-qemu-in-shell">run-qemu-in-shell</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/04/huge-page/" title="huge_page">huge_page</a></span>
   </li>
 
   </ul>
