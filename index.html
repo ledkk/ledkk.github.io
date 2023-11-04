@@ -88,12 +88,12 @@
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?234393"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?159326"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?608597"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?351318"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?472642"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?371137"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?924033"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?376301"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?276186"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?18093"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?444129"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?764635"></li>
         </ul>
       </div>
     </header>
@@ -120,35 +120,56 @@
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/03/hello-world/" itemprop="url" title="hexo使用"><img data-src="https://api.isoyu.com/bing_images.php?216061"></a>
+    <a href="/2023/11/04/compile-rust-as-static-link/" itemprop="url" title="compile_rust_as_static_link"><img data-src="https://api.isoyu.com/bing_images.php?286298"></a>
   </div>
   <div class="info">
     
 <div class="meta">
-  <span class="item" title="Created: 2023-11-03 00:25:47">
+  <span class="item" title="Created: 2023-11-04 10:46:19">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-03T00:25:47+08:00">2023-11-03</time>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-04T10:46:19+08:00">2023-11-04</time>
   </span>
 </div>
 
-    <h3><a href="/2023/11/03/hello-world/" itemprop="url" title="hexo使用">hexo使用</a></h3>
+    <h3><a href="/2023/11/04/compile-rust-as-static-link/" itemprop="url" title="compile_rust_as_static_link">compile_rust_as_static_link</a></h3>
     <div class="excerpt">
-        Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post1$ hexo new &amp;quot;使用Rust写一个LSMTree的存储结构&amp;quot;
-
-More info: Writing
-Run...
+        由于环境的不同，个人远程服务器上使用的gcc版本比较旧，而本地编译机器使用的操作系统版本又比较高，对应的gcc版本和服务器版本差异比较大，之前测试java程序的时候，还感受不出来运行环境的差异，对系统部署的影响。近期尝试rust写一些小脚本的时候，经常发现本地可以正常跑起来的程序，部署到了远程就无法跑出来了。把两套环境完全搞成一样的，成本又相对比较高。使用Docker进行部署，相对来说又比较复杂，而且远程服务器性能较弱，不太适合直接本地编译，因此需要考虑对rust做静态编译。这里做一下记录。
+123456789101112131415161718#...
     </div>
-    <a href="/2023/11/03/hello-world/" itemprop="url" title="hexo使用" class="btn">more...</a>
+    <a href="/2023/11/04/compile-rust-as-static-link/" itemprop="url" title="compile_rust_as_static_link" class="btn">more...</a>
   </div>
 </article>
 
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/01/random-img-api/" itemprop="url" title="random_img_api"><img data-src="https://api.isoyu.com/bing_images.php?211556"></a>
+    <a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" itemprop="url" title="我的重传为什么这么高"><img data-src="https://api.isoyu.com/bing_images.php?934109"></a>
+  </div>
+  <div class="info">
+    
+<div class="meta">
+  <span class="item" title="Created: 2023-11-01 16:07:27">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-01T16:07:27+08:00">2023-11-01</time>
+  </span>
+</div>
+
+    <h3><a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" itemprop="url" title="我的重传为什么这么高">我的重传为什么这么高</a></h3>
+    <div class="excerpt">
+        在实际的系统运行过程中，SRE工程师经常会发现系统存在网络重传的报警，有时候发生在个别机器上，有时候会发生在某些机房里，还有会发生在某些应用中。遇到这类问题的时候，经常有同学会第一时间想拉网络的同学进行排查，询问系统无任何变更的时候，应用为什么会有重传。大部分情况下，网络的同学反馈的都是网络是正常的，和网络关系不大。相关的case发生次数多了之后，就会出现一个现象，网络的同学对类似的问题爱搭不理，业务的同学也会对网络颇有微词。从我的经验来看，两者的观点站在彼此的角度上看，都没有太大的问题，主要还是网络和业务的同学都只对自己本域的内容很清楚，对网络链路上的全局不明了，导致的现象。就这种现象，个人...
+    </div>
+    <a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" itemprop="url" title="我的重传为什么这么高" class="btn">more...</a>
+  </div>
+</article>
+
+        
+<article class="item">
+  <div class="cover">
+    <a href="/2023/11/01/random-img-api/" itemprop="url" title="random_img_api"><img data-src="https://api.isoyu.com/bing_images.php?879208"></a>
   </div>
   <div class="info">
     
@@ -172,7 +193,7 @@ Run...
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/10/31/run-qemu-in-shell/" itemprop="url" title="run-qemu-in-shell"><img data-src="https://api.isoyu.com/bing_images.php?56907"></a>
+    <a href="/2023/10/31/run-qemu-in-shell/" itemprop="url" title="run-qemu-in-shell"><img data-src="https://api.isoyu.com/bing_images.php?835001"></a>
   </div>
   <div class="info">
     
@@ -202,7 +223,7 @@ Run...
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/01/08/springboot-influx-micrometer-granfana/" itemprop="url" title="springboot_influx_micrometer_granfana"><img data-src="https://api.isoyu.com/bing_images.php?862632"></a>
+    <a href="/2023/01/08/springboot-influx-micrometer-granfana/" itemprop="url" title="springboot_influx_micrometer_granfana"><img data-src="https://api.isoyu.com/bing_images.php?947935"></a>
   </div>
   <div class="info">
     
@@ -229,7 +250,7 @@ InfluxMetricsExportAutoConfiguration 提供了InfluxMetricsExport的配置引入
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/01/06/script-for-windows/" itemprop="url" title="script_for_windows"><img data-src="https://api.isoyu.com/bing_images.php?422277"></a>
+    <a href="/2023/01/06/script-for-windows/" itemprop="url" title="script_for_windows"><img data-src="https://api.isoyu.com/bing_images.php?348350"></a>
   </div>
   <div class="info">
     
@@ -254,7 +275,7 @@ windows复制到虚拟机的脚本1234567891011PS D:\tools\bat&amp;gt; cat .\rcp
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/01/06/proxy-on-console/" itemprop="url" title="proxy_on_console"><img data-src="https://api.isoyu.com/bing_images.php?439198"></a>
+    <a href="/2023/01/06/proxy-on-console/" itemprop="url" title="proxy_on_console"><img data-src="https://api.isoyu.com/bing_images.php?754746"></a>
   </div>
   <div class="info">
     
@@ -278,7 +299,7 @@ windows复制到虚拟机的脚本1234567891011PS D:\tools\bat&amp;gt; cat .\rcp
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/01/06/prometheus-granfana-mysql-exporter/" itemprop="url" title="prometheus_granfana_mysql_exporter"><img data-src="https://api.isoyu.com/bing_images.php?241840"></a>
+    <a href="/2023/01/06/prometheus-granfana-mysql-exporter/" itemprop="url" title="prometheus_granfana_mysql_exporter"><img data-src="https://api.isoyu.com/bing_images.php?223206"></a>
   </div>
   <div class="info">
     
@@ -308,7 +329,7 @@ grant process, replication client , select on *.* to...
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/01/04/huge-page/" itemprop="url" title="huge_page"><img data-src="https://api.isoyu.com/bing_images.php?22848"></a>
+    <a href="/2023/01/04/huge-page/" itemprop="url" title="huge_page"><img data-src="https://api.isoyu.com/bing_images.php?917455"></a>
   </div>
   <div class="info">
     
@@ -332,7 +353,7 @@ grant process, replication client , select on *.* to...
         
 <article class="item">
   <div class="cover">
-    <a href="/2022/12/31/mysql-profile-monitor/" itemprop="url" title="mysql-profile-monitor"><img data-src="https://api.isoyu.com/bing_images.php?413864"></a>
+    <a href="/2022/12/31/mysql-profile-monitor/" itemprop="url" title="mysql-profile-monitor"><img data-src="https://api.isoyu.com/bing_images.php?733938"></a>
   </div>
   <div class="info">
     
@@ -351,31 +372,6 @@ grant process, replication client , select on *.* to...
 profile数据默认是关闭的，可以通过SET profiling = 1; 打开，随后可以通过show profile 查看查询在各个阶段的耗时及开销。 show profie 默认情况下显示各个阶段的执行耗时情况，可以增加额外的参数，观察更多的系统参数情况。例如 BLOCK IO,CONTEXT SWITCHES,CPU,IPC,MEMORY,PAGE FAULTS,SOURCE,SWAPS 等数据类型。show profile, show...
     </div>
     <a href="/2022/12/31/mysql-profile-monitor/" itemprop="url" title="mysql-profile-monitor" class="btn">more...</a>
-  </div>
-</article>
-
-        
-<article class="item">
-  <div class="cover">
-    <a href="/2022/12/30/strace-for-linux/" itemprop="url" title="strace_for_linux"><img data-src="https://api.isoyu.com/bing_images.php?800840"></a>
-  </div>
-  <div class="info">
-    
-<div class="meta">
-  <span class="item" title="Created: 2022-12-30 22:31:39">
-    <span class="icon">
-      <i class="ic i-calendar"></i>
-    </span>
-    <time itemprop="dateCreated datePublished" datetime="2022-12-30T22:31:39+08:00">2022-12-30</time>
-  </span>
-</div>
-
-    <h3><a href="/2022/12/30/strace-for-linux/" itemprop="url" title="strace_for_linux">strace_for_linux</a></h3>
-    <div class="excerpt">
-        近期在研究Linux相关的内容，比如透明大页对系统性能的影响，以及一些Linux程序的运行情况。由于对C以及Linux并不是特别熟悉，在学习一些程序的时候，总是有一种云里雾里的感觉，因此想找到一些观测工具，能看到Linux系统下程序的执行情况。类似java生态里的Arthas、btrace的工具。经过几番查找，找到了可能有用的几个工具：strace、ebpf 、systemtap、kprobe,从网上看了比较多的内容，但还是一知半解，因此决定逐个击破，今天先看看strace相关的内容。最终目的是熟悉linux下的观测工具，比能熟练解决linux下的系统问题。
-strace 是什么strace...
-    </div>
-    <a href="/2022/12/30/strace-for-linux/" itemprop="url" title="strace_for_linux" class="btn">more...</a>
   </div>
 </article>
 
@@ -414,7 +410,7 @@ strace 是什么strace...
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">13</span>
+        <span class="count">15</span>
         <span class="name">posts</span>
       </a>
     </div>
@@ -466,7 +462,7 @@ strace 是什么strace...
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2023/11/03/hello-world/" title="hexo使用">hexo使用</a></span>
+    <span><a href="/2023/11/04/compile-rust-as-static-link/" title="compile_rust_as_static_link">compile_rust_as_static_link</a></span>
   </li>
 
       
@@ -475,16 +471,7 @@ strace 是什么strace...
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2023/01/06/script-for-windows/" title="script_for_windows">script_for_windows</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-</div>
-
-    <span><a href="/2022/11/01/sth-abuout-socks5/" title="sth abuout socks5">sth abuout socks5</a></span>
+    <span><a href="/2022/11/08/hello-world/" title="hexo使用">hexo使用</a></span>
   </li>
 
       
@@ -502,7 +489,7 @@ strace 是什么strace...
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2023/01/06/proxy-on-console/" title="proxy_on_console">proxy_on_console</a></span>
+    <span><a href="/2022/12/30/strace-for-linux/" title="strace_for_linux">strace_for_linux</a></span>
   </li>
 
       
@@ -511,7 +498,7 @@ strace 是什么strace...
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2023/10/31/run-qemu-in-shell/" title="run-qemu-in-shell">run-qemu-in-shell</a></span>
+    <span><a href="/2023/01/06/prometheus-granfana-mysql-exporter/" title="prometheus_granfana_mysql_exporter">prometheus_granfana_mysql_exporter</a></span>
   </li>
 
       
@@ -520,7 +507,16 @@ strace 是什么strace...
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2022/12/08/docker-usage/" title="docker_usage">docker_usage</a></span>
+    <span><a href="/2023/01/04/huge-page/" title="huge_page">huge_page</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/11/01/sth-abuout-socks5/" title="sth abuout socks5">sth abuout socks5</a></span>
   </li>
 
       
@@ -538,7 +534,7 @@ strace 是什么strace...
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2022/12/30/strace-for-linux/" title="strace_for_linux">strace_for_linux</a></span>
+    <span><a href="/2022/12/08/docker-usage/" title="docker_usage">docker_usage</a></span>
   </li>
 
       
