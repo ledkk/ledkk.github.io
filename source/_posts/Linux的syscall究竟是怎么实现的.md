@@ -112,5 +112,6 @@ static inline int is_syscall_trace_event(struct trace_event_call *tp_event)
 #endif
 
 
+// demo https://blog.csdn.net/weixin_42992444/article/details/108571515
 
 ```
