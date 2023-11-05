@@ -1,0 +1,460 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="小站" href="https://blog.royjo.ltd/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="小站" href="https://blog.royjo.ltd/atom.xml" />
+<link rel="alternate" type="application/json" title="小站" href="https://blog.royjo.ltd/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://blog.royjo.ltd/2023/11/04/Linux%E7%9A%84syscall%E7%A9%B6%E7%AB%9F%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84/">
+
+
+
+  <title>
+Linux的syscall究竟是怎么实现的 |
+Yume Shoka = 小站</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Linux的syscall究竟是怎么实现的
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="Created: 2023-11-04 16:09:57">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">Posted on</span>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-04T16:09:57+08:00">2023-11-04</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="Toggle navigation bar">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?236949"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?520352"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?21929"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?873744"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?690850"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?278728"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">Home</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/04/Linux%E7%9A%84syscall%E7%A9%B6%E7%AB%9F%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="John Doe">
+    <meta itemprop="description" content=", ">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小站">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <p>当执行一个系统调用的时候，在linux系统中是如何流转的？ 这一直是我的一个疑问，比如我想看看一个网络包可能会走的流程，我通过<code>strace </code> 可以指导最终会走到send这个系统调用中去，但是在send这个系统调用中，如何最终走到了网卡上，以及如何从网卡上把接收到的数据正确的返回，一直是我比较大的疑问之一。 </p>
+<p>以ping 192.168.0.1 为例，通过strace可以看到其实际走到的调用为sendto这个系统调用，通过<code>man sendto</code> 可以看到这个系统调用实际做的操作，但仅仅通过文档是无法解释很多细节的问题的，比如这个网络包怎么进到了网卡中去的？于是带着这个问题，我们想走一遍网络栈</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">发送数据包</span></span><br><span class="line">sendto(3, &quot;\10\0\0\315\0\0\0\1\7\375Ee\0\0\0\0\350\374\2\0\0\0\0\0\20\21\22\23\24\25\26\27&quot;..., 64, 0, &#123;sa_family=AF_INET, sin_port=htons(0), sin_addr=inet_addr(&quot;192.168.0.1&quot;)&#125;, 16) = 64</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">随后接收数据包</span></span><br><span class="line">recvmsg(3, &#123;msg_name=&#123;sa_family=AF_INET, sin_port=htons(0), sin_addr=inet_addr(&quot;192.168.0.1&quot;)&#125;, msg_namelen=128-&gt;16, msg_iov=[&#123;iov_base=&quot;\0\0\10\306\0\7\0\1\7\375Ee\0\0\0\0\350\374\2\0\0\0\0\0\20\21\22\23\24\25\26\27&quot;..., iov_len=192&#125;], msg_iovlen=1, msg_control=[&#123;cmsg_len=32, cmsg_level=SOL_SOCKET, cmsg_type=SO_TIMESTAMP_OLD, cmsg_data=&#123;tv_sec=1699085575, tv_usec=197778&#125;&#125;, &#123;cmsg_len=20, cmsg_level=SOL_IP, cmsg_type=IP_TTL, cmsg_data=[63]&#125;], msg_controllen=56, msg_flags=0&#125;, 0) = 64</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>以下代码疑似sendto的系统调用入口。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//net/socket.c</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//疑似sendto系统调用的入口</span></span><br><span class="line">SYSCALL_DEFINE6(sendto, <span class="type">int</span>, fd, <span class="type">void</span> __user *, buff, <span class="type">size_t</span>, len,</span><br><span class="line">                <span class="type">unsigned</span> <span class="type">int</span>, flags, <span class="keyword">struct</span> sockaddr __user *, addr,</span><br><span class="line">                <span class="type">int</span>, addr_len)</span><br><span class="line">&#123;</span><br><span class="line">        <span class="keyword">return</span> __sys_sendto(fd, buff, len, flags, addr, addr_len);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>这段代码里遇到了一个特殊的MICRO：<code>SYSCALL_DEFINE6</code>, 那么这里面做了什么呢？ 以及一些特殊的字符串 <code>void __user *</code> 、<code>struct sockaddr __user * </code>，那么这些分别时候什么呢？</p>
+<h3 id="SYSCALL-DEFINE6"><a href="#SYSCALL-DEFINE6" class="headerlink" title="SYSCALL_DEFINE6"></a>SYSCALL_DEFINE6</h3><p>对于<code>SYSCALL_DEFINE6</code>的定义放在了<code>include/linux/syscall.h</code>中，其定义的详细内容为</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//include/linux/syscall.h</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 为了简化代码的分析过程，人为在编译的时候，未开启`CONFIG_FTRACE_SYSCALLS`, 对于为开启`CONFIG_FTRACE_SYSCALLS` 时，`SYSCALL_METADATA` 不做任何事情，直接返回</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYSCALL_METADATA(sname, nb, ...)</span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">int</span> <span class="title function_">is_syscall_trace_event</span><span class="params">(<span class="keyword">struct</span> trace_event_call *tp_event)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYSCALL_DEFINE2(name, ...) SYSCALL_DEFINEx(2, _##name, __VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYSCALL_DEFINE3(name, ...) SYSCALL_DEFINEx(3, _##name, __VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYSCALL_DEFINE4(name, ...) SYSCALL_DEFINEx(4, _##name, __VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYSCALL_DEFINE5(name, ...) SYSCALL_DEFINEx(5, _##name, __VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYSCALL_DEFINE6(name, ...) SYSCALL_DEFINEx(6, _##name, __VA_ARGS__)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYSCALL_DEFINE_MAXARGS  6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `SYSCALL_DEFINEx` 内部调用`__SYSCALL_DEFINEx` </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYSCALL_DEFINEx(x, sname, ...)                          \</span></span><br><span class="line"><span class="meta">        SYSCALL_METADATA(sname, x, __VA_ARGS__)                 \</span></span><br><span class="line"><span class="meta">        __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __PROTECT(...) asmlinkage_protect(__VA_ARGS__)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * The asmlinkage stub is aliased to a function named __se_sys_*() which</span></span><br><span class="line"><span class="comment"> * sign-extends 32-bit ints to longs whenever needed. The actual work is</span></span><br><span class="line"><span class="comment"> * done within __do_sys_*().</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> __SYSCALL_DEFINEx</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __SYSCALL_DEFINEx(x, name, ...)                                 \</span></span><br><span class="line"><span class="meta">        __diag_push();                                                  \  <span class="comment">// 和编译相关的逻辑，现阶段不重要</span></span></span><br><span class="line">        __diag_ignore(GCC, <span class="number">8</span>, <span class="string">&quot;-Wattribute-alias&quot;</span>,                      \  <span class="comment">// 和编译相关的逻辑，现阶段不重要</span></span><br><span class="line">                      <span class="string">&quot;Type aliasing is used to sanitize syscall arguments&quot;</span>);\  <span class="comment">// 和编译相关的逻辑，现阶段不重要</span></span><br><span class="line">        asmlinkage <span class="type">long</span> sys#<span class="meta">#name(__MAP(x,__SC_DECL,__VA_ARGS__))       \    <span class="comment">// include/linux/linkage.h  asmlinkage 不重要，这里实际是调用了long sys_sendto对应的系统调用，上述的数字6，仅仅代表其有6个参数而已</span></span></span><br><span class="line">                __attribute__((alias(__stringify(__se_sys#<span class="meta">#name))));    \    <span class="comment">// gcc相关的，应该也不重要。 ./include/linux/compiler_attributes.h</span></span></span><br><span class="line">        ALLOW_ERROR_INJECTION(sys#<span class="meta">#name, ERRNO);                        \    <span class="comment">//./include/asm-generic/error-injection.h 异常注入相关，参考Documentation/fault-injection/fault-injection.rst， 不重要</span></span></span><br><span class="line">        <span class="type">static</span> <span class="keyword">inline</span> <span class="type">long</span> __do_sys#<span class="meta">#name(__MAP(x,__SC_DECL,__VA_ARGS__));\  <span class="comment">// 实际转换为 static inline long __do_sys_sendto的函数</span></span></span><br><span class="line">        asmlinkage <span class="type">long</span> __se_sys#<span class="meta">#name(__MAP(x,__SC_LONG,__VA_ARGS__)); \    <span class="comment">// long __se_sys_sendto</span></span></span><br><span class="line">        asmlinkage <span class="type">long</span> __se_sys#<span class="meta">#name(__MAP(x,__SC_LONG,__VA_ARGS__))  \    <span class="comment">//long __se_sys_sendto </span></span></span><br><span class="line">        &#123;                                                               \</span><br><span class="line">                <span class="type">long</span> ret = __do_sys#<span class="meta">#name(__MAP(x,__SC_CAST,__VA_ARGS__));\  <span class="comment">// __do_sys_sendto</span></span></span><br><span class="line">                __MAP(x,__SC_TEST,__VA_ARGS__);                         \</span><br><span class="line">                __PROTECT(x, ret,__MAP(x,__SC_ARGS,__VA_ARGS__));       \</span><br><span class="line">                <span class="keyword">return</span> ret;                                             \</span><br><span class="line">        &#125;                                                               \</span><br><span class="line">        __diag_pop();                                                   \</span><br><span class="line">        <span class="type">static</span> <span class="keyword">inline</span> <span class="type">long</span> __do_sys#<span class="meta">#name(__MAP(x,__SC_DECL,__VA_ARGS__))    <span class="comment">// static inline long __do_sys_sendto </span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">/* __SYSCALL_DEFINEx */</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// include/linux/linkage.h</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CPP_ASMLINKAGE extern <span class="string">&quot;C&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CPP_ASMLINKAGE</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> asmlinkage</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> asmlinkage CPP_ASMLINKAGE</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="sys-sendto-实际的数据发送入口"><a href="#sys-sendto-实际的数据发送入口" class="headerlink" title="__sys_sendto 实际的数据发送入口"></a>__sys_sendto 实际的数据发送入口</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> *      Send a datagram to a given address. We move the address into kernel</span></span><br><span class="line"><span class="comment"> *      space and check the user space data area is readable before invoking</span></span><br><span class="line"><span class="comment"> *      the protocol.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">// __user  代表的是用户态的数据？</span></span><br><span class="line"><span class="type">int</span> __sys_sendto(<span class="type">int</span> fd, <span class="type">void</span> __user *buff, <span class="type">size_t</span> len, <span class="type">unsigned</span> <span class="type">int</span> flags,</span><br><span class="line">                 <span class="keyword">struct</span> sockaddr __user *addr,  <span class="type">int</span> addr_len)</span><br><span class="line">&#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">socket</span> *<span class="title">sock</span>;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_storage</span> <span class="title">address</span>;</span></span><br><span class="line">        <span class="type">int</span> err;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">msghdr</span> <span class="title">msg</span>;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> <span class="title">iov</span>;</span></span><br><span class="line">        <span class="type">int</span> fput_needed;</span><br><span class="line">        <span class="comment">// 检查数据，并将用户态的数据复制到内核态中，其操作的内容放在了msg_iter中</span></span><br><span class="line">        err = import_single_range(ITER_SOURCE, buff, len, &amp;iov, &amp;msg.msg_iter);</span><br><span class="line">        <span class="keyword">if</span> (unlikely(err))</span><br><span class="line">                <span class="keyword">return</span> err;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将fd转换成socket</span></span><br><span class="line">        sock = sockfd_lookup_light(fd, &amp;err, &amp;fput_needed);</span><br><span class="line">        <span class="keyword">if</span> (!sock)</span><br><span class="line">                <span class="keyword">goto</span> out;</span><br><span class="line"></span><br><span class="line">        msg.msg_name = <span class="literal">NULL</span>;</span><br><span class="line">        msg.msg_control = <span class="literal">NULL</span>;</span><br><span class="line">        msg.msg_controllen = <span class="number">0</span>;</span><br><span class="line">        msg.msg_namelen = <span class="number">0</span>;</span><br><span class="line">        msg.msg_ubuf = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">if</span> (addr) &#123;</span><br><span class="line">                <span class="comment">// 将地址移动到内核态</span></span><br><span class="line">                err = move_addr_to_kernel(addr, addr_len, &amp;address);</span><br><span class="line">                <span class="keyword">if</span> (err &lt; <span class="number">0</span>)</span><br><span class="line">                        <span class="keyword">goto</span> out_put;</span><br><span class="line">                msg.msg_name = (<span class="keyword">struct</span> sockaddr *)&amp;address;</span><br><span class="line">                msg.msg_namelen = addr_len;</span><br><span class="line">        &#125;</span><br><span class="line">        flags &amp;= ~MSG_INTERNAL_SENDMSG_FLAGS;</span><br><span class="line">        <span class="keyword">if</span> (sock-&gt;file-&gt;f_flags &amp; O_NONBLOCK)</span><br><span class="line">                flags |= MSG_DONTWAIT;</span><br><span class="line">        msg.msg_flags = flags;</span><br><span class="line">        <span class="comment">//内核态发送消息</span></span><br><span class="line">        err = __sock_sendmsg(sock, &amp;msg);</span><br><span class="line"></span><br><span class="line">out_put:</span><br><span class="line">        fput_light(sock-&gt;file, fput_needed);</span><br><span class="line">out:</span><br><span class="line">        <span class="keyword">return</span> err;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> noinline <span class="type">void</span> <span class="title function_">call_trace_sock_send_length</span><span class="params">(<span class="keyword">struct</span> sock *sk, <span class="type">int</span> ret,</span></span><br><span class="line"><span class="params">                                                 <span class="type">int</span> flags)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="comment">// 未找到该函数的定义，但从名字看，应该是做trace 记录的 //TODO 后续分析</span></span><br><span class="line">        trace_sock_send_length(sk, ret, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">int</span> <span class="title function_">sock_sendmsg_nosec</span><span class="params">(<span class="keyword">struct</span> socket *sock, <span class="keyword">struct</span> msghdr *msg)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="comment">// INDIRECT_CALL_INET 用于处理ipv4、IPV6 相关的差异信息的内容, 如果开启了ipv6 就使用inet6_sendmsg ，否则用inet_sendmsg？</span></span><br><span class="line">        <span class="comment">// READ_ONCE 用于编译器相关的指令，用于告诉编译器，不要重复调用？</span></span><br><span class="line">        <span class="type">int</span> ret = INDIRECT_CALL_INET(READ_ONCE(sock-&gt;ops)-&gt;sendmsg, inet6_sendmsg,</span><br><span class="line">                                     inet_sendmsg, sock, msg,</span><br><span class="line">                                     msg_data_left(msg));</span><br><span class="line">        BUG_ON(ret == -EIOCBQUEUED);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (trace_sock_send_length_enabled())</span><br><span class="line">                <span class="comment">// trace 相关的逻辑？</span></span><br><span class="line">                call_trace_sock_send_length(sock-&gt;sk, ret, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> __sock_sendmsg(<span class="keyword">struct</span> socket *sock, <span class="keyword">struct</span> msghdr *msg)</span><br><span class="line">&#123;</span><br><span class="line">        <span class="comment">//校验是否允许通过soket发送msg，做安全校验相关的工作。</span></span><br><span class="line">        <span class="type">int</span> err = security_socket_sendmsg(sock, msg,</span><br><span class="line">                                          msg_data_left(msg));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> err ?: sock_sendmsg_nosec(sock, msg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *      sock_sendmsg - send a message through @sock</span></span><br><span class="line"><span class="comment"> *      @sock: socket</span></span><br><span class="line"><span class="comment"> *      @msg: message to send</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *      Sends @msg through @sock, passing through LSM.</span></span><br><span class="line"><span class="comment"> *      Returns the number of bytes sent, or an error code.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sock_sendmsg</span><span class="params">(<span class="keyword">struct</span> socket *sock, <span class="keyword">struct</span> msghdr *msg)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_storage</span> *<span class="title">save_addr</span> =</span> (<span class="keyword">struct</span> sockaddr_storage *)msg-&gt;msg_name;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_storage</span> <span class="title">address</span>;</span></span><br><span class="line">        <span class="type">int</span> ret;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (msg-&gt;msg_name) &#123;</span><br><span class="line">                <span class="built_in">memcpy</span>(&amp;address, msg-&gt;msg_name, msg-&gt;msg_namelen);</span><br><span class="line">                msg-&gt;msg_name = &amp;address;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ret = __sock_sendmsg(sock, msg);</span><br><span class="line">        msg-&gt;msg_name = save_addr;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line">EXPORT_SYMBOL(sock_sendmsg);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="inet-sendmsg-发送ipv4数据"><a href="#inet-sendmsg-发送ipv4数据" class="headerlink" title="inet_sendmsg 发送ipv4数据"></a>inet_sendmsg 发送ipv4数据</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 判断socket是否已经准备好</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">inet_send_prepare</span><span class="params">(<span class="keyword">struct</span> sock *sk)</span></span><br><span class="line">&#123;</span><br><span class="line">        sock_rps_record_flow(sk);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* We may need to bind the socket. */</span></span><br><span class="line">        <span class="keyword">if</span> (data_race(!inet_sk(sk)-&gt;inet_num) &amp;&amp; !sk-&gt;sk_prot-&gt;no_autobind &amp;&amp;</span><br><span class="line">            inet_autobind(sk))</span><br><span class="line">                <span class="keyword">return</span> -EAGAIN;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">EXPORT_SYMBOL_GPL(inet_send_prepare);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 针对ipv4，实际发送socket的逻辑</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">inet_sendmsg</span><span class="params">(<span class="keyword">struct</span> socket *sock, <span class="keyword">struct</span> msghdr *msg, <span class="type">size_t</span> size)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sock</span> *<span class="title">sk</span> =</span> sock-&gt;sk;</span><br><span class="line">        <span class="comment">// 判断socket 是否已经准备好发送数据</span></span><br><span class="line">        <span class="keyword">if</span> (unlikely(inet_send_prepare(sk)))</span><br><span class="line">                <span class="keyword">return</span> -EAGAIN;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据tcp的协议判断是通过tcp_sendmsg 还是通过udp_sendmsg 发送后续的消息</span></span><br><span class="line">        <span class="keyword">return</span> INDIRECT_CALL_2(sk-&gt;sk_prot-&gt;sendmsg, tcp_sendmsg, udp_sendmsg,</span><br><span class="line">                               sk, msg, size);</span><br><span class="line">&#125;</span><br><span class="line">EXPORT_SYMBOL(inet_sendmsg);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="udp-sendmsg"><a href="#udp-sendmsg" class="headerlink" title="udp_sendmsg"></a>udp_sendmsg</h3><p>为了简化网络发送相关的分析，先研究一下udp协议的发送逻辑。其代码在 <code>&quot;net/ipv4/udp.c&quot;</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 发送udp包的核心入口</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">udp_sendmsg</span><span class="params">(<span class="keyword">struct</span> sock *sk, <span class="keyword">struct</span> msghdr *msg, <span class="type">size_t</span> len)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">inet_sock</span> *<span class="title">inet</span> =</span> inet_sk(sk);</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">udp_sock</span> *<span class="title">up</span> =</span> udp_sk(sk);</span><br><span class="line">        DECLARE_SOCKADDR(<span class="keyword">struct</span> sockaddr_in *, usin, msg-&gt;msg_name);</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">flowi4</span> <span class="title">fl4_stack</span>;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">flowi4</span> *<span class="title">fl4</span>;</span></span><br><span class="line">        <span class="type">int</span> ulen = len;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">ipcm_cookie</span> <span class="title">ipc</span>;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">rtable</span> *<span class="title">rt</span> =</span> <span class="literal">NULL</span>;</span><br><span class="line">        <span class="type">int</span> <span class="built_in">free</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> connected = <span class="number">0</span>;</span><br><span class="line">        __be32 daddr, faddr, saddr;</span><br><span class="line">        u8 tos, scope;</span><br><span class="line">        __be16 dport;</span><br><span class="line">        <span class="type">int</span> err, is_udplite = IS_UDPLITE(sk);</span><br><span class="line">        <span class="type">int</span> corkreq = udp_test_bit(CORK, sk) || msg-&gt;msg_flags &amp; MSG_MORE;</span><br><span class="line">        <span class="type">int</span> (*getfrag)(<span class="type">void</span> *, <span class="type">char</span> *, <span class="type">int</span>, <span class="type">int</span>, <span class="type">int</span>, <span class="keyword">struct</span> sk_buff *);</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sk_buff</span> *<span class="title">skb</span>;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">ip_options_data</span> <span class="title">opt_copy</span>;</span></span><br><span class="line">        <span class="type">int</span> uc_index;</span><br><span class="line">.....</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="vim使用心得"><a href="#vim使用心得" class="headerlink" title="vim使用心得"></a>vim使用心得</h3><p>由于远程的linux机器的性能比较弱，通过idea远程查看linux代码，最终会被oom-kill掉，没办法，为了最佳的效果，最终使用了vim作为linux源码的分析工具。相关记录如下</p>
+<ol>
+<li>安装ctags,cscope，用于快速检索</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> sudo apt install ctags</span><br><span class="line"> sudo apt install cscope</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"> # </span><span class="language-bash">生成ctags和cscope的索引数据，也可以重新申请</span></span><br><span class="line"></span><br><span class="line">ctags -R *</span><br><span class="line">cscope -qbR</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除ctags和cscope的索引数据</span></span><br><span class="line">rm -rf tags</span><br><span class="line">rm -rf cscope.*</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">虽然配置了很多关键字映射，但还不熟悉，安装上述两个命令后，可以通过`cs find g func_name` 查看函数的定义，相对来说还比较好用。 目前使用起来有一个困惑的地方就是，通过`vwy`复制完关键的符号后，如何快速的检索，以及快速的放到命令语句中？</span></span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">Edited on</span>
+    <time title="Modified: 2023-11-05 23:26:21" itemprop="dateModified" datetime="2023-11-05T23:26:21+08:00">2023-11-05</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>Post author:  </strong>John Doe <i class="ic i-at"><em>@</em></i>小站
+  </li>
+  <li class="link">
+    <strong>Post link: </strong>
+    <a href="https://blog.royjo.ltd/2023/11/04/Linux%E7%9A%84syscall%E7%A9%B6%E7%AB%9F%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84/" title="Linux的syscall究竟是怎么实现的">https://blog.royjo.ltd/2023/11/04/Linux的syscall究竟是怎么实现的/</a>
+  </li>
+  <li class="license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2023/11/04/the-xdp-test-with-netns/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?40888" title="the xdp test with netns">
+  <span class="type">Previous Post</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>the xdp test with netns</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="Contents">
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#SYSCALL-DEFINE6"><span class="toc-number">1.</span> <span class="toc-text">SYSCALL_DEFINE6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sys-sendto-%E5%AE%9E%E9%99%85%E7%9A%84%E6%95%B0%E6%8D%AE%E5%8F%91%E9%80%81%E5%85%A5%E5%8F%A3"><span class="toc-number">2.</span> <span class="toc-text">__sys_sendto 实际的数据发送入口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#inet-sendmsg-%E5%8F%91%E9%80%81ipv4%E6%95%B0%E6%8D%AE"><span class="toc-number">3.</span> <span class="toc-text">inet_sendmsg 发送ipv4数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#udp-sendmsg"><span class="toc-number">4.</span> <span class="toc-text">udp_sendmsg</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vim%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97"><span class="toc-number">5.</span> <span class="toc-text">vim使用心得</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="Related">
+      </div>
+      <div class="overview panel" data-title="Overview">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="John Doe"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">John Doe</p>
+  <div class="description" itemprop="description"></div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">17</span>
+        <span class="name">posts</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>Home</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>Random Posts</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/11/04/Linux%E7%9A%84syscall%E7%A9%B6%E7%AB%9F%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84/" title="Linux的syscall究竟是怎么实现的">Linux的syscall究竟是怎么实现的</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/04/huge-page/" title="huge_page">huge_page</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/06/proxy-on-console/" title="proxy_on_console">proxy_on_console</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/08/springboot-influx-micrometer-granfana/" title="springboot_influx_micrometer_granfana">springboot_influx_micrometer_granfana</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/10/31/run-qemu-in-shell/" title="run-qemu-in-shell">run-qemu-in-shell</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" title="我的重传为什么这么高">我的重传为什么这么高</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2023/01/06/prometheus-granfana-mysql-exporter/" title="prometheus_granfana_mysql_exporter">prometheus_granfana_mysql_exporter</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/11/08/hello-world/" title="hexo使用">hexo使用</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/12/30/strace-for-linux/" title="strace_for_linux">strace_for_linux</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/12/31/mysql-profile-monitor/" title="mysql-profile-monitor">mysql-profile-monitor</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>Recent Comments</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    Powered by <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2023/11/04/Linux的syscall究竟是怎么实现的/',
+    favicon: {
+      show: "（●´3｀●）Goooood",
+      hide: "(´Д｀)Booooom"
+    },
+    search : {
+      placeholder: "Search for Posts",
+      empty: "We didn't find any results for the search: ${query}",
+      stats: "${hits} results found in ${time} ms"
+    },
+    valine: true,fancybox: true,
+    copyright: 'Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>
