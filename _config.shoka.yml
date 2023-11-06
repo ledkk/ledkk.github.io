@@ -129,7 +129,7 @@ sidebar:
 
 widgets:
   # if true, will show random posts
-  random_posts: true
+  random_posts: false
   # if true, will show recent comments
   recent_comments: false
 
