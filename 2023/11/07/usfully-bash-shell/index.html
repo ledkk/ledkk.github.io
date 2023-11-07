@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?408975"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?288452"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?44380"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?694688"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?473477"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?104569"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?384109"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?411304"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?922192"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?425826"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?495573"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?457781"></li>
         </ul>
       </div>
     </header>
@@ -169,6 +169,21 @@ Yume Shoka = 小站</title>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">fuser -n tcp 22</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<ol start="5">
+<li><p>shell中使用<code>$</code> 获取当前程序的pid，由于shell中$用于取变量，一般打印当前程序的PID，可以用<code>$$</code>来表示</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">cat</span> 1.sh</span></span><br><span class="line">echo $$</span><br><span class="line">cat /proc/$$/cgroup</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过shell打印某一个pid的rss内存使用<br>该能力有几种方式都可以实现，第一种方式是通过统计<code>/proc/$pid/smaps</code>中的Rss，然后将所有的数据加起来，统计出来的就是Rss的大小。第二种方式是通过<code>ps </code>的方式来统计，具体如下:（从原理上看，两者实际是完全一样的，PS同样是读取&#x2F;proc文件来获取资源的）</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">利用ps来统计所有的程序的资源开销，包括Rss 和Size，在实际使用的过程中，可以通过info top查看详细的命令说明情况</span></span><br><span class="line">ps -axo stat,euid,ruid,tty,tpgid,sess,pgrp,ppid,pid,pcpu,comm,rss,size</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">利用/proc/<span class="variable">$pid</span>/smaps 分析内存的利用率情况，统计其Rss的使用</span></span><br><span class="line">cat /proc/$pid/smaps | grep Rss | awk &#x27;&#123;sum += $2&#125;END&#123;print sum/1024&quot;MB&quot;&#125;&#x27; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li><p>查看某一个命令的详细使用文档，可以考虑使用info指令来查看,该命令可以查看这个指令的info 文档 : <code>info top</code> , <code>info chtr</code> ， <code>info ps </code></p>
+</li>
+<li><p>一些可以探索使用方式的工具: <code>cut </code>, <code>paste</code> , <code>xargs</code></p>
+</li>
+</ol>
 
   </div>
 
@@ -180,7 +195,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-07 15:20:43" itemprop="dateModified" datetime="2023-11-07T15:20:43+08:00">2023-11-07</time>
+    <time title="Modified: 2023-11-07 16:19:00" itemprop="dateModified" datetime="2023-11-07T16:19:00+08:00">2023-11-07</time>
   </span>
 </div>
 
@@ -212,7 +227,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/07/GNU-m4/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?62530" title="GNU m4">
+  <a href="/2023/11/07/GNU-m4/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?89976" title="GNU m4">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>GNU m4</h3>
