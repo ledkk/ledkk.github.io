@@ -87,3 +87,7 @@ cat /proc/$pid/smaps | grep Rss | awk '{sum += $2}END{print sum/1024"MB"}'
 7. 查看某一个命令的详细使用文档，可以考虑使用info指令来查看,该命令可以查看这个指令的info 文档 : `info top` , `info chtr` ， `info ps `
 
 8. 一些可以探索使用方式的工具: `cut `, `paste` , `xargs`
+
+
+9. 下载一些gun库的源码，可以直接通过apt-get 进行下载 `apt-get source iputils-ping`
+
