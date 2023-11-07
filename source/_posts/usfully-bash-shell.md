@@ -63,3 +63,27 @@ fuser -n tcp 22
 
 ```
 
+5. shell中使用`$` 获取当前程序的pid，由于shell中$用于取变量，一般打印当前程序的PID，可以用`$$`来表示
+```shell
+# cat 1.sh
+echo $$
+cat /proc/$$/cgroup
+
+```
+
+6. 通过shell打印某一个pid的rss内存使用
+该能力有几种方式都可以实现，第一种方式是通过统计`/proc/$pid/smaps`中的Rss，然后将所有的数据加起来，统计出来的就是Rss的大小。第二种方式是通过`ps `的方式来统计，具体如下:（从原理上看，两者实际是完全一样的，PS同样是读取/proc文件来获取资源的）
+
+```shell
+
+# 利用ps来统计所有的程序的资源开销，包括Rss 和Size，在实际使用的过程中，可以通过info top查看详细的命令说明情况
+ps -axo stat,euid,ruid,tty,tpgid,sess,pgrp,ppid,pid,pcpu,comm,rss,size
+
+# 利用/proc/$pid/smaps 分析内存的利用率情况，统计其Rss的使用
+cat /proc/$pid/smaps | grep Rss | awk '{sum += $2}END{print sum/1024"MB"}' 
+
+```
+
+7. 查看某一个命令的详细使用文档，可以考虑使用info指令来查看,该命令可以查看这个指令的info 文档 : `info top` , `info chtr` ， `info ps `
+
+8. 一些可以探索使用方式的工具: `cut `, `paste` , `xargs`
