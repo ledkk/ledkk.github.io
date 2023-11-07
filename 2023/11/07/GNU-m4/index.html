@@ -25,12 +25,12 @@
 
   
 
-<link rel="canonical" href="https://blog.royjo.ltd/2023/11/01/random-img-api/">
+<link rel="canonical" href="https://blog.royjo.ltd/2023/11/07/GNU-m4/">
 
 
 
   <title>
-random_img_api |
+GNU m4 |
 Yume Shoka = 小站</title>
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -58,16 +58,16 @@ Yume Shoka = 小站</title>
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">random_img_api
+  <h1 itemprop="name headline">GNU m4
   </h1>
   
 <div class="meta">
-  <span class="item" title="Created: 2023-11-01 13:34:42">
+  <span class="item" title="Created: 2023-11-07 12:49:49">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">Posted on</span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-01T13:34:42+08:00">2023-11-01</time>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-07T12:49:49+08:00">2023-11-07</time>
   </span>
 </div>
 
@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?125799"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?607635"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?344724"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?148049"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?681527"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?852822"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?146424"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?444155"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?517434"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?47102"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?329572"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?649646"></li>
         </ul>
       </div>
     </header>
@@ -134,7 +134,7 @@ Yume Shoka = 小站</title>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
-  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/01/random-img-api/">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/07/GNU-m4/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/avatar.jpg">
@@ -149,14 +149,12 @@ Yume Shoka = 小站</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <p>在捣鼓github page的时候，学到了一个新的名词<code>random image server api </code> ， 页面可以利用这些服务随机的展示图片，丰富自己网站的表现形式。第一映像觉得很不现实，在网络上，流量费用是相当贵的，而对于一些高清的图片，费用更贵，不太可能会存在免费的提供图片下载的站点。不然就是做公益了。 基于这个问题，就想弄清楚这些网站的背后机制是什么？</p>
-<p>分析了我自己在使用的这个随机图片api后，其原理大概已经清楚了，简单来说，这些随机图片api本身并不提供图片的展示服务，其只是将客户端的请求随机的302到一个图片的地址上，而图片的地址就是用网上大范围的图片服务提供的地址即可。比较简单的一个示例如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">curl -s  &#x27;https://cn.bing.com/&#x27;  | egrep &#x27;preload&quot; href=&quot;[^&quot;]+&quot;&#x27; -o  | egrep &#x27;https[^&quot;]+&#x27; -o</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">上述脚本会将bing首页展示的背景图片的地址扣出来，随机图片服务就利用这个原理，达到了图片随机的效果。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">https://s.cn.bing.net/th?<span class="built_in">id</span>=OHR.HautBarr_ZH-CN8274813404_1920x1080.webp&amp;amp;qlt=50</span></span><br></pre></td></tr></table></figure>
+    <p>在看一些C语言相关的系统的时候，经常会遇到M4后缀的文件，为了了解清楚文件的作用，于是有了这个文件记录。 </p>
+<p>首先M4 是一个宏处理器，其输入是一个文本流，输出同样也是文本流。对于输入中的宏内容进行展开。这种在脚本语言中使用比较多。<br><code>define</code> 用于定义一个macro，其有两个参数，一个标识宏的名字，另外一个标识宏的内容。当随后的文本中出现了宏名字的文本时，就会被替换成定义的宏内容。如果宏内容中还包含其他宏名字，对应的宏也会被展开，最终在文本输出流中表现出来。 <code>dnl</code> 也是m4中的一个关键字，其代表的意思是删除当前行以及换行符，一般在宏定义的结尾跟上<code>dnl</code>关键字，并在dnl关键字后补充宏定义的备注，在实际宏展开的时候，也不会影响宏的展示。一般情况下,dnl 用作备注使用。<code>changequote</code> 也是m4中预定义的函数，可以修改m4中quote的字符，比如可以从原本的&#96;&#96;修改成{}中括号。quote在m4中代表把里面的内容当做文本处理，默认使用的是单引号，但一个文本中单引号过多表现的比较复杂时，可以考虑使用<code>changequote</code> 修改quote字符，比如可以使用<code>changequote(&#123;,&#125;)</code> 指令之后，中括号括起来的内容会当做文本直接处理,使用<code>man m4</code> 可以查看m4工具的基本使用方式，使用<code>info m4</code> 可以查看m4的完整手册</p>
+<h2 id="common-m4-test"><a href="#common-m4-test" class="headerlink" title="common m4 test"></a>common m4 test</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dnl cat 1.m4 </span><br><span class="line">dnl m4 1.m4</span><br><span class="line">dnl the output should be `this is a test 100 should be 100 and 100 also be 100, the 1000 is 1000, this all ~~~~`</span><br><span class="line">define(A,100)dnl</span><br><span class="line">define(B,A)dnl</span><br><span class="line">define(C,1000)dnl</span><br><span class="line">this is a test A should be 100 and B also be 100, the C is 1000, this all ~~~~</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>对于网络上的图床，其效果也是类似的效果，比如某一个业务有图片上传能力，那么一个简单的图床就产生了，对这个业务的上传接口做包装，图片上传后的地址就作为可以外链访问的地址即可。</p>
-<h2 id="but…"><a href="#but…" class="headerlink" title="but…"></a>but…</h2><p>实际尝试下来，不同的页面访问bing的首页，返回的页面格式存在差异，重新分析了下bing的返回内容以及接口，发现了一个比较合适的接口，简单的代码片段如下, 实际可以访问的地址为<code>http://www.royjo.ltd/bing_img</code></p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Ok</span>(client) = reqwest::ClientBuilder::<span class="title function_ invoke__">new</span>().<span class="title function_ invoke__">connect_timeout</span>(Duration::<span class="title function_ invoke__">from_secs</span>(<span class="number">5</span>)).<span class="title function_ invoke__">build</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">t</span> = client.<span class="title function_ invoke__">get</span>(<span class="string">&quot;https://cn.bing.com/hp/api/v1/imagegallery?format=json&quot;</span>).<span class="title function_ invoke__">send</span>().<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>().json::&lt;serde_json::Value&gt;().<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">v</span> :<span class="type">Vec</span>&lt;<span class="type">String</span>&gt; = t[<span class="string">&quot;data&quot;</span>][<span class="string">&quot;images&quot;</span>].<span class="title function_ invoke__">as_array</span>().<span class="title function_ invoke__">unwrap</span>().<span class="title function_ invoke__">iter</span>().<span class="title function_ invoke__">map</span>(|k|&#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">m</span> = &amp;k[<span class="string">&quot;imageUrls&quot;</span>][<span class="string">&quot;landscape&quot;</span>][<span class="string">&quot;highDef&quot;</span>];</span><br><span class="line">        <span class="built_in">format!</span>(<span class="string">&quot;https://cn.bing.com&#123;&#125;&quot;</span>, m.<span class="title function_ invoke__">as_str</span>().<span class="title function_ invoke__">unwrap</span>())</span><br><span class="line">    &#125;).collect::&lt;<span class="type">Vec</span>&lt;<span class="type">String</span>&gt;&gt;();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">i</span>  = random::&lt;<span class="type">usize</span>&gt;();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">index</span> = i % v.<span class="title function_ invoke__">len</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">rand_url</span> = v.<span class="title function_ invoke__">get</span>(index).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">Ok</span>(Redirect::<span class="title function_ invoke__">to</span>(rand_url.<span class="title function_ invoke__">clone</span>()));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<h2 id="demo-changequote"><a href="#demo-changequote" class="headerlink" title="demo changequote"></a>demo changequote</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dnl cat 2.m4</span><br><span class="line">dnl m4 2.m4</span><br><span class="line">dnl the output should be `this is a test 100 should be 100 and 100 should be 100, but A should be A ....`</span><br><span class="line">changequote([[,]])dnl</span><br><span class="line">define([[A]],100)dnl</span><br><span class="line">define([[B]],[[A]])dnl</span><br><span class="line">this is a test A should be 100 and B should be 100, but [[A]] should be [[A]] ....</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
   </div>
@@ -169,7 +167,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-03 10:52:17" itemprop="dateModified" datetime="2023-11-03T10:52:17+08:00">2023-11-03</time>
+    <time title="Modified: 2023-11-07 14:17:14" itemprop="dateModified" datetime="2023-11-07T14:17:14+08:00">2023-11-07</time>
   </span>
 </div>
 
@@ -182,7 +180,7 @@ Yume Shoka = 小站</title>
   </li>
   <li class="link">
     <strong>Post link: </strong>
-    <a href="https://blog.royjo.ltd/2023/11/01/random-img-api/" title="random_img_api">https://blog.royjo.ltd/2023/11/01/random-img-api/</a>
+    <a href="https://blog.royjo.ltd/2023/11/07/GNU-m4/" title="GNU m4">https://blog.royjo.ltd/2023/11/07/GNU-m4/</a>
   </li>
   <li class="license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
@@ -201,20 +199,20 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/10/31/run-qemu-in-shell/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?335079" title="run-qemu-in-shell">
+  <a href="/2023/11/06/%E5%A6%82%E6%9E%9C%E6%88%91%E6%98%AF%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%E7%9A%84CEO/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?446225" title="如果我是一家公司的CEO">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>run-qemu-in-shell</h3>
+  <h3>如果我是一家公司的CEO</h3>
   </a>
 
     </div>
     <div class="item right">
       
 
-  <a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?894811" title="我的重传为什么这么高">
+  <a href="/2023/11/07/usfully-bash-shell/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?180901" title="usfully bash shell">
   <span class="type">Next Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>我的重传为什么这么高</h3>
+  <h3>usfully bash shell</h3>
   </a>
 
     </div>
@@ -233,7 +231,7 @@ Yume Shoka = 小站</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="Contents">
-          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#but%E2%80%A6"><span class="toc-number">1.</span> <span class="toc-text">but…</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#common-m4-test"><span class="toc-number">1.</span> <span class="toc-text">common m4 test</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#demo-changequote"><span class="toc-number">2.</span> <span class="toc-text">demo changequote</span></a></li></ol>
       </div>
       <div class="related panel pjax" data-title="Related">
       </div>
@@ -273,12 +271,12 @@ Yume Shoka = 小站</title>
 
   <ul id="quick">
     <li class="prev pjax">
-        <a href="/2023/10/31/run-qemu-in-shell/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
+        <a href="/2023/11/06/%E5%A6%82%E6%9E%9C%E6%88%91%E6%98%AF%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%E7%9A%84CEO/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
-        <a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
+        <a href="/2023/11/07/usfully-bash-shell/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -315,7 +313,7 @@ Yume Shoka = 小站</title>
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2023/11/01/random-img-api/',
+    path: '2023/11/07/GNU-m4/',
     favicon: {
       show: "（●´3｀●）Goooood",
       hide: "(´Д｀)Booooom"
