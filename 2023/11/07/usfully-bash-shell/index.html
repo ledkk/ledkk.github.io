@@ -1,0 +1,378 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="小站" href="https://blog.royjo.ltd/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="小站" href="https://blog.royjo.ltd/atom.xml" />
+<link rel="alternate" type="application/json" title="小站" href="https://blog.royjo.ltd/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://blog.royjo.ltd/2023/11/07/usfully-bash-shell/">
+
+
+
+  <title>
+usfully bash shell |
+Yume Shoka = 小站</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">usfully bash shell
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="Created: 2023-11-07 15:00:48">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">Posted on</span>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-07T15:00:48+08:00">2023-11-07</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="Toggle navigation bar">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?455135"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?336970"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?511998"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?599179"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?797814"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?960108"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">Home</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/07/usfully-bash-shell/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="John Doe">
+    <meta itemprop="description" content=", ">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小站">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <ol>
+<li><p>查看本机上的timer服务列表 <code>systemctl list-timers</code> , 查看对应服务的详细信息 <code>systemctl cat anacron.timer</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">systemctl list-timers</span><br><span class="line"></span><br><span class="line">root@ss20231017:~# systemctl cat anacron.timer</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">/lib/systemd/system/anacron.timer</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Trigger anacron every hour</span><br><span class="line"></span><br><span class="line">[Timer]</span><br><span class="line">OnCalendar=*-*-* 07..23:30</span><br><span class="line">RandomizedDelaySec=5m</span><br><span class="line">Persistent=true</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=timers.target</span><br><span class="line">root@ss20231017:~#</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>chrt</code> 查看linux程序的调度器以及调度的优先级。查看各个调度器的最大最小优先级<code>chrt -m</code> , 查看某个线程的优先级信息<code>chrt -p pid</code> ， 以某个优先级启动某个程序<code>chrt -f 99 sleep 10000</code></p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">chrt -m</span> </span><br><span class="line">SCHED_OTHER min/max priority	: 0/0</span><br><span class="line">SCHED_FIFO min/max priority	: 1/99</span><br><span class="line">SCHED_RR min/max priority	: 1/99</span><br><span class="line">SCHED_BATCH min/max priority	: 0/0</span><br><span class="line">SCHED_IDLE min/max priority	: 0/0</span><br><span class="line">SCHED_DEADLINE min/max priority	: 0/0</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">pid = 166459</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">chrt -f 99 <span class="built_in">sleep</span> 1000</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">chrt -p 166459</span></span><br><span class="line">pid 166459&#x27;s current scheduling policy: SCHED_FIFO</span><br><span class="line">pid 166459&#x27;s current scheduling priority: 99</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<ol start="3">
+<li><p>列出CPU消耗高的进程top10 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ps -eT -o%cpu,pid,tid,ppid,comm | grep -v CPU | sort -n -r | head -10</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>端口查看进程</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">fuser -n tcp 22</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><p>shell中使用<code>$</code> 获取当前程序的pid，由于shell中$用于取变量，一般打印当前程序的PID，可以用<code>$$</code>来表示</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">cat</span> 1.sh</span></span><br><span class="line">echo $$</span><br><span class="line">cat /proc/$$/cgroup</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过shell打印某一个pid的rss内存使用<br>该能力有几种方式都可以实现，第一种方式是通过统计<code>/proc/$pid/smaps</code>中的Rss，然后将所有的数据加起来，统计出来的就是Rss的大小。第二种方式是通过<code>ps </code>的方式来统计，具体如下:（从原理上看，两者实际是完全一样的，PS同样是读取&#x2F;proc文件来获取资源的）</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">利用ps来统计所有的程序的资源开销，包括Rss 和Size，在实际使用的过程中，可以通过info top查看详细的命令说明情况</span></span><br><span class="line">ps -axo stat,euid,ruid,tty,tpgid,sess,pgrp,ppid,pid,pcpu,comm,rss,size</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">利用/proc/<span class="variable">$pid</span>/smaps 分析内存的利用率情况，统计其Rss的使用</span></span><br><span class="line">cat /proc/$pid/smaps | grep Rss | awk &#x27;&#123;sum += $2&#125;END&#123;print sum/1024&quot;MB&quot;&#125;&#x27; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li><p>查看某一个命令的详细使用文档，可以考虑使用info指令来查看,该命令可以查看这个指令的info 文档 : <code>info top</code> , <code>info chtr</code> ， <code>info ps </code></p>
+</li>
+<li><p>一些可以探索使用方式的工具: <code>cut </code>, <code>paste</code> , <code>xargs</code></p>
+</li>
+<li><p>下载一些gun库的源码，可以直接通过apt-get 进行下载 <code>apt-get source iputils-ping</code></p>
+</li>
+</ol>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">Edited on</span>
+    <time title="Modified: 2023-11-09 20:28:34" itemprop="dateModified" datetime="2023-11-09T20:28:34+08:00">2023-11-09</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>Post author:  </strong>John Doe <i class="ic i-at"><em>@</em></i>小站
+  </li>
+  <li class="link">
+    <strong>Post link: </strong>
+    <a href="https://blog.royjo.ltd/2023/11/07/usfully-bash-shell/" title="usfully bash shell">https://blog.royjo.ltd/2023/11/07/usfully-bash-shell/</a>
+  </li>
+  <li class="license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2023/11/07/GNU-m4/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?752478" title="GNU m4">
+  <span class="type">Previous Post</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>GNU m4</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?254767" title="mem ecc error cause sys load high">
+  <span class="type">Next Post</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>mem ecc error cause sys load high</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="Contents">
+      </div>
+      <div class="related panel pjax" data-title="Related">
+      </div>
+      <div class="overview panel" data-title="Overview">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="John Doe"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">John Doe</p>
+  <div class="description" itemprop="description"></div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">25</span>
+        <span class="name">posts</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>Home</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2023/11/07/GNU-m4/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    Powered by <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2023/11/07/usfully-bash-shell/',
+    favicon: {
+      show: "（●´3｀●）Goooood",
+      hide: "(´Д｀)Booooom"
+    },
+    search : {
+      placeholder: "Search for Posts",
+      empty: "We didn't find any results for the search: ${query}",
+      stats: "${hits} results found in ${time} ms"
+    },
+    valine: true,fancybox: true,
+    copyright: 'Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>
