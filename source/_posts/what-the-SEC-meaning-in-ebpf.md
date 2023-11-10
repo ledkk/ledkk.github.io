@@ -43,6 +43,55 @@ b) https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html  __attribu
 
 `section` 该属性用于标识将定义的内容移到指定的section中。 `used` 用于告诉gcc无论这个函数有没有被人引用，都不要在编译的时候优化掉，需要在编译的文件中，保留这部分内容。
 
+3. 测试
+
+```c
+
+// cat b.c && gcc b.c -o b
+#include <stdlib.h>
+#include <stdio.h>
+
+#define SEC_FOO __attribute__((section("foo"), used))
+
+int main(int argc, char** argv)
+{
+	printf("this is a test %s \r\n","hello");
+	bar();
+	return 0;
+}
+
+
+void SEC_FOO bar() {
+	printf("this is a foo invoke %s \r\n", "hello world");
+}
+
+
+```
+使用`objdump -D -j foo b` 查看某个段的定义
+```shell
+
+# objdump -D -j foo b
+
+b:     file format elf64-x86-64
+
+
+Disassembly of section foo:
+
+0000000000001205 <bar>:
+    1205:	f3 0f 1e fa          	endbr64
+    1209:	55                   	push   %rbp
+    120a:	48 89 e5             	mov    %rsp,%rbp
+    120d:	48 8d 35 0b 0e 00 00 	lea    0xe0b(%rip),%rsi        # 201f <_IO_stdin_used+0x1f>
+    1214:	48 8d 3d 10 0e 00 00 	lea    0xe10(%rip),%rdi        # 202b <_IO_stdin_used+0x2b>
+    121b:	b8 00 00 00 00       	mov    $0x0,%eax
+    1220:	e8 2b fe ff ff       	callq  1050 <printf@plt>
+    1225:	90                   	nop
+    1226:	5d                   	pop    %rbp
+    1227:	c3                   	retq
+
+
+
+```
 
 ### 个人猜测
 
