@@ -96,3 +96,5 @@ Disassembly of section foo:
 ### 个人猜测
 
 通过上面的了解，可以大胆的猜测一下，ebpf解释器在解析ebpf文件的过程中，实际是通过section来对某个环节应该使用什么函数做了约定，当某个section定义了函数的时候，就自动会执行对应的钩子，触发对应的程序执行，从而实现相关复杂的能力
+
+ebpf 比较好的参考手册： git@github.com:eunomia-bpf/bpf-developer-tutorial.git
