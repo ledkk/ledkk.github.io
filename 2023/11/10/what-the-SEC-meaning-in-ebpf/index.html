@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?504639"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?517023"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?838581"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?640934"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?621609"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?768843"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?556780"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?579816"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?270475"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?889509"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?412301"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?768639"></li>
         </ul>
       </div>
     </header>
@@ -156,6 +156,13 @@ Yume Shoka = 小站</title>
 <li><strong>attribute</strong> 属于gcc中的补充定义，用于对一些函数添加一些定义属性，相关的参考资料有<br>a）<span class="exturl" data-url="aHR0cHM6Ly9nY2MuZ251Lm9yZy9vbmxpbmVkb2NzL2djYy9BdHRyaWJ1dGUtU3ludGF4Lmh0bWw=">https://gcc.gnu.org/onlinedocs/gcc/Attribute-Syntax.html</span>  __attribute__的使用语法<br>b) <span class="exturl" data-url="aHR0cHM6Ly9nY2MuZ251Lm9yZy9vbmxpbmVkb2NzL2djYy9Db21tb24tRnVuY3Rpb24tQXR0cmlidXRlcy5odG1s">https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html</span>  <strong>attribute</strong> 可以使用的常见的属性名字以及其含义。 对于SEC定义中使用的两个属性的解释如下</li>
 </ol>
 <p><code>section</code> 该属性用于标识将定义的内容移到指定的section中。 <code>used</code> 用于告诉gcc无论这个函数有没有被人引用，都不要在编译的时候优化掉，需要在编译的文件中，保留这部分内容。</p>
+<ol start="3">
+<li>测试</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// cat b.c &amp;&amp; gcc b.c -o b</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SEC_FOO __attribute__((section(<span class="string">&quot;foo&quot;</span>), used))</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;this is a test %s \r\n&quot;</span>,<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">	bar();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> SEC_FOO <span class="title function_">bar</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;this is a foo invoke %s \r\n&quot;</span>, <span class="string">&quot;hello world&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用<code>objdump -D -j foo b</code> 查看某个段的定义</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">objdump -D -j foo b</span></span><br><span class="line"></span><br><span class="line">b:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section foo:</span><br><span class="line"></span><br><span class="line">0000000000001205 &lt;bar&gt;:</span><br><span class="line">    1205:	f3 0f 1e fa          	endbr64</span><br><span class="line">    1209:	55                   	push   %rbp</span><br><span class="line">    120a:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">    120d:	48 8d 35 0b 0e 00 00 	lea    0xe0b(%rip),%rsi        # 201f &lt;_IO_stdin_used+0x1f&gt;</span><br><span class="line">    1214:	48 8d 3d 10 0e 00 00 	lea    0xe10(%rip),%rdi        # 202b &lt;_IO_stdin_used+0x2b&gt;</span><br><span class="line">    121b:	b8 00 00 00 00       	mov    $0x0,%eax</span><br><span class="line">    1220:	e8 2b fe ff ff       	callq  1050 &lt;printf@plt&gt;</span><br><span class="line">    1225:	90                   	nop</span><br><span class="line">    1226:	5d                   	pop    %rbp</span><br><span class="line">    1227:	c3                   	retq</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h3 id="个人猜测"><a href="#个人猜测" class="headerlink" title="个人猜测"></a>个人猜测</h3><p>通过上面的了解，可以大胆的猜测一下，ebpf解释器在解析ebpf文件的过程中，实际是通过section来对某个环节应该使用什么函数做了约定，当某个section定义了函数的时候，就自动会执行对应的钩子，触发对应的程序执行，从而实现相关复杂的能力</p>
 
   </div>
@@ -168,7 +175,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-10 13:46:54" itemprop="dateModified" datetime="2023-11-10T13:46:54+08:00">2023-11-10</time>
+    <time title="Modified: 2023-11-10 13:54:03" itemprop="dateModified" datetime="2023-11-10T13:54:03+08:00">2023-11-10</time>
   </span>
 </div>
 
@@ -200,7 +207,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/09/thoughts-of-sth/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?452867" title="thoughts of sth">
+  <a href="/2023/11/09/thoughts-of-sth/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?308419" title="thoughts of sth">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>thoughts of sth</h3>
