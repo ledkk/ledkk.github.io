@@ -91,3 +91,13 @@ cat /proc/$pid/smaps | grep Rss | awk '{sum += $2}END{print sum/1024"MB"}'
 
 9. 下载一些gun库的源码，可以直接通过apt-get 进行下载 `apt-get source iputils-ping`
 
+
+10. 通过sar查看系统监控相关的数据，默认情况下只能查看当天的数据，可以通过如下脚本查看之前某一天的数据, 其原理就是通过sar产生的数据文件读取相关的数据，并做展示。
+
+```shell
+
+sar -f /var/log/sysstat/sa$(date +%d -d yesterday)
+
+```
+
+11. 安装sar工具后，默认情况下并不会默认开启，需要主动打开，操作的方式为，修改`/etc/default/sysstat` 文件，设置`ENABLED="true"` 即可
