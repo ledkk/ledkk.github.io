@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?126088"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?139786"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?76205"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?382238"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?77345"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?239086"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?392113"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?698880"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?464565"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?707590"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?386857"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?612734"></li>
         </ul>
       </div>
     </header>
@@ -185,6 +185,13 @@ Yume Shoka = 小站</title>
 </li>
 <li><p>下载一些gun库的源码，可以直接通过apt-get 进行下载 <code>apt-get source iputils-ping</code></p>
 </li>
+<li><p>通过sar查看系统监控相关的数据，默认情况下只能查看当天的数据，可以通过如下脚本查看之前某一天的数据, 其原理就是通过sar产生的数据文件读取相关的数据，并做展示。</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sar -f /var/log/sysstat/sa$(date +%d -d yesterday)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="11">
+<li>安装sar工具后，默认情况下并不会默认开启，需要主动打开，操作的方式为，修改<code>/etc/default/sysstat</code> 文件，设置<code>ENABLED=&quot;true&quot;</code> 即可</li>
 </ol>
 
   </div>
@@ -197,7 +204,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-07 18:46:13" itemprop="dateModified" datetime="2023-11-07T18:46:13+08:00">2023-11-07</time>
+    <time title="Modified: 2023-11-11 00:14:05" itemprop="dateModified" datetime="2023-11-11T00:14:05+08:00">2023-11-11</time>
   </span>
 </div>
 
@@ -229,7 +236,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/07/GNU-m4/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?349260" title="GNU m4">
+  <a href="/2023/11/07/GNU-m4/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?60291" title="GNU m4">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>GNU m4</h3>
@@ -239,7 +246,7 @@ Yume Shoka = 小站</title>
     <div class="item right">
       
 
-  <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?715032" title="mem ecc error cause sys load high">
+  <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?753426" title="mem ecc error cause sys load high">
   <span class="type">Next Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>mem ecc error cause sys load high</h3>
