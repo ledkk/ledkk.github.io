@@ -25,12 +25,12 @@
 
   
 
-<link rel="canonical" href="https://blog.royjo.ltd/2023/11/06/%E5%A6%82%E6%9E%9C%E6%88%91%E6%98%AF%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%E7%9A%84CEO/">
+<link rel="canonical" href="https://blog.royjo.ltd/2023/11/10/what-the-SEC-meaning-in-ebpf/">
 
 
 
   <title>
-如果我是一家公司的CEO |
+what the SEC meaning in ebpf |
 Yume Shoka = 小站</title>
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -58,16 +58,16 @@ Yume Shoka = 小站</title>
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">如果我是一家公司的CEO
+  <h1 itemprop="name headline">what the SEC meaning in ebpf
   </h1>
   
 <div class="meta">
-  <span class="item" title="Created: 2023-11-06 18:01:28">
+  <span class="item" title="Created: 2023-11-10 13:36:17">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">Posted on</span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-06T18:01:28+08:00">2023-11-06</time>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-10T13:36:17+08:00">2023-11-10</time>
   </span>
 </div>
 
@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?906053"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?330891"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?903637"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?500516"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?144324"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?501199"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?504639"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?517023"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?838581"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?640934"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?621609"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?768843"></li>
         </ul>
       </div>
     </header>
@@ -134,7 +134,7 @@ Yume Shoka = 小站</title>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
-  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/06/%E5%A6%82%E6%9E%9C%E6%88%91%E6%98%AF%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%E7%9A%84CEO/">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/10/what-the-SEC-meaning-in-ebpf/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/avatar.jpg">
@@ -149,8 +149,14 @@ Yume Shoka = 小站</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <p>做技术的人，最终的归属是不是自己开公司，当一个公司的CEO，负责公司的各项事情。如果把这个事情作为一个终极目标的话，来尝试畅想一下，如果我已经是一家公司的CEO了，我要怎么做才能胜任这份工作，如何才能让公司基业常青，员工干劲十足。</p>
-<h3 id="先做一些假设"><a href="#先做一些假设" class="headerlink" title="先做一些假设"></a>先做一些假设</h3><p>1、 公司规模： 300-500人规模的公司<br>2、 公司行业： 互联网行业（细分行业：）<br>3、 公司现状：<br>4、 公司问题：</p>
+    <p>由于没有扎实的C相关的基础，导致在学习ebpf的时候，一直对SEC感到困惑，为了搞清楚这个东西的原理，我翻找了linux的源码和gcc相关的资料，这里做一下简单的汇总总结。<br>1、SEC在<code>./tools/lib/bpf/bpf_helpers.h</code> 中定义，具体如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Helper macro to place programs, maps, license in</span></span><br><span class="line"><span class="comment"> * different sections in elf_bpf file. Section names</span></span><br><span class="line"><span class="comment"> * are interpreted by libbpf depending on the context (BPF programs, BPF maps,</span></span><br><span class="line"><span class="comment"> * extern variables, etc).</span></span><br><span class="line"><span class="comment"> * To allow use of SEC() with externs (e.g., for extern .maps declarations),</span></span><br><span class="line"><span class="comment"> * make sure __attribute__((unused)) doesn&#x27;t trigger compilation warning.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> __GNUC__ &amp;&amp; !__clang__</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Pragma macros are broken on GCC</span></span><br><span class="line"><span class="comment"> * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55578</span></span><br><span class="line"><span class="comment"> * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90400</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SEC(name) __attribute__((section(name), used))</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SEC(name) \</span></span><br><span class="line"><span class="meta">        <span class="keyword">_Pragma</span>(<span class="string">&quot;GCC diagnostic push&quot;</span>)                                      \</span></span><br><span class="line"><span class="meta">        <span class="keyword">_Pragma</span>(<span class="string">&quot;GCC diagnostic ignored \&quot;-Wignored-attributes\&quot;&quot;</span>)          \</span></span><br><span class="line"><span class="meta">        __attribute__((section(name), used))                                \</span></span><br><span class="line"><span class="meta">        <span class="keyword">_Pragma</span>(<span class="string">&quot;GCC diagnostic pop&quot;</span>)                                       \</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>从描述看，这个宏的主要作用是将一些函数、maps、license放到指定的section中，在编译成elf_bpf文件。</p>
+<ol start="2">
+<li><strong>attribute</strong> 属于gcc中的补充定义，用于对一些函数添加一些定义属性，相关的参考资料有<br>a）<span class="exturl" data-url="aHR0cHM6Ly9nY2MuZ251Lm9yZy9vbmxpbmVkb2NzL2djYy9BdHRyaWJ1dGUtU3ludGF4Lmh0bWw=">https://gcc.gnu.org/onlinedocs/gcc/Attribute-Syntax.html</span>  __attribute__的使用语法<br>b) <span class="exturl" data-url="aHR0cHM6Ly9nY2MuZ251Lm9yZy9vbmxpbmVkb2NzL2djYy9Db21tb24tRnVuY3Rpb24tQXR0cmlidXRlcy5odG1s">https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html</span>  <strong>attribute</strong> 可以使用的常见的属性名字以及其含义。 对于SEC定义中使用的两个属性的解释如下</li>
+</ol>
+<p><code>section</code> 该属性用于标识将定义的内容移到指定的section中。 <code>used</code> 用于告诉gcc无论这个函数有没有被人引用，都不要在编译的时候优化掉，需要在编译的文件中，保留这部分内容。</p>
+<h3 id="个人猜测"><a href="#个人猜测" class="headerlink" title="个人猜测"></a>个人猜测</h3><p>通过上面的了解，可以大胆的猜测一下，ebpf解释器在解析ebpf文件的过程中，实际是通过section来对某个环节应该使用什么函数做了约定，当某个section定义了函数的时候，就自动会执行对应的钩子，触发对应的程序执行，从而实现相关复杂的能力</p>
 
   </div>
 
@@ -162,7 +168,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-06 18:22:04" itemprop="dateModified" datetime="2023-11-06T18:22:04+08:00">2023-11-06</time>
+    <time title="Modified: 2023-11-10 13:46:54" itemprop="dateModified" datetime="2023-11-10T13:46:54+08:00">2023-11-10</time>
   </span>
 </div>
 
@@ -175,7 +181,7 @@ Yume Shoka = 小站</title>
   </li>
   <li class="link">
     <strong>Post link: </strong>
-    <a href="https://blog.royjo.ltd/2023/11/06/%E5%A6%82%E6%9E%9C%E6%88%91%E6%98%AF%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%E7%9A%84CEO/" title="如果我是一家公司的CEO">https://blog.royjo.ltd/2023/11/06/如果我是一家公司的CEO/</a>
+    <a href="https://blog.royjo.ltd/2023/11/10/what-the-SEC-meaning-in-ebpf/" title="what the SEC meaning in ebpf">https://blog.royjo.ltd/2023/11/10/what-the-SEC-meaning-in-ebpf/</a>
   </li>
   <li class="license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
@@ -194,22 +200,14 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/06/%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8A%A8%E6%95%88%E5%AE%9E%E7%8E%B0-lottie/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?473199" title="客户端动效实现--lottie">
+  <a href="/2023/11/09/thoughts-of-sth/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?452867" title="thoughts of sth">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>客户端动效实现--lottie</h3>
+  <h3>thoughts of sth</h3>
   </a>
 
     </div>
     <div class="item right">
-      
-
-  <a href="/2023/11/07/GNU-m4/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?815545" title="GNU m4">
-  <span class="type">Next Post</span>
-  <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>GNU m4</h3>
-  </a>
-
     </div>
 </div>
 
@@ -226,7 +224,7 @@ Yume Shoka = 小站</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="Contents">
-          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%88%E5%81%9A%E4%B8%80%E4%BA%9B%E5%81%87%E8%AE%BE"><span class="toc-number">1.</span> <span class="toc-text">先做一些假设</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E7%8C%9C%E6%B5%8B"><span class="toc-number">1.</span> <span class="toc-text">个人猜测</span></a></li></ol>
       </div>
       <div class="related panel pjax" data-title="Related">
       </div>
@@ -266,12 +264,10 @@ Yume Shoka = 小站</title>
 
   <ul id="quick">
     <li class="prev pjax">
-        <a href="/2023/11/06/%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8A%A8%E6%95%88%E5%AE%9E%E7%8E%B0-lottie/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
-        <a href="/2023/11/07/GNU-m4/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -308,7 +304,7 @@ Yume Shoka = 小站</title>
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2023/11/06/如果我是一家公司的CEO/',
+    path: '2023/11/10/what-the-SEC-meaning-in-ebpf/',
     favicon: {
       show: "（●´3｀●）Goooood",
       hide: "(´Д｀)Booooom"
