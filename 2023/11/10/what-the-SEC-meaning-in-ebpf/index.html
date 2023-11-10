@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?556780"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?579816"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?270475"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?889509"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?412301"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?768639"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?767026"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?133459"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?937775"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?318122"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?116380"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?379964"></li>
         </ul>
       </div>
     </header>
@@ -164,6 +164,7 @@ Yume Shoka = 小站</title>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">objdump -D -j foo b</span></span><br><span class="line"></span><br><span class="line">b:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section foo:</span><br><span class="line"></span><br><span class="line">0000000000001205 &lt;bar&gt;:</span><br><span class="line">    1205:	f3 0f 1e fa          	endbr64</span><br><span class="line">    1209:	55                   	push   %rbp</span><br><span class="line">    120a:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line">    120d:	48 8d 35 0b 0e 00 00 	lea    0xe0b(%rip),%rsi        # 201f &lt;_IO_stdin_used+0x1f&gt;</span><br><span class="line">    1214:	48 8d 3d 10 0e 00 00 	lea    0xe10(%rip),%rdi        # 202b &lt;_IO_stdin_used+0x2b&gt;</span><br><span class="line">    121b:	b8 00 00 00 00       	mov    $0x0,%eax</span><br><span class="line">    1220:	e8 2b fe ff ff       	callq  1050 &lt;printf@plt&gt;</span><br><span class="line">    1225:	90                   	nop</span><br><span class="line">    1226:	5d                   	pop    %rbp</span><br><span class="line">    1227:	c3                   	retq</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h3 id="个人猜测"><a href="#个人猜测" class="headerlink" title="个人猜测"></a>个人猜测</h3><p>通过上面的了解，可以大胆的猜测一下，ebpf解释器在解析ebpf文件的过程中，实际是通过section来对某个环节应该使用什么函数做了约定，当某个section定义了函数的时候，就自动会执行对应的钩子，触发对应的程序执行，从而实现相关复杂的能力</p>
+<p>ebpf 比较好的参考手册： <span class="exturl" data-url="bWFpbHRvOiYjeDY3OyYjMTA1OyYjeDc0OyYjeDQwOyYjMTAzOyYjMTA1OyYjMTE2OyYjMTA0OyYjMTE3OyYjeDYyOyYjNDY7JiN4NjM7JiN4NmY7JiMxMDk7">&#x67;&#105;&#x74;&#x40;&#103;&#105;&#116;&#104;&#117;&#x62;&#46;&#x63;&#x6f;&#109;</span>:eunomia-bpf&#x2F;bpf-developer-tutorial.git</p>
 
   </div>
 
@@ -175,7 +176,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-10 13:54:03" itemprop="dateModified" datetime="2023-11-10T13:54:03+08:00">2023-11-10</time>
+    <time title="Modified: 2023-11-10 18:13:09" itemprop="dateModified" datetime="2023-11-10T18:13:09+08:00">2023-11-10</time>
   </span>
 </div>
 
@@ -207,7 +208,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/09/thoughts-of-sth/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?308419" title="thoughts of sth">
+  <a href="/2023/11/09/thoughts-of-sth/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?233764" title="thoughts of sth">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>thoughts of sth</h3>
