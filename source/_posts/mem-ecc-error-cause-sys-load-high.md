@@ -36,3 +36,6 @@ sudo perf stat -a
 
 
 ```
+
+查看当前任务的进程状态分布情况 `ps axl  | awk '{print $10}'  | sort | uniq -c | sort -n` ， 查看处于D状态的进程信息`ps axl | awk '$10 ~/D/ {print $0}'`
+查看某一个进程的当前在执行的线程栈情况`cat /proc/pid/stack`
