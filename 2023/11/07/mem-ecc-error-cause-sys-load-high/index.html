@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?764398"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?697015"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?354768"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?398868"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?257799"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?505972"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?275505"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?816017"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?847583"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?924804"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?668102"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?526372"></li>
         </ul>
       </div>
     </header>
@@ -157,6 +157,8 @@ Yume Shoka = 小站</title>
 <p>top 看cpu、load、iowait相关的数据，可以看到cpu低、load搞<br>tsar 看load 的详细信息，可以看到runq的表现，和磁盘的表现，排除是由于系统负载高以及磁盘io高导致的整机load高。<br>使用perf 看机器的cpu运行情况，重点看cpu的ips ，可以看看cpu的执行频率情况，确定是cpu负载稿，还是由于cpu的执行效率低导致<code>perf stat -a </code><br>在所有问题查不清楚的时候，看看内核日志<code>dmesg -T</code> ，也许内核日志里有一些线索。。。。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">sudo perf stat -a</span><br><span class="line">^C</span><br><span class="line"> Performance counter stats for &#x27;system wide&#x27;:</span><br><span class="line"></span><br><span class="line">     326237.203455      task-clock (msec)         #   16.001 CPUs utilized</span><br><span class="line">           750,189      context-switches          #    0.002 M/sec</span><br><span class="line">            26,724      cpu-migrations            #    0.082 K/sec</span><br><span class="line">           393,003      page-faults               #    0.001 M/sec</span><br><span class="line">   229,354,281,442      cycles                    #    0.703 GHz</span><br><span class="line">   &lt;not supported&gt;      stalled-cycles-frontend</span><br><span class="line">   &lt;not supported&gt;      stalled-cycles-backend</span><br><span class="line">   154,354,075,229      instructions              #    0.67  insns per cycle</span><br><span class="line">    36,761,887,530      branches                  #  112.685 M/sec</span><br><span class="line">       271,931,138      branch-misses             #    0.74% of all branches</span><br><span class="line"></span><br><span class="line">      20.388467618 seconds time elapsed</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<p>查看当前任务的进程状态分布情况 <code>ps axl  | awk &#39;&#123;print $10&#125;&#39;  | sort | uniq -c | sort -n</code> ， 查看处于D状态的进程信息<code>ps axl | awk &#39;$10 ~/D/ &#123;print $0&#125;&#39;</code><br>查看某一个进程的当前在执行的线程栈情况<code>cat /proc/pid/stack</code></p>
+
   </div>
 
    <footer>
@@ -167,7 +169,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-09 20:28:34" itemprop="dateModified" datetime="2023-11-09T20:28:34+08:00">2023-11-09</time>
+    <time title="Modified: 2023-11-17 20:11:34" itemprop="dateModified" datetime="2023-11-17T20:11:34+08:00">2023-11-17</time>
   </span>
 </div>
 
@@ -199,7 +201,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/07/usfully-bash-shell/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?98668" title="usfully bash shell">
+  <a href="/2023/11/07/usfully-bash-shell/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?251466" title="usfully bash shell">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>usfully bash shell</h3>
@@ -209,7 +211,7 @@ Yume Shoka = 小站</title>
     <div class="item right">
       
 
-  <a href="/2023/11/08/how-netstat-know-the-socketlist-and-who-use-it/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?299452" title="how netstat know the socketlist and who use it">
+  <a href="/2023/11/08/how-netstat-know-the-socketlist-and-who-use-it/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?633012" title="how netstat know the socketlist and who use it">
   <span class="type">Next Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>how netstat know the socketlist and who use it</h3>
@@ -245,7 +247,7 @@ Yume Shoka = 小站</title>
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">25</span>
+        <span class="count">26</span>
         <span class="name">posts</span>
       </a>
     </div>

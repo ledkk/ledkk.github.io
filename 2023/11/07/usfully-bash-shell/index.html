@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?455135"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?336970"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?511998"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?599179"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?797814"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?960108"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?717586"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?884005"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?641769"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?382721"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?719350"></li>
+          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?563342"></li>
         </ul>
       </div>
     </header>
@@ -185,7 +185,31 @@ Yume Shoka = 小站</title>
 </li>
 <li><p>下载一些gun库的源码，可以直接通过apt-get 进行下载 <code>apt-get source iputils-ping</code></p>
 </li>
+<li><p>通过sar查看系统监控相关的数据，默认情况下只能查看当天的数据，可以通过如下脚本查看之前某一天的数据, 其原理就是通过sar产生的数据文件读取相关的数据，并做展示。</p>
+</li>
 </ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sar -f /var/log/sysstat/sa$(date +%d -d yesterday)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="11">
+<li><p>安装sar工具后，默认情况下并不会默认开启，需要主动打开，操作的方式为，修改<code>/etc/default/sysstat</code> 文件，设置<code>ENABLED=&quot;true&quot;</code> 即可</p>
+</li>
+<li><p>查看整个操作系统的内存使用情况，直接通过free命令只能看到整体的内容使用情况，这些内存使用情况，还需要进一步分区分内存是被slabinfo占用，还是被Pagetable占用，或者是被应用的rss占用。可以通过如下脚本进行采集分析, 由于RSS包含程序和程序之间公用的部分，所以已下的内容加起来要比实际的内容要多。操作系统分配的内存还有一部分是通过allocpage方式直接申请的，这部分内存无法被统计到。</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">cat</span> mem.sh</span></span><br><span class="line"></span><br><span class="line">for PROC in `ls /proc/ | grep &quot;^[0-9]&quot;`</span><br><span class="line">do</span><br><span class="line">	if [ -f /proc/$PROC/statm ]; then</span><br><span class="line">		TEP=`cat /proc/$PROC/statm | awk &#x27;&#123;print $2&#125;&#x27;`</span><br><span class="line">		RSS=`expr $RSS + $TEP`</span><br><span class="line">	fi</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">RSS=`expr $RSS \* 4 / 1024`</span><br><span class="line">PageTable=`grep PageTables /proc/meminfo | awk &#x27;&#123;print $2/1024&#125;&#x27;`</span><br><span class="line">SlabInfo=`cat /proc/slabinfo | awk &#x27;BEGIN&#123;sum=0;&#125;&#123;sum=sum+$3*$4;&#125;END&#123;print sum/1024/1024&#125;&#x27;`</span><br><span class="line">echo &quot;RSS:&quot;$RSS&quot;MB&quot;, &quot;PageTable: &quot; $PageTable&quot;MB&quot;, &quot;SlabInfo: &quot; $SlabInfo&quot;MB&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<ol start="13">
+<li>在网络收包的时候，<code>NET_RX_SOFTIRQ</code> 主要是由<code>net_rx_action</code> 处理，<code>receive_mergeable</code> 是和<code>virtio_net</code>驱动有关系。 网络相关的内容，通过ss命令可以快速的分析其网络状态。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~# </span><span class="language-bash">ss -s</span></span><br><span class="line">Total: 1165</span><br><span class="line">TCP:   10 (estab 3, closed 1, orphaned 0, timewait 1)</span><br><span class="line"></span><br><span class="line">Transport Total     IP        IPv6</span><br><span class="line">RAW	  1         0         1</span><br><span class="line">UDP	  9         6         3</span><br><span class="line">TCP	  9         6         3</span><br><span class="line">INET	  19        12        7</span><br><span class="line">FRAG	  0         0         0</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">~# </span><span class="language-bash">ss -ltnpamO</span></span><br><span class="line">State                    Recv-Q                Send-Q                                Local Address:Port                                  Peer Address:Port                Process</span><br><span class="line">LISTEN                   0                     4096                                  127.0.0.53%lo:53                                         0.0.0.0:*                    users:((&quot;systemd-resolve&quot;,pid=451,fd=13)) skmem:(r0,rb131072,t0,tb16384,f0,w0,o0,bl0,d0)</span><br><span class="line">LISTEN                   0                     128                                         0.0.0.0:22                                         0.0.0.0:*                    users:((&quot;sshd&quot;,pid=806,fd=3)) skmem:(r0,rb131072,t0,tb16384,f0,w0,o0,bl0,d5837)</span><br><span class="line">LISTEN                   0                     5                                         127.0.0.1:631                                        0.0.0.0:*                    users:((&quot;cupsd&quot;,pid=215026,fd=7)) skmem:(r0,rb131072,t0,tb16384,f0,w0,o0,bl0,d0)</span><br><span class="line">TIME-WAIT                0                     0                                    192.168.10.227:47610                               100.100.45.106:443</span><br><span class="line">ESTAB                    0                     0                                    192.168.10.227:60340                                100.100.30.25:80                   users:((&quot;AliYunDun&quot;,pid=58400,fd=11)) skmem:(r0,rb2519636,t0,tb87040,f0,w0,o0,bl0,d1)</span><br><span class="line">TIME-WAIT                0                     0                                    192.168.10.227:43566                               100.100.45.106:80</span><br><span class="line">ESTAB                    0                     0                                    192.168.10.227:48550                                146.75.114.49:443                  users:((&quot;fwupdmgr&quot;,pid=62734,fd=10)) skmem:(r0,rb847456,t0,tb87040,f8192,w0,o0,bl0,d13)</span><br><span class="line">ESTAB                    0                     0                                    192.168.10.227:22                                   42.120.74.223:56563                users:((&quot;sshd&quot;,pid=215910,fd=4)) skmem:(r0,rb2509544,t0,tb3951616,f4096,w0,o0,bl0,d328)</span><br><span class="line">LISTEN                   0                     2                                                 *:3389                                             *:*                    users:((&quot;xrdp&quot;,pid=54176,fd=11)) skmem:(r0,rb131072,t0,tb65536,f0,w0,o0,bl0,d4685)</span><br><span class="line">LISTEN                   0                     2                                             [::1]:3350                                          [::]:*                    users:((&quot;xrdp-sesman&quot;,pid=54158,fd=7)) skmem:(r0,rb131072,t0,tb65536,f0,w0,o0,bl0,d0)</span><br><span class="line">LISTEN                   0                     5                                             [::1]:631                                           [::]:*                    users:((&quot;cupsd&quot;,pid=215026,fd=6)) skmem:(r0,rb131072,t0,tb16384,f0,w0,o0,bl0,d0)</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">~# </span><span class="language-bash"><span class="built_in">cat</span> /proc/net/sockstat</span></span><br><span class="line">sockets: used 1165</span><br><span class="line">TCP: inuse 6 orphan 0 tw 1 alloc 9 mem 3</span><br><span class="line">UDP: inuse 6 mem 3</span><br><span class="line">UDPLITE: inuse 0</span><br><span class="line">RAW: inuse 0</span><br><span class="line">FRAG: inuse 0 memory 0</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
 
   </div>
 
@@ -197,7 +221,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-09 20:28:34" itemprop="dateModified" datetime="2023-11-09T20:28:34+08:00">2023-11-09</time>
+    <time title="Modified: 2023-11-17 20:11:34" itemprop="dateModified" datetime="2023-11-17T20:11:34+08:00">2023-11-17</time>
   </span>
 </div>
 
@@ -229,7 +253,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/07/GNU-m4/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?752478" title="GNU m4">
+  <a href="/2023/11/07/GNU-m4/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?942498" title="GNU m4">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>GNU m4</h3>
@@ -239,7 +263,7 @@ Yume Shoka = 小站</title>
     <div class="item right">
       
 
-  <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?254767" title="mem ecc error cause sys load high">
+  <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;api.isoyu.com&#x2F;bing_images.php?722332" title="mem ecc error cause sys load high">
   <span class="type">Next Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>mem ecc error cause sys load high</h3>
@@ -275,7 +299,7 @@ Yume Shoka = 小站</title>
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">25</span>
+        <span class="count">26</span>
         <span class="name">posts</span>
       </a>
     </div>
