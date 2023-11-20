@@ -27,3 +27,14 @@ ldd target/x86_64-unknown-linux-musl/release/we
 ```
 
 
+env_logger可以通过环境变量传递日志的等级，比如在使用的时候使用了如下的方式初始化日志。那么默认情况下日志为debug等级，如果想把debug调整成info或者error，可以通过如下方式调整
+```rust
+
+   env_logger::init_from_env(env_logger::Env::new().default_filter_or("debug"));
+
+   // 调整日志等级，只要在启动的过程中传入日志等级即可，比如： `RUST_LOG=error ./website `
+
+```
+
+
+actix_web 可以通过app_data传递一些初始化比较困难的对象，比如数据库的连接池，http的客户端等。大家可以共用，即可统一控制
