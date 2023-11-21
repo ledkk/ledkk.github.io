@@ -23,4 +23,6 @@ apt install linux-tools-5.4.0-162-generic
 `perf ftrace ` perf工具对ftrace的包装，用于应用的系统调用相关的内容，可以利用该工具分析一个程序的系统调用情况，以及其各个方面的耗时情况
 
 
+### perf trace
 
+`perf trace -p 135545` 跟踪系统调用的情况
