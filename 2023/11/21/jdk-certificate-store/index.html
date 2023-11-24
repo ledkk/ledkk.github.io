@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?543213"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?399563"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?384233"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?224048"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?868493"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?837414"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?735173"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?382206"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?952793"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?886850"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?927364"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?486634"></li>
         </ul>
       </div>
     </header>
@@ -151,6 +151,7 @@ Yume Shoka = 小站</title>
 
     <p>在通过java应用程序发起https的网络请求的时候，会涉及到网络证书的验证以及交换，默认情况下jdk内部会有大部分的根证书认证的，这部分数据会随着jdk进行分发。</p>
 <p><code>$JAVA_HOME/bin/keytool -list -keystore $JAVA_HOME/lib/security/cacerts </code> 对应的密码为默认密码：<code>changeit</code> ，jdk8的该文件的目录有所差异，其文件地址为<code>$JAVA_HOME/jre/lib/security/cacerts</code></p>
+<p>TLS协议中提供了很多的扩展，在与服务端进行协商的时候，通过Client Hello消息同步到服务端，服务端针对传递的扩展内容，相互约定。随后协商出做加解密的密钥信息， 从实际的表现看，jdk8的早期版本和后续的版本中，对TLS的协议处理上存在差异，一方面扩展的数量存在差异，另外一方面对扩展的差异也有变化。从前后两个的抓包看，server name 扩展在jdk8的早期版本里，如果Client Hello 不携带的话， 服务端也能正常返回，同时做好协商。 但在后期的版本中，如果server name 这个扩展没有生效，或者传递的servername是存在差异的情况下， 就会存在异常。关于SNIServerName的详细信息，可以参考RFC6066（<span class="exturl" data-url="aHR0cHM6Ly93d3cucmZjLWVkaXRvci5vcmcvcmZjL3JmYzYwNjYjcGFnZS0xOSVFRiVCQyU4OSVFRiVCQyU4Qw==">https://www.rfc-editor.org/rfc/rfc6066#page-19），</span> 如果在访问一个https的服务的时候，如果未执行域名，直接通过ip进行访问就会出现类似的问题。</p>
 
   </div>
 
@@ -162,7 +163,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-21 19:47:34" itemprop="dateModified" datetime="2023-11-21T19:47:34+08:00">2023-11-21</time>
+    <time title="Modified: 2023-11-24 13:54:23" itemprop="dateModified" datetime="2023-11-24T13:54:23+08:00">2023-11-24</time>
   </span>
 </div>
 
@@ -194,7 +195,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/20/how-to-install-and-use-perf-in-ubuntu/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?527126" title="how to install and use perf in ubuntu">
+  <a href="/2023/11/20/how-to-install-and-use-perf-in-ubuntu/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?999963" title="how to install and use perf in ubuntu">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>how to install and use perf in ubuntu</h3>
@@ -202,6 +203,14 @@ Yume Shoka = 小站</title>
 
     </div>
     <div class="item right">
+      
+
+  <a href="/2023/11/24/something-about-directbuffer/" itemprop="url" rel="next" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?626681" title="something about directbuffer">
+  <span class="type">Next Post</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>something about directbuffer</h3>
+  </a>
+
     </div>
 </div>
 
@@ -232,7 +241,7 @@ Yume Shoka = 小站</title>
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">28</span>
+        <span class="count">29</span>
         <span class="name">posts</span>
       </a>
     </div>
@@ -257,10 +266,12 @@ Yume Shoka = 小站</title>
 
   <ul id="quick">
     <li class="prev pjax">
+        <a href="/2023/11/20/how-to-install-and-use-perf-in-ubuntu/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
+        <a href="/2023/11/24/something-about-directbuffer/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>

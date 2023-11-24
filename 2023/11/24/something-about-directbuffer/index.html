@@ -25,12 +25,12 @@
 
   
 
-<link rel="canonical" href="https://blog.royjo.ltd/2023/11/04/compile-rust-as-static-link/">
+<link rel="canonical" href="https://blog.royjo.ltd/2023/11/24/something-about-directbuffer/">
 
 
 
   <title>
-compile_rust_as_static_link |
+something about directbuffer |
 Yume Shoka = 小站</title>
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -58,16 +58,16 @@ Yume Shoka = 小站</title>
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">compile_rust_as_static_link
+  <h1 itemprop="name headline">something about directbuffer
   </h1>
   
 <div class="meta">
-  <span class="item" title="Created: 2023-11-04 10:46:19">
+  <span class="item" title="Created: 2023-11-24 13:54:58">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">Posted on</span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-04T10:46:19+08:00">2023-11-04</time>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-24T13:54:58+08:00">2023-11-24</time>
   </span>
 </div>
 
@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?367510"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?943381"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?928612"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?264032"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?367950"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?763230"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?791157"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?117089"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?255285"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?954455"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?423930"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?359084"></li>
         </ul>
       </div>
     </header>
@@ -134,7 +134,7 @@ Yume Shoka = 小站</title>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
-  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/04/compile-rust-as-static-link/">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/24/something-about-directbuffer/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/avatar.jpg">
@@ -149,15 +149,15 @@ Yume Shoka = 小站</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <p>由于环境的不同，个人远程服务器上使用的gcc版本比较旧，而本地编译机器使用的操作系统版本又比较高，对应的gcc版本和服务器版本差异比较大，之前测试java程序的时候，还感受不出来运行环境的差异，对系统部署的影响。近期尝试rust写一些小脚本的时候，经常发现本地可以正常跑起来的程序，部署到了远程就无法跑出来了。把两套环境完全搞成一样的，成本又相对比较高。使用Docker进行部署，相对来说又比较复杂，而且远程服务器性能较弱，不太适合直接本地编译，因此需要考虑对rust做静态编译。这里做一下记录。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装x86_64-unknown-linux-musl target</span></span><br><span class="line">rustup target add x86_64-unknown-linux-musl</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装musl相关的工具</span></span><br><span class="line">sudo apt-get install musl-tools</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">build release 文件，产出静态链接的目标文件</span></span><br><span class="line">cargo build --release --target x86_64-unknown-linux-musl</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">文件产出的目录为target/x86_64-unknown-linux-musl/release/xx</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">通过ldd 可以看到对应的生成程序已经是静态链接的了</span></span><br><span class="line"></span><br><span class="line">ldd target/x86_64-unknown-linux-musl/release/we</span><br><span class="line">        statically linked</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>env_logger可以通过环境变量传递日志的等级，比如在使用的时候使用了如下的方式初始化日志。那么默认情况下日志为debug等级，如果想把debug调整成info或者error，可以通过如下方式调整</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">env_logger::<span class="title function_ invoke__">init_from_env</span>(env_logger::Env::<span class="title function_ invoke__">new</span>().<span class="title function_ invoke__">default_filter_or</span>(<span class="string">&quot;debug&quot;</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调整日志等级，只要在启动的过程中传入日志等级即可，比如： `RUST_LOG=error ./website `</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>actix_web 可以通过app_data传递一些初始化比较困难的对象，比如数据库的连接池，http的客户端等。大家可以共用，即可统一控制</p>
+    <p>堆外内存区别与堆内内存，其内存的回收以及管理，均不受JVM控制。但实际上在Java程序中，堆外内存可以分为三种，一种是通过ByteBuffer.allocateDirect分配产生的DirectBuffer， 再一个是FileChannel.map产生的MappedByteBuffer, 最后一个是比较头疼的由于JNI调用外部的动态库，由动态库中的代码逻辑向操作系统申请的内存。这三块的内存的回收机制，都是不同的。对于前两种的堆外内存，JVM是key感知，并且在持有这些堆外内存的引用不在使用的时候，主动回收掉。但是对于动态库中申请的内存，JVM是完全无法感知到的，这种情况下就需要动态库内部做到内存的管理以及回收。</p>
+<ol>
+<li><p>JVM可以管理的堆外内存在没有使用的时候，可以被JVM回收掉么？<br>该问题的答案是可以的，这主要是由于在JVM内部针对这部分内存定义好了对应的清理方式，当这类引用没有新的使用的时候，就会被回收掉。关于这块的回收逻辑，可以看<code>java.nio.DirectByteBuffer.Deallocator</code>中的实现，其内部会通过UNSAFE中的freeMemory方法回收内存。其操作等价与C语言中的free。 而对于DirectBuffer的回收，其在初始化的时候，就会有一个Cleaner构建出来，利用Deallocator进行回收堆外内存。而对应的回收将由ReferenceHandler进行周期新的内存回收。 所以对于这部分堆外内存的回收，更多的需要关注内存中的DirectBuffer为何被其他对象应用。</p>
+</li>
+<li><p>JVM无法管理的由动态库生成的堆外内存，如果出现溢出了，应该怎么排查？<br>这部分堆外内存，一般是由动态库生成的，其申请的内存的地址、大小，JVM均无法直到，所以也不存在对这部分内存进行管理。 对于这部分内存，有一个简单的判断方式，看看当前程序中有没有使用特殊的动态库，一般情况下除了JVM自身需要的动态库外，如果存在其他动态库，就需要排查一下其是否合理，是否存在堆外内存的溢出情况。 如果动态库基本都是JVM内部使用的，一般情况下存在由于动态库导致的堆外内存溢出的概率比较低。另外一个点就是libc库中的分配器存在对内存进行缓存的情况，有一种情况是，由于JVM正常的释放了内存，但是由于libc内部做了缓存，导致整体看起来内存占用多于实际占用。在一种方式就是利用tcmalloc、jemalloc相关的工具，分析其产生堆外内存无法释放的堆栈。进而排查其调用是否合理。</p>
+</li>
+<li><p>常见的堆外内存溢出产生的原因有那些？<br>在JVM领域中，一般使用堆外内存，用来网络请求中的0copy，避免大量的用户态和内核态之间的内存复制情况。从这个角度上看，网络库是重灾区，Netty内部会有对DirectBuffer的使用，早期的版本中默认不会使用池化的内存分配器，也并不会优先使用堆外内存。但在需要的时候，也会利用堆外内存，这部分堆外内存是属于线程级别的，这部分堆外内存的大小以及数量和netty的线程数有关系，但这种方案下线程的争强会变得很低。后续的版本中netty默认使用池化的方式申请内存，其分配器的结构类似jemalloc。内存池中会对内存的大小进行分类，tiny、small、normal之类的线程队列。随后每个线程上也会有一个线程级别的缓存，对公共的线程池进行引用，增加缓存的利用率的同时，避免了线程级别的锁争强。基于这种情况，优化对网络库的堆外内存的使用是一个关键的点。</p>
+</li>
+</ol>
 
   </div>
 
@@ -169,7 +169,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-20 20:34:03" itemprop="dateModified" datetime="2023-11-20T20:34:03+08:00">2023-11-20</time>
+    <time title="Modified: 2023-11-24 14:23:51" itemprop="dateModified" datetime="2023-11-24T14:23:51+08:00">2023-11-24</time>
   </span>
 </div>
 
@@ -182,7 +182,7 @@ Yume Shoka = 小站</title>
   </li>
   <li class="link">
     <strong>Post link: </strong>
-    <a href="https://blog.royjo.ltd/2023/11/04/compile-rust-as-static-link/" title="compile_rust_as_static_link">https://blog.royjo.ltd/2023/11/04/compile-rust-as-static-link/</a>
+    <a href="https://blog.royjo.ltd/2023/11/24/something-about-directbuffer/" title="something about directbuffer">https://blog.royjo.ltd/2023/11/24/something-about-directbuffer/</a>
   </li>
   <li class="license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
@@ -201,22 +201,14 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?504994" title="我的重传为什么这么高">
+  <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?508596" title="jdk certificate store">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>我的重传为什么这么高</h3>
+  <h3>jdk certificate store</h3>
   </a>
 
     </div>
     <div class="item right">
-      
-
-  <a href="/2023/11/04/the-xdp-test-with-netns/" itemprop="url" rel="next" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?185373" title="the xdp test with netns">
-  <span class="type">Next Post</span>
-  <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>the xdp test with netns</h3>
-  </a>
-
     </div>
 </div>
 
@@ -272,12 +264,10 @@ Yume Shoka = 小站</title>
 
   <ul id="quick">
     <li class="prev pjax">
-        <a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
-        <a href="/2023/11/04/the-xdp-test-with-netns/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -314,7 +304,7 @@ Yume Shoka = 小站</title>
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2023/11/04/compile-rust-as-static-link/',
+    path: '2023/11/24/something-about-directbuffer/',
     favicon: {
       show: "（●´3｀●）Goooood",
       hide: "(´Д｀)Booooom"
