@@ -225,7 +225,7 @@ creative_commons:
 
 # random image api
 # image_server: "https://api.isoyu.com/bing_images.php" #  "https://acg.xydwz.cn/api/api.php"
-image_server: "http://api.muvip.cn/api/bing?rand=true" #  "https://acg.xydwz.cn/api/api.php"
+image_server: "http://api.muvip.cn/api/bing?rand=true&t=1" #  "https://acg.xydwz.cn/api/api.php"
 
 # Algolia Search
 # For more information: https://www.algolia.com
