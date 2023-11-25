@@ -30,6 +30,34 @@ make
 make install
 # the jemalloc lib path is /usr/local/lib/libjemalloc.so
 
+MALLOC_CONF=prof_leak:true,lg_prof_sample:0,prof_final:true \
+LD_PRELOAD=/usr/local/lib/libjemalloc.so.2 \
+ls
+
+
+# 分析内存分配信息
+
+~/code$ jeprof /usr/bin/ls jeprof.1139459.0.f.heap
+Using local file /usr/bin/ls.
+Using local file jeprof.1139459.0.f.heap.
+addr2line: DWARF error: section .debug_info is larger than its filesize! (0xc14d2 vs 0x90f38)
+addr2line: DWARF error: section .debug_info is larger than its filesize! (0x93ef57 vs 0x530f28)
+Welcome to jeprof!  For help, type 'help'.
+(jeprof) top
+Total: 0.1 MB
+     0.1  99.6%  99.6%      0.1  99.6% prof_backtrace_impl
+     0.0   0.4% 100.0%      0.0  29.8% _obstack_begin
+     0.0   0.0% 100.0%      0.1  70.2% GLIBC_2.2.5
+     0.0   0.0% 100.0%      0.0   0.0% __ctype_init
+     0.0   0.0% 100.0%      0.0   0.0% __gconv_destroy_spec
+     0.0   0.0% 100.0%      0.0  29.8% __libc_start_main
+     0.0   0.0% 100.0%      0.0   0.2% __strdup
+     0.0   0.0% 100.0%      0.1  70.2% _dl_rtld_di_serinfo
+     0.0   0.0% 100.0%      0.0   0.1% _obstack_memory_used
+     0.0   0.0% 100.0%      0.0   0.0% bindtextdomain
+(jeprof)
+
+
 ```
 
 
