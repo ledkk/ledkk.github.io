@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?815854"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?620765"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?218988"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?402080"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?56648"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?87735"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?607247"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?546754"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?707796"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?628014"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?761968"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?329825"></li>
         </ul>
       </div>
     </header>
@@ -161,7 +161,7 @@ Yume Shoka = 小站</title>
 </li>
 </ol>
 <p>a）下载并编译jemalloc，由于需要分析起内存产生的prof信息，因此在编译的过程中，需要开启prof能力。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"> git clone https://github.com/jemalloc/jemalloc.git</span><br><span class="line">git checout 5.3.0</span><br><span class="line">./autogen.sh --enable-prof </span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">the jemalloc lib path is /usr/local/lib/libjemalloc.so</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"> git clone https://github.com/jemalloc/jemalloc.git</span><br><span class="line">git checout 5.3.0</span><br><span class="line">./autogen.sh --enable-prof </span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">the jemalloc lib path is /usr/local/lib/libjemalloc.so</span></span><br><span class="line"></span><br><span class="line">MALLOC_CONF=prof_leak:true,lg_prof_sample:0,prof_final:true \</span><br><span class="line">LD_PRELOAD=/usr/local/lib/libjemalloc.so.2 \</span><br><span class="line">ls</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">分析内存分配信息</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">~/code$ </span><span class="language-bash">jeprof /usr/bin/ls jeprof.1139459.0.f.heap</span></span><br><span class="line">Using local file /usr/bin/ls.</span><br><span class="line">Using local file jeprof.1139459.0.f.heap.</span><br><span class="line">addr2line: DWARF error: section .debug_info is larger than its filesize! (0xc14d2 vs 0x90f38)</span><br><span class="line">addr2line: DWARF error: section .debug_info is larger than its filesize! (0x93ef57 vs 0x530f28)</span><br><span class="line">Welcome to jeprof!  For help, type &#x27;help&#x27;.</span><br><span class="line">(jeprof) top</span><br><span class="line">Total: 0.1 MB</span><br><span class="line">     0.1  99.6%  99.6%      0.1  99.6% prof_backtrace_impl</span><br><span class="line">     0.0   0.4% 100.0%      0.0  29.8% _obstack_begin</span><br><span class="line">     0.0   0.0% 100.0%      0.1  70.2% GLIBC_2.2.5</span><br><span class="line">     0.0   0.0% 100.0%      0.0   0.0% __ctype_init</span><br><span class="line">     0.0   0.0% 100.0%      0.0   0.0% __gconv_destroy_spec</span><br><span class="line">     0.0   0.0% 100.0%      0.0  29.8% __libc_start_main</span><br><span class="line">     0.0   0.0% 100.0%      0.0   0.2% __strdup</span><br><span class="line">     0.0   0.0% 100.0%      0.1  70.2% _dl_rtld_di_serinfo</span><br><span class="line">     0.0   0.0% 100.0%      0.0   0.1% _obstack_memory_used</span><br><span class="line">     0.0   0.0% 100.0%      0.0   0.0% bindtextdomain</span><br><span class="line">(jeprof)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 
@@ -176,7 +176,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-25 22:19:30" itemprop="dateModified" datetime="2023-11-25T22:19:30+08:00">2023-11-25</time>
+    <time title="Modified: 2023-11-25 22:26:32" itemprop="dateModified" datetime="2023-11-25T22:26:32+08:00">2023-11-25</time>
   </span>
 </div>
 
@@ -208,7 +208,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?220787" title="jdk certificate store">
+  <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?322900" title="jdk certificate store">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>jdk certificate store</h3>
