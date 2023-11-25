@@ -25,12 +25,12 @@
 
   
 
-<link rel="canonical" href="https://blog.royjo.ltd/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/">
+<link rel="canonical" href="https://blog.royjo.ltd/2023/11/20/how-to-install-and-use-perf-in-ubuntu/">
 
 
 
   <title>
-我的重传为什么这么高 |
+how to install and use perf in ubuntu |
 Yume Shoka = 小站</title>
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -58,16 +58,16 @@ Yume Shoka = 小站</title>
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">我的重传为什么这么高
+  <h1 itemprop="name headline">how to install and use perf in ubuntu
   </h1>
   
 <div class="meta">
-  <span class="item" title="Created: 2023-11-01 16:07:27">
+  <span class="item" title="Created: 2023-11-20 20:07:38">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">Posted on</span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-01T16:07:27+08:00">2023-11-01</time>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-20T20:07:38+08:00">2023-11-20</time>
   </span>
 </div>
 
@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?513370"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?207309"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?8339"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?97624"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?376862"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?362614"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?758160"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?756623"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?565003"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?938413"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?466492"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?555527"></li>
         </ul>
       </div>
     </header>
@@ -134,7 +134,7 @@ Yume Shoka = 小站</title>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
-  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/20/how-to-install-and-use-perf-in-ubuntu/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/avatar.jpg">
@@ -149,14 +149,13 @@ Yume Shoka = 小站</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <p>在实际的系统运行过程中，SRE工程师经常会发现系统存在网络重传的报警，有时候发生在个别机器上，有时候会发生在某些机房里，还有会发生在某些应用中。遇到这类问题的时候，经常有同学会第一时间想拉网络的同学进行排查，询问系统无任何变更的时候，应用为什么会有重传。大部分情况下，网络的同学反馈的都是网络是正常的，和网络关系不大。相关的case发生次数多了之后，就会出现一个现象，网络的同学对类似的问题爱搭不理，业务的同学也会对网络颇有微词。从我的经验来看，两者的观点站在彼此的角度上看，都没有太大的问题，主要还是网络和业务的同学都只对自己本域的内容很清楚，对网络链路上的全局不明了，导致的现象。就这种现象，个人想从我自己的理解来谈谈，哪些常见的场景可能会导致网络异常，以及如果遇到网络异常的时候，我们应该如果定位这些异常，并找到合适的同学快速的解决定位这类问题。</p>
-<p>一、常见的网络链路是什么样子的？<br>   目前大部分的业务实际是运行在云上的独立vpc内部的，当然也有一部分公司业务是混合云部署，业务运行在云上和云下环境都有。这里为了简单说明重点聊一下同VPC内的网络问题。对于异地、跨VPC的网络问题，单独介绍。对于用云的业务同学来说，我们能感知到的主要是容器，也就是docker镜像。当我们的业务镜像通过容器部署起来之后，业务的流量就会从这个容器上走出去，熟悉容器化的同学都清楚，容器在网络层面实际是通过netns进行流量的隔离的，对应的网卡也是走的虚拟网卡，虚拟网卡最终的流量也会路由到宿主机的物理网卡上。可以考虑一个问题，容器的ip一般和宿主机的IP是不在同一个网段的，从网络协议上看，怎么完成数据包的路由呢？ 这里需要一个NAT路由，或者需要一个网桥，将数据包的桥接到网卡上，或者通过NAT路由网关，将容器的流量通过网卡路由出去。但是直接通过物理网卡做数据转发效率太低了，同时大家公用同一块网卡网络性能也会比较弱，就这个问题，引入了一些硬件来承接网络转发的能力。比如NPU，对于aliyun上的ECS，其上有avs以及moc卡，avs类似nat网关，所有的数据包都会走avs做转发，走到物理机上。moc卡。那么一个网络请求发出去后，理论上就会走到这些节点。同时当业务侧出现响应阻塞的时候，也会发生重传的现象，而且重传可能只是某些链路上存在问题。因此如果遇到类似的情况，需要逐个排查清楚问题产生的原因。</p>
-<p>1.1 ECS内不同POD之间的网络通讯<br>    从容器的规范来看，同宿主机上网络的隔离实际是通过netns来处理的，不同的netns之间公用了主机的协议栈，不同的地方在于不同的netns之间，通过vlan进行隔离，这里的细节和内核内部的处置方式就存在细节上的不同。对于内核来说，vlan的隔离, 不同的数据访问方式走的情况是有差异的，一般情况下，同ECS内的POD都会走同一套网络，可以通过<code>docker network list </code> 查看当前ECS下的容器网络列表，<code>docker network inspect $networkid</code> 查看对应网络的相关配置，可以看到该网段的配置情况，以及网关的配置情况等。</p>
-<p>1.1.2 同ECS内之间POD的通信</p>
-<p>1.2 同网段下不同ECS的POD通信</p>
-<p>1.4 同Region下不同AZ中POD通信</p>
-<p>1.6 不同Region下POD通信</p>
-<p>1.7 ECS和POD之间的区别？ ECS走的网络和POD走的网络相同么？ </p>
+    <p>perf是linux下自带的非常强大的性能分析工具，利用perf可以查找系统中的各种瓶颈，对于linux系统的内核分析有很大的帮助。</p>
+<h1 id="ubuntu下安装perf工具"><a href="#ubuntu下安装perf工具" class="headerlink" title="ubuntu下安装perf工具"></a>ubuntu下安装perf工具</h1><p>直接执行perf命令的时候，ubuntu下会提示需要安装的软件，按照对应的提示即可完成perf工具的安装，对应的cloud的工具，可以不用安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt install linux-tools-common</span><br><span class="line">apt install linux-tools-5.4.0-162-generic</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用perf工具"><a href="#使用perf工具" class="headerlink" title="使用perf工具"></a>使用perf工具</h1><h3 id="perf-top"><a href="#perf-top" class="headerlink" title="perf top"></a>perf top</h3><p><code>perf top</code> 查看系统的实时性能问题，</p>
+<h3 id="perf-ftrace"><a href="#perf-ftrace" class="headerlink" title="perf ftrace"></a>perf ftrace</h3><p><code>perf ftrace </code> perf工具对ftrace的包装，用于应用的系统调用相关的内容，可以利用该工具分析一个程序的系统调用情况，以及其各个方面的耗时情况</p>
+<h3 id="perf-trace"><a href="#perf-trace" class="headerlink" title="perf trace"></a>perf trace</h3><p><code>perf trace -p 135545</code> 跟踪系统调用的情况</p>
 
   </div>
 
@@ -168,7 +167,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-04 10:45:30" itemprop="dateModified" datetime="2023-11-04T10:45:30+08:00">2023-11-04</time>
+    <time title="Modified: 2023-11-25 21:48:13" itemprop="dateModified" datetime="2023-11-25T21:48:13+08:00">2023-11-25</time>
   </span>
 </div>
 
@@ -181,7 +180,7 @@ Yume Shoka = 小站</title>
   </li>
   <li class="link">
     <strong>Post link: </strong>
-    <a href="https://blog.royjo.ltd/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" title="我的重传为什么这么高">https://blog.royjo.ltd/2023/11/01/我的重传为什么这么高/</a>
+    <a href="https://blog.royjo.ltd/2023/11/20/how-to-install-and-use-perf-in-ubuntu/" title="how to install and use perf in ubuntu">https://blog.royjo.ltd/2023/11/20/how-to-install-and-use-perf-in-ubuntu/</a>
   </li>
   <li class="license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
@@ -200,20 +199,20 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/01/random-img-api/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?111894" title="random_img_api">
+  <a href="/2023/11/10/what-the-SEC-meaning-in-ebpf/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?856032" title="what the SEC meaning in ebpf">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>random_img_api</h3>
+  <h3>what the SEC meaning in ebpf</h3>
   </a>
 
     </div>
     <div class="item right">
       
 
-  <a href="/2023/11/04/compile-rust-as-static-link/" itemprop="url" rel="next" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?495190" title="compile_rust_as_static_link">
+  <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" rel="next" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?594684" title="jdk certificate store">
   <span class="type">Next Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>compile_rust_as_static_link</h3>
+  <h3>jdk certificate store</h3>
   </a>
 
     </div>
@@ -232,6 +231,7 @@ Yume Shoka = 小站</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="Contents">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ubuntu%E4%B8%8B%E5%AE%89%E8%A3%85perf%E5%B7%A5%E5%85%B7"><span class="toc-number">1.</span> <span class="toc-text">ubuntu下安装perf工具</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8perf%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">使用perf工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#perf-top"><span class="toc-number">2.0.1.</span> <span class="toc-text">perf top</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#perf-ftrace"><span class="toc-number">2.0.2.</span> <span class="toc-text">perf ftrace</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#perf-trace"><span class="toc-number">2.0.3.</span> <span class="toc-text">perf trace</span></a></li></ol></li></ol></li></ol>
       </div>
       <div class="related panel pjax" data-title="Related">
       </div>
@@ -271,12 +271,12 @@ Yume Shoka = 小站</title>
 
   <ul id="quick">
     <li class="prev pjax">
-        <a href="/2023/11/01/random-img-api/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
+        <a href="/2023/11/10/what-the-SEC-meaning-in-ebpf/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
-        <a href="/2023/11/04/compile-rust-as-static-link/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
+        <a href="/2023/11/21/jdk-certificate-store/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -313,7 +313,7 @@ Yume Shoka = 小站</title>
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2023/11/01/我的重传为什么这么高/',
+    path: '2023/11/20/how-to-install-and-use-perf-in-ubuntu/',
     favicon: {
       show: "（●´3｀●）Goooood",
       hide: "(´Д｀)Booooom"

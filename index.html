@@ -88,12 +88,12 @@
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?257501"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?889347"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?33488"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?331492"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?23900"></li>
-          <li class="item" data-background-image="https://api.isoyu.com/bing_images.php?450670"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?59861"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?85171"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?640431"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?171183"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?207830"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?332091"></li>
         </ul>
       </div>
     </header>
@@ -120,7 +120,86 @@
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/10/what-the-SEC-meaning-in-ebpf/" itemprop="url" title="what the SEC meaning in ebpf"><img data-src="https://api.isoyu.com/bing_images.php?295275"></a>
+    <a href="/2023/11/24/something-about-directbuffer/" itemprop="url" title="something about directbuffer"><img data-src="http://api.muvip.cn/api/bing?960974"></a>
+  </div>
+  <div class="info">
+    
+<div class="meta">
+  <span class="item" title="Created: 2023-11-24 13:54:58">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-24T13:54:58+08:00">2023-11-24</time>
+  </span>
+</div>
+
+    <h3><a href="/2023/11/24/something-about-directbuffer/" itemprop="url" title="something about directbuffer">something about directbuffer</a></h3>
+    <div class="excerpt">
+        堆外内存区别与堆内内存，其内存的回收以及管理，均不受JVM控制。但实际上在Java程序中，堆外内存可以分为三种，一种是通过ByteBuffer.allocateDirect分配产生的DirectBuffer， 再一个是FileChannel.map产生的MappedByteBuffer,...
+    </div>
+    <a href="/2023/11/24/something-about-directbuffer/" itemprop="url" title="something about directbuffer" class="btn">more...</a>
+  </div>
+</article>
+
+        
+<article class="item">
+  <div class="cover">
+    <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" title="jdk certificate store"><img data-src="http://api.muvip.cn/api/bing?95939"></a>
+  </div>
+  <div class="info">
+    
+<div class="meta">
+  <span class="item" title="Created: 2023-11-21 18:04:26">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-21T18:04:26+08:00">2023-11-21</time>
+  </span>
+</div>
+
+    <h3><a href="/2023/11/21/jdk-certificate-store/" itemprop="url" title="jdk certificate store">jdk certificate store</a></h3>
+    <div class="excerpt">
+        在通过java应用程序发起https的网络请求的时候，会涉及到网络证书的验证以及交换，默认情况下jdk内部会有大部分的根证书认证的，这部分数据会随着jdk进行分发。
+$JAVA_HOME/bin/keytool -list -keystore $JAVA_HOME/lib/security/cacerts 对应的密码为默认密码：changeit ，jdk8的该文件的目录有所差异，其文件地址为$JAVA_HOME/jre/lib/security/cacerts
+TLS协议中提供了很多的扩展，在与服务端进行协商的时候，通过Client...
+    </div>
+    <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" title="jdk certificate store" class="btn">more...</a>
+  </div>
+</article>
+
+        
+<article class="item">
+  <div class="cover">
+    <a href="/2023/11/20/how-to-install-and-use-perf-in-ubuntu/" itemprop="url" title="how to install and use perf in ubuntu"><img data-src="http://api.muvip.cn/api/bing?464276"></a>
+  </div>
+  <div class="info">
+    
+<div class="meta">
+  <span class="item" title="Created: 2023-11-20 20:07:38">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-20T20:07:38+08:00">2023-11-20</time>
+  </span>
+</div>
+
+    <h3><a href="/2023/11/20/how-to-install-and-use-perf-in-ubuntu/" itemprop="url" title="how to install and use perf in ubuntu">how to install and use perf in ubuntu</a></h3>
+    <div class="excerpt">
+        perf是linux下自带的非常强大的性能分析工具，利用perf可以查找系统中的各种瓶颈，对于linux系统的内核分析有很大的帮助。
+ubuntu下安装perf工具直接执行perf命令的时候，ubuntu下会提示需要安装的软件，按照对应的提示即可完成perf工具的安装，对应的cloud的工具，可以不用安装
+12apt install linux-tools-commonapt install linux-tools-5.4.0-162-generic
+
+使用perf工具perf topperf top 查看系统的实时性能问题，
+perf ftraceperf ftrace...
+    </div>
+    <a href="/2023/11/20/how-to-install-and-use-perf-in-ubuntu/" itemprop="url" title="how to install and use perf in ubuntu" class="btn">more...</a>
+  </div>
+</article>
+
+        
+<article class="item">
+  <div class="cover">
+    <a href="/2023/11/10/what-the-SEC-meaning-in-ebpf/" itemprop="url" title="what the SEC meaning in ebpf"><img data-src="http://api.muvip.cn/api/bing?320615"></a>
   </div>
   <div class="info">
     
@@ -145,7 +224,7 @@
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/09/thoughts-of-sth/" itemprop="url" title="thoughts of sth"><img data-src="https://api.isoyu.com/bing_images.php?354215"></a>
+    <a href="/2023/11/09/thoughts-of-sth/" itemprop="url" title="thoughts of sth"><img data-src="http://api.muvip.cn/api/bing?784220"></a>
   </div>
   <div class="info">
     
@@ -172,7 +251,7 @@
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/08/vimrc-content-list/" itemprop="url" title=".vimrc content list"><img data-src="https://api.isoyu.com/bing_images.php?426070"></a>
+    <a href="/2023/11/08/vimrc-content-list/" itemprop="url" title=".vimrc content list"><img data-src="http://api.muvip.cn/api/bing?787854"></a>
   </div>
   <div class="info">
     
@@ -197,7 +276,7 @@
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/08/how-netstat-know-the-socketlist-and-who-use-it/" itemprop="url" title="how netstat know the socketlist and who use it"><img data-src="https://api.isoyu.com/bing_images.php?423975"></a>
+    <a href="/2023/11/08/how-netstat-know-the-socketlist-and-who-use-it/" itemprop="url" title="how netstat know the socketlist and who use it"><img data-src="http://api.muvip.cn/api/bing?365083"></a>
   </div>
   <div class="info">
     
@@ -223,7 +302,7 @@
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" title="mem ecc error cause sys load high"><img data-src="https://api.isoyu.com/bing_images.php?321804"></a>
+    <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" title="mem ecc error cause sys load high"><img data-src="http://api.muvip.cn/api/bing?222230"></a>
   </div>
   <div class="info">
     
@@ -252,7 +331,7 @@ top...
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/07/usfully-bash-shell/" itemprop="url" title="usfully bash shell"><img data-src="https://api.isoyu.com/bing_images.php?699792"></a>
+    <a href="/2023/11/07/usfully-bash-shell/" itemprop="url" title="usfully bash shell"><img data-src="http://api.muvip.cn/api/bing?69857"></a>
   </div>
   <div class="info">
     
@@ -277,7 +356,7 @@ top...
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/07/GNU-m4/" itemprop="url" title="GNU m4"><img data-src="https://api.isoyu.com/bing_images.php?713696"></a>
+    <a href="/2023/11/07/GNU-m4/" itemprop="url" title="GNU m4"><img data-src="http://api.muvip.cn/api/bing?721227"></a>
   </div>
   <div class="info">
     
@@ -296,81 +375,6 @@ top...
 首先M4 是一个宏处理器，其输入是一个文本流，输出同样也是文本流。对于输入中的宏内容进行展开。这种在脚本语言中使用比较多。define 用于定义一个macro，其有两个参数，一个标识宏的名字，另外一个标识宏的内容。当随后的文本中出现了宏名字的文本时，就会被替换成定义的宏内容。如果宏内容中还包含其他宏名字，对应的宏也会被展开，最终在文本输出流中表现出来。 dnl...
     </div>
     <a href="/2023/11/07/GNU-m4/" itemprop="url" title="GNU m4" class="btn">more...</a>
-  </div>
-</article>
-
-        
-<article class="item">
-  <div class="cover">
-    <a href="/2023/11/06/%E5%A6%82%E6%9E%9C%E6%88%91%E6%98%AF%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%E7%9A%84CEO/" itemprop="url" title="如果我是一家公司的CEO"><img data-src="https://api.isoyu.com/bing_images.php?195688"></a>
-  </div>
-  <div class="info">
-    
-<div class="meta">
-  <span class="item" title="Created: 2023-11-06 18:01:28">
-    <span class="icon">
-      <i class="ic i-calendar"></i>
-    </span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-06T18:01:28+08:00">2023-11-06</time>
-  </span>
-</div>
-
-    <h3><a href="/2023/11/06/%E5%A6%82%E6%9E%9C%E6%88%91%E6%98%AF%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%E7%9A%84CEO/" itemprop="url" title="如果我是一家公司的CEO">如果我是一家公司的CEO</a></h3>
-    <div class="excerpt">
-        做技术的人，最终的归属是不是自己开公司，当一个公司的CEO，负责公司的各项事情。如果把这个事情作为一个终极目标的话，来尝试畅想一下，如果我已经是一家公司的CEO了，我要怎么做才能胜任这份工作，如何才能让公司基业常青，员工干劲十足。
-先做一些假设1、 公司规模： 300-500人规模的公司2、 公司行业： 互联网行业（细分行业：）3、 公司现状：4、 公司问题：
-    </div>
-    <a href="/2023/11/06/%E5%A6%82%E6%9E%9C%E6%88%91%E6%98%AF%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%E7%9A%84CEO/" itemprop="url" title="如果我是一家公司的CEO" class="btn">more...</a>
-  </div>
-</article>
-
-        
-<article class="item">
-  <div class="cover">
-    <a href="/2023/11/06/%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8A%A8%E6%95%88%E5%AE%9E%E7%8E%B0-lottie/" itemprop="url" title="客户端动效实现--lottie"><img data-src="https://api.isoyu.com/bing_images.php?938390"></a>
-  </div>
-  <div class="info">
-    
-<div class="meta">
-  <span class="item" title="Created: 2023-11-06 15:39:32">
-    <span class="icon">
-      <i class="ic i-calendar"></i>
-    </span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-06T15:39:32+08:00">2023-11-06</time>
-  </span>
-</div>
-
-    <h3><a href="/2023/11/06/%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8A%A8%E6%95%88%E5%AE%9E%E7%8E%B0-lottie/" itemprop="url" title="客户端动效实现--lottie">客户端动效实现--lottie</a></h3>
-    <div class="excerpt">
-        客户端中有很多营销氛围，以及动画效果，一般情况下，是通过lottie来实现的，设计师只需要使用Adobe After Effects设计动画，随后使用Bodymovin 导出成json格式，交由客户端的Lottie sdk进行解析渲染即可实现炫酷的动效。
-Lottie使用说明Lottie优势
-    </div>
-    <a href="/2023/11/06/%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8A%A8%E6%95%88%E5%AE%9E%E7%8E%B0-lottie/" itemprop="url" title="客户端动效实现--lottie" class="btn">more...</a>
-  </div>
-</article>
-
-        
-<article class="item">
-  <div class="cover">
-    <a href="/2023/11/04/Linux%E7%9A%84syscall%E7%A9%B6%E7%AB%9F%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84/" itemprop="url" title="Linux的syscall究竟是怎么实现的"><img data-src="https://api.isoyu.com/bing_images.php?75547"></a>
-  </div>
-  <div class="info">
-    
-<div class="meta">
-  <span class="item" title="Created: 2023-11-04 16:09:57">
-    <span class="icon">
-      <i class="ic i-calendar"></i>
-    </span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-04T16:09:57+08:00">2023-11-04</time>
-  </span>
-</div>
-
-    <h3><a href="/2023/11/04/Linux%E7%9A%84syscall%E7%A9%B6%E7%AB%9F%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84/" itemprop="url" title="Linux的syscall究竟是怎么实现的">Linux的syscall究竟是怎么实现的</a></h3>
-    <div class="excerpt">
-        当执行一个系统调用的时候，在linux系统中是如何流转的？ 这一直是我的一个疑问，比如我想看看一个网络包可能会走的流程，我通过strace 可以指导最终会走到send这个系统调用中去，但是在send这个系统调用中，如何最终走到了网卡上，以及如何从网卡上把接收到的数据正确的返回，一直是我比较大的疑问之一。
-以ping 192.168.0.1 为例，通过strace可以看到其实际走到的调用为sendto这个系统调用，通过man sendto...
-    </div>
-    <a href="/2023/11/04/Linux%E7%9A%84syscall%E7%A9%B6%E7%AB%9F%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84/" itemprop="url" title="Linux的syscall究竟是怎么实现的" class="btn">more...</a>
   </div>
 </article>
 
@@ -409,7 +413,7 @@ Lottie使用说明Lottie优势
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">26</span>
+        <span class="count">29</span>
         <span class="name">posts</span>
       </a>
     </div>

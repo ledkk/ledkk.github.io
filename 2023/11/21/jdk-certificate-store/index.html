@@ -25,14 +25,12 @@
 
   
 
-<link rel="canonical" href="https://blog.royjo.ltd/archives/2022/10/">
+<link rel="canonical" href="https://blog.royjo.ltd/2023/11/21/jdk-certificate-store/">
 
 
 
   <title>
-2022 Y / 10 M -
-
-Archive |
+jdk certificate store |
 Yume Shoka = 小站</title>
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -60,9 +58,19 @@ Yume Shoka = 小站</title>
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">
-      Posted on "2022Y10M"
+  <h1 itemprop="name headline">jdk certificate store
   </h1>
+  
+<div class="meta">
+  <span class="item" title="Created: 2023-11-21 18:04:26">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">Posted on</span>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-21T18:04:26+08:00">2023-11-21</time>
+  </span>
+</div>
+
 
           </div>
         </div>
@@ -92,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?181002"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?603763"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?210700"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?232255"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?192353"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?247796"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?298789"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?35802"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?493913"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?890097"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?931256"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?960024"></li>
         </ul>
       </div>
     </header>
@@ -118,36 +126,102 @@ Yume Shoka = 小站</title>
       <div class="inner">
         <div id="main" class="pjax">
           
-  <div class="collapse wrap">
-    <h2 class="item header">
-          <a href="/archives">All</a> <small>/</small> <a href="/archives/2022">2022 Y</a> <small>/</small> 10 M<small>Archive</small>
-        
-    </h2>
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">Home</a></span>
+</div>
 
-        <article class="item normal" itemscope itemtype="http://schema.org/Article">
-          <div class="meta">
-            <time itemprop="dateCreated"
-                  datetime="2022-10-28T23:48:27+08:00"
-                  content="2022-10-28">
-              10-28
-            </time>
-          </div>
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/21/jdk-certificate-store/">
 
-          <div class="title">
-              <a href="/2022/10/28/clap-demo/" itemprop="url">
-                <span itemprop="name">clap demo</span>
-              </a>
-          </div>
-        </article>
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="John Doe">
+    <meta itemprop="description" content=", ">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小站">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <p>在通过java应用程序发起https的网络请求的时候，会涉及到网络证书的验证以及交换，默认情况下jdk内部会有大部分的根证书认证的，这部分数据会随着jdk进行分发。</p>
+<p><code>$JAVA_HOME/bin/keytool -list -keystore $JAVA_HOME/lib/security/cacerts </code> 对应的密码为默认密码：<code>changeit</code> ，jdk8的该文件的目录有所差异，其文件地址为<code>$JAVA_HOME/jre/lib/security/cacerts</code></p>
+<p>TLS协议中提供了很多的扩展，在与服务端进行协商的时候，通过Client Hello消息同步到服务端，服务端针对传递的扩展内容，相互约定。随后协商出做加解密的密钥信息， 从实际的表现看，jdk8的早期版本和后续的版本中，对TLS的协议处理上存在差异，一方面扩展的数量存在差异，另外一方面对扩展的差异也有变化。从前后两个的抓包看，server name 扩展在jdk8的早期版本里，如果Client Hello 不携带的话， 服务端也能正常返回，同时做好协商。 但在后期的版本中，如果server name 这个扩展没有生效，或者传递的servername是存在差异的情况下， 就会存在异常。关于SNIServerName的详细信息，可以参考RFC6066（<span class="exturl" data-url="aHR0cHM6Ly93d3cucmZjLWVkaXRvci5vcmcvcmZjL3JmYzYwNjYjcGFnZS0xOSVFRiVCQyU4OSVFRiVCQyU4Qw==">https://www.rfc-editor.org/rfc/rfc6066#page-19），</span> 如果在访问一个https的服务的时候，如果未执行域名，直接通过ip进行访问就会出现类似的问题。</p>
+
   </div>
 
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">Edited on</span>
+    <time title="Modified: 2023-11-25 21:48:13" itemprop="dateModified" datetime="2023-11-25T21:48:13+08:00">2023-11-25</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>Post author:  </strong>John Doe <i class="ic i-at"><em>@</em></i>小站
+  </li>
+  <li class="link">
+    <strong>Post link: </strong>
+    <a href="https://blog.royjo.ltd/2023/11/21/jdk-certificate-store/" title="jdk certificate store">https://blog.royjo.ltd/2023/11/21/jdk-certificate-store/</a>
+  </li>
+  <li class="license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
   
 
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2023/11/20/how-to-install-and-use-perf-in-ubuntu/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?699271" title="how to install and use perf in ubuntu">
+  <span class="type">Previous Post</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>how to install and use perf in ubuntu</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2023/11/24/something-about-directbuffer/" itemprop="url" rel="next" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?919250" title="something about directbuffer">
+  <span class="type">Next Post</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>something about directbuffer</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
 
 
         </div>
         <div id="sidebar">
           
+
 <div class="inner">
 
   <div class="panels">
@@ -192,14 +266,17 @@ Yume Shoka = 小站</title>
 
   <ul id="quick">
     <li class="prev pjax">
+        <a href="/2023/11/20/how-to-install-and-use-perf-in-ubuntu/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
+        <a href="/2023/11/24/something-about-directbuffer/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
 </div>
+
 
         </div>
         <div class="dimmer"></div>
@@ -231,7 +308,7 @@ Yume Shoka = 小站</title>
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: 'archives/2022/10/',
+    path: '2023/11/21/jdk-certificate-store/',
     favicon: {
       show: "（●´3｀●）Goooood",
       hide: "(´Д｀)Booooom"

@@ -25,12 +25,12 @@
 
   
 
-<link rel="canonical" href="https://blog.royjo.ltd/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/">
+<link rel="canonical" href="https://blog.royjo.ltd/2023/11/24/something-about-directbuffer/">
 
 
 
   <title>
-我的重传为什么这么高 |
+something about directbuffer |
 Yume Shoka = 小站</title>
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -58,16 +58,16 @@ Yume Shoka = 小站</title>
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">我的重传为什么这么高
+  <h1 itemprop="name headline">something about directbuffer
   </h1>
   
 <div class="meta">
-  <span class="item" title="Created: 2023-11-01 16:07:27">
+  <span class="item" title="Created: 2023-11-24 13:54:58">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">Posted on</span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-01T16:07:27+08:00">2023-11-01</time>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-24T13:54:58+08:00">2023-11-24</time>
   </span>
 </div>
 
@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?513370"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?207309"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?8339"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?97624"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?376862"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?362614"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?54579"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?357728"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?689751"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?422412"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?426659"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?857893"></li>
         </ul>
       </div>
     </header>
@@ -134,7 +134,7 @@ Yume Shoka = 小站</title>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
-  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/24/something-about-directbuffer/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/avatar.jpg">
@@ -149,14 +149,15 @@ Yume Shoka = 小站</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <p>在实际的系统运行过程中，SRE工程师经常会发现系统存在网络重传的报警，有时候发生在个别机器上，有时候会发生在某些机房里，还有会发生在某些应用中。遇到这类问题的时候，经常有同学会第一时间想拉网络的同学进行排查，询问系统无任何变更的时候，应用为什么会有重传。大部分情况下，网络的同学反馈的都是网络是正常的，和网络关系不大。相关的case发生次数多了之后，就会出现一个现象，网络的同学对类似的问题爱搭不理，业务的同学也会对网络颇有微词。从我的经验来看，两者的观点站在彼此的角度上看，都没有太大的问题，主要还是网络和业务的同学都只对自己本域的内容很清楚，对网络链路上的全局不明了，导致的现象。就这种现象，个人想从我自己的理解来谈谈，哪些常见的场景可能会导致网络异常，以及如果遇到网络异常的时候，我们应该如果定位这些异常，并找到合适的同学快速的解决定位这类问题。</p>
-<p>一、常见的网络链路是什么样子的？<br>   目前大部分的业务实际是运行在云上的独立vpc内部的，当然也有一部分公司业务是混合云部署，业务运行在云上和云下环境都有。这里为了简单说明重点聊一下同VPC内的网络问题。对于异地、跨VPC的网络问题，单独介绍。对于用云的业务同学来说，我们能感知到的主要是容器，也就是docker镜像。当我们的业务镜像通过容器部署起来之后，业务的流量就会从这个容器上走出去，熟悉容器化的同学都清楚，容器在网络层面实际是通过netns进行流量的隔离的，对应的网卡也是走的虚拟网卡，虚拟网卡最终的流量也会路由到宿主机的物理网卡上。可以考虑一个问题，容器的ip一般和宿主机的IP是不在同一个网段的，从网络协议上看，怎么完成数据包的路由呢？ 这里需要一个NAT路由，或者需要一个网桥，将数据包的桥接到网卡上，或者通过NAT路由网关，将容器的流量通过网卡路由出去。但是直接通过物理网卡做数据转发效率太低了，同时大家公用同一块网卡网络性能也会比较弱，就这个问题，引入了一些硬件来承接网络转发的能力。比如NPU，对于aliyun上的ECS，其上有avs以及moc卡，avs类似nat网关，所有的数据包都会走avs做转发，走到物理机上。moc卡。那么一个网络请求发出去后，理论上就会走到这些节点。同时当业务侧出现响应阻塞的时候，也会发生重传的现象，而且重传可能只是某些链路上存在问题。因此如果遇到类似的情况，需要逐个排查清楚问题产生的原因。</p>
-<p>1.1 ECS内不同POD之间的网络通讯<br>    从容器的规范来看，同宿主机上网络的隔离实际是通过netns来处理的，不同的netns之间公用了主机的协议栈，不同的地方在于不同的netns之间，通过vlan进行隔离，这里的细节和内核内部的处置方式就存在细节上的不同。对于内核来说，vlan的隔离, 不同的数据访问方式走的情况是有差异的，一般情况下，同ECS内的POD都会走同一套网络，可以通过<code>docker network list </code> 查看当前ECS下的容器网络列表，<code>docker network inspect $networkid</code> 查看对应网络的相关配置，可以看到该网段的配置情况，以及网关的配置情况等。</p>
-<p>1.1.2 同ECS内之间POD的通信</p>
-<p>1.2 同网段下不同ECS的POD通信</p>
-<p>1.4 同Region下不同AZ中POD通信</p>
-<p>1.6 不同Region下POD通信</p>
-<p>1.7 ECS和POD之间的区别？ ECS走的网络和POD走的网络相同么？ </p>
+    <p>堆外内存区别与堆内内存，其内存的回收以及管理，均不受JVM控制。但实际上在Java程序中，堆外内存可以分为三种，一种是通过ByteBuffer.allocateDirect分配产生的DirectBuffer， 再一个是FileChannel.map产生的MappedByteBuffer, 最后一个是比较头疼的由于JNI调用外部的动态库，由动态库中的代码逻辑向操作系统申请的内存。这三块的内存的回收机制，都是不同的。对于前两种的堆外内存，JVM是key感知，并且在持有这些堆外内存的引用不在使用的时候，主动回收掉。但是对于动态库中申请的内存，JVM是完全无法感知到的，这种情况下就需要动态库内部做到内存的管理以及回收。</p>
+<ol>
+<li><p>JVM可以管理的堆外内存在没有使用的时候，可以被JVM回收掉么？<br>该问题的答案是可以的，这主要是由于在JVM内部针对这部分内存定义好了对应的清理方式，当这类引用没有新的使用的时候，就会被回收掉。关于这块的回收逻辑，可以看<code>java.nio.DirectByteBuffer.Deallocator</code>中的实现，其内部会通过UNSAFE中的freeMemory方法回收内存。其操作等价与C语言中的free。 而对于DirectBuffer的回收，其在初始化的时候，就会有一个Cleaner构建出来，利用Deallocator进行回收堆外内存。而对应的回收将由ReferenceHandler进行周期新的内存回收。 所以对于这部分堆外内存的回收，更多的需要关注内存中的DirectBuffer为何被其他对象应用。</p>
+</li>
+<li><p>JVM无法管理的由动态库生成的堆外内存，如果出现溢出了，应该怎么排查？<br>这部分堆外内存，一般是由动态库生成的，其申请的内存的地址、大小，JVM均无法直到，所以也不存在对这部分内存进行管理。 对于这部分内存，有一个简单的判断方式，看看当前程序中有没有使用特殊的动态库，一般情况下除了JVM自身需要的动态库外，如果存在其他动态库，就需要排查一下其是否合理，是否存在堆外内存的溢出情况。 如果动态库基本都是JVM内部使用的，一般情况下存在由于动态库导致的堆外内存溢出的概率比较低。另外一个点就是libc库中的分配器存在对内存进行缓存的情况，有一种情况是，由于JVM正常的释放了内存，但是由于libc内部做了缓存，导致整体看起来内存占用多于实际占用。在一种方式就是利用tcmalloc、jemalloc相关的工具，分析其产生堆外内存无法释放的堆栈。进而排查其调用是否合理。</p>
+</li>
+<li><p>常见的堆外内存溢出产生的原因有那些？<br>在JVM领域中，一般使用堆外内存，用来网络请求中的0copy，避免大量的用户态和内核态之间的内存复制情况。从这个角度上看，网络库是重灾区，Netty内部会有对DirectBuffer的使用，早期的版本中默认不会使用池化的内存分配器，也并不会优先使用堆外内存。但在需要的时候，也会利用堆外内存，这部分堆外内存是属于线程级别的，这部分堆外内存的大小以及数量和netty的线程数有关系，但这种方案下线程的争强会变得很低。后续的版本中netty默认使用池化的方式申请内存，其分配器的结构类似jemalloc。内存池中会对内存的大小进行分类，tiny、small、normal之类的线程队列。随后每个线程上也会有一个线程级别的缓存，对公共的线程池进行引用，增加缓存的利用率的同时，避免了线程级别的锁争强。基于这种情况，优化对网络库的堆外内存的使用是一个关键的点。</p>
+</li>
+</ol>
 
   </div>
 
@@ -168,7 +169,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-04 10:45:30" itemprop="dateModified" datetime="2023-11-04T10:45:30+08:00">2023-11-04</time>
+    <time title="Modified: 2023-11-25 21:48:13" itemprop="dateModified" datetime="2023-11-25T21:48:13+08:00">2023-11-25</time>
   </span>
 </div>
 
@@ -181,7 +182,7 @@ Yume Shoka = 小站</title>
   </li>
   <li class="link">
     <strong>Post link: </strong>
-    <a href="https://blog.royjo.ltd/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" title="我的重传为什么这么高">https://blog.royjo.ltd/2023/11/01/我的重传为什么这么高/</a>
+    <a href="https://blog.royjo.ltd/2023/11/24/something-about-directbuffer/" title="something about directbuffer">https://blog.royjo.ltd/2023/11/24/something-about-directbuffer/</a>
   </li>
   <li class="license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
@@ -200,22 +201,14 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/01/random-img-api/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?111894" title="random_img_api">
+  <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?183766" title="jdk certificate store">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>random_img_api</h3>
+  <h3>jdk certificate store</h3>
   </a>
 
     </div>
     <div class="item right">
-      
-
-  <a href="/2023/11/04/compile-rust-as-static-link/" itemprop="url" rel="next" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?495190" title="compile_rust_as_static_link">
-  <span class="type">Next Post</span>
-  <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>compile_rust_as_static_link</h3>
-  </a>
-
     </div>
 </div>
 
@@ -271,12 +264,10 @@ Yume Shoka = 小站</title>
 
   <ul id="quick">
     <li class="prev pjax">
-        <a href="/2023/11/01/random-img-api/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
-        <a href="/2023/11/04/compile-rust-as-static-link/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -313,7 +304,7 @@ Yume Shoka = 小站</title>
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2023/11/01/我的重传为什么这么高/',
+    path: '2023/11/24/something-about-directbuffer/',
     favicon: {
       show: "（●´3｀●）Goooood",
       hide: "(´Д｀)Booooom"
