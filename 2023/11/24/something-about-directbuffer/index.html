@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?54579"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?357728"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?689751"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?422412"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?426659"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?857893"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?815854"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?620765"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?218988"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?402080"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?56648"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?87735"></li>
         </ul>
       </div>
     </header>
@@ -157,7 +157,14 @@ Yume Shoka = 小站</title>
 </li>
 <li><p>常见的堆外内存溢出产生的原因有那些？<br>在JVM领域中，一般使用堆外内存，用来网络请求中的0copy，避免大量的用户态和内核态之间的内存复制情况。从这个角度上看，网络库是重灾区，Netty内部会有对DirectBuffer的使用，早期的版本中默认不会使用池化的内存分配器，也并不会优先使用堆外内存。但在需要的时候，也会利用堆外内存，这部分堆外内存是属于线程级别的，这部分堆外内存的大小以及数量和netty的线程数有关系，但这种方案下线程的争强会变得很低。后续的版本中netty默认使用池化的方式申请内存，其分配器的结构类似jemalloc。内存池中会对内存的大小进行分类，tiny、small、normal之类的线程队列。随后每个线程上也会有一个线程级别的缓存，对公共的线程池进行引用，增加缓存的利用率的同时，避免了线程级别的锁争强。基于这种情况，优化对网络库的堆外内存的使用是一个关键的点。</p>
 </li>
+<li><p>如果存在动态库的对外内存溢出，应该怎么解决？<br>对于堆外内存的溢出，一般是由于系统依赖的一些动态库产生的分配内存无法得到释放，导致的系统问题。这类问题，一般需要分析整个JVM的内存分配器，进而识别内存占用比较多的系统以及代码路径。常见的工具有两种：jemalloc、tcmalloc。这两个工具均可以作为内存的分配器进行后续的分析。以jemalloc为例：</p>
+</li>
 </ol>
+<p>a）下载并编译jemalloc，由于需要分析起内存产生的prof信息，因此在编译的过程中，需要开启prof能力。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"> git clone https://github.com/jemalloc/jemalloc.git</span><br><span class="line">git checout 5.3.0</span><br><span class="line">./autogen.sh --enable-prof </span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">the jemalloc lib path is /usr/local/lib/libjemalloc.so</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
 
   </div>
 
@@ -169,7 +176,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-25 21:48:13" itemprop="dateModified" datetime="2023-11-25T21:48:13+08:00">2023-11-25</time>
+    <time title="Modified: 2023-11-25 22:19:30" itemprop="dateModified" datetime="2023-11-25T22:19:30+08:00">2023-11-25</time>
   </span>
 </div>
 
@@ -201,7 +208,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?183766" title="jdk certificate store">
+  <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?220787" title="jdk certificate store">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>jdk certificate store</h3>
