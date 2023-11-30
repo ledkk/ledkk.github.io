@@ -26,8 +26,9 @@ ldd target/x86_64-unknown-linux-musl/release/we
 
 ```
 
+## 一些关于Rust使用的记录
 
-env_logger可以通过环境变量传递日志的等级，比如在使用的时候使用了如下的方式初始化日志。那么默认情况下日志为debug等级，如果想把debug调整成info或者error，可以通过如下方式调整
+1. env_logger可以通过环境变量传递日志的等级，比如在使用的时候使用了如下的方式初始化日志。那么默认情况下日志为debug等级，如果想把debug调整成info或者error，可以通过如下方式调整
 ```rust
 
    env_logger::init_from_env(env_logger::Env::new().default_filter_or("debug"));
@@ -37,4 +38,7 @@ env_logger可以通过环境变量传递日志的等级，比如在使用的时�
 ```
 
 
-actix_web 可以通过app_data传递一些初始化比较困难的对象，比如数据库的连接池，http的客户端等。大家可以共用，即可统一控制
+2. actix_web 可以通过app_data传递一些初始化比较困难的对象，比如数据库的连接池，http的客户端等。大家可以共用，即可统一控制
+
+
+3. 客户端在使用ab进行流量施压的时候，由于会对服务端发起大量的建联请求（和启动的并发数有关），由于客户端可用的端口有限（`net.ipv4.ip_local_port_range= 32768 65000`) ，同时TIME_WAIT状态的回收时间有限制（`net.ipv4.tcp_fin_timeout = 60` ) ， 导致施压机在发起请求的过程中（尤其在连续发起多个并发请求的情况下），由于端口可用数有限制，导致发起链接耗时增加。为了缓解这种问题，可以考虑TW状态的复用（`net.ipv4.tcp_tw_reuse = 1`) 

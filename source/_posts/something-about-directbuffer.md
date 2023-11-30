@@ -15,6 +15,56 @@ tags:
 3. 常见的堆外内存溢出产生的原因有那些？ 
 在JVM领域中，一般使用堆外内存，用来网络请求中的0copy，避免大量的用户态和内核态之间的内存复制情况。从这个角度上看，网络库是重灾区，Netty内部会有对DirectBuffer的使用，早期的版本中默认不会使用池化的内存分配器，也并不会优先使用堆外内存。但在需要的时候，也会利用堆外内存，这部分堆外内存是属于线程级别的，这部分堆外内存的大小以及数量和netty的线程数有关系，但这种方案下线程的争强会变得很低。后续的版本中netty默认使用池化的方式申请内存，其分配器的结构类似jemalloc。内存池中会对内存的大小进行分类，tiny、small、normal之类的线程队列。随后每个线程上也会有一个线程级别的缓存，对公共的线程池进行引用，增加缓存的利用率的同时，避免了线程级别的锁争强。基于这种情况，优化对网络库的堆外内存的使用是一个关键的点。
 
+<<<<<<< HEAD
 4. 常见的directbytebuffer带来的性能优化，比如零拷贝，究竟是如何实现的？ 
 从功能上看，零拷贝主要的使用场景是两个channel或者发送socket期间会存在零拷贝的技术。比如在服务端向一个socket发送数据的时候，或者在两个文件相互进行拷贝的时候。 在没有零拷贝之前，一般的处理策略是，使用一个for循环，从源文件中读取数据到缓存中，随后将缓存中的数据写到目标文件中。这个中间就会涉及到系统调用相关的操作。一般来说，会需要从linux内核中读取文件中的数据，读取到用户态后，再将用户态的数据写入到目标的文件中， 又会有一次用户态到内核态的转化过程。对于用户态和内核态之间的数据转换以及拷贝（消耗高的原理）会带来更多的性能开销，从而导致性能的衰减情况。那么在jdk层面是如何实现零拷贝A，进而通过零拷贝降低系统开销的呢？ 
 首先对于DirectByteBuffer来说，会利用堆外内存进行系统优化工作, 
+=======
+
+4. 如果存在动态库的对外内存溢出，应该怎么解决？
+对于堆外内存的溢出，一般是由于系统依赖的一些动态库产生的分配内存无法得到释放，导致的系统问题。这类问题，一般需要分析整个JVM的内存分配器，进而识别内存占用比较多的系统以及代码路径。常见的工具有两种：jemalloc、tcmalloc。这两个工具均可以作为内存的分配器进行后续的分析。以jemalloc为例：
+
+a）下载并编译jemalloc，由于需要分析起内存产生的prof信息，因此在编译的过程中，需要开启prof能力。
+```shell
+
+
+ git clone https://github.com/jemalloc/jemalloc.git
+git checout 5.3.0
+./autogen.sh --enable-prof 
+make
+make install
+# the jemalloc lib path is /usr/local/lib/libjemalloc.so
+
+MALLOC_CONF=prof_leak:true,lg_prof_sample:0,prof_final:true \
+LD_PRELOAD=/usr/local/lib/libjemalloc.so.2 \
+ls
+
+
+# 分析内存分配信息
+
+~/code$ jeprof /usr/bin/ls jeprof.1139459.0.f.heap
+Using local file /usr/bin/ls.
+Using local file jeprof.1139459.0.f.heap.
+addr2line: DWARF error: section .debug_info is larger than its filesize! (0xc14d2 vs 0x90f38)
+addr2line: DWARF error: section .debug_info is larger than its filesize! (0x93ef57 vs 0x530f28)
+Welcome to jeprof!  For help, type 'help'.
+(jeprof) top
+Total: 0.1 MB
+     0.1  99.6%  99.6%      0.1  99.6% prof_backtrace_impl
+     0.0   0.4% 100.0%      0.0  29.8% _obstack_begin
+     0.0   0.0% 100.0%      0.1  70.2% GLIBC_2.2.5
+     0.0   0.0% 100.0%      0.0   0.0% __ctype_init
+     0.0   0.0% 100.0%      0.0   0.0% __gconv_destroy_spec
+     0.0   0.0% 100.0%      0.0  29.8% __libc_start_main
+     0.0   0.0% 100.0%      0.0   0.2% __strdup
+     0.0   0.0% 100.0%      0.1  70.2% _dl_rtld_di_serinfo
+     0.0   0.0% 100.0%      0.0   0.1% _obstack_memory_used
+     0.0   0.0% 100.0%      0.0   0.0% bindtextdomain
+(jeprof)
+
+
+```
+
+
+
+>>>>>>> cadb77dc45e8de43c7cf63f6c8348a0ccc10d1a9
