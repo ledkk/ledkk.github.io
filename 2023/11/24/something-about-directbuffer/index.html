@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?183605"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?625252"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?848370"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?582678"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?846450"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?328944"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?604501"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?140178"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?194341"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?932178"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?541756"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?596440"></li>
         </ul>
       </div>
     </header>
@@ -157,6 +157,8 @@ Yume Shoka = 小站</title>
 </li>
 <li><p>常见的堆外内存溢出产生的原因有那些？<br>在JVM领域中，一般使用堆外内存，用来网络请求中的0copy，避免大量的用户态和内核态之间的内存复制情况。从这个角度上看，网络库是重灾区，Netty内部会有对DirectBuffer的使用，早期的版本中默认不会使用池化的内存分配器，也并不会优先使用堆外内存。但在需要的时候，也会利用堆外内存，这部分堆外内存是属于线程级别的，这部分堆外内存的大小以及数量和netty的线程数有关系，但这种方案下线程的争强会变得很低。后续的版本中netty默认使用池化的方式申请内存，其分配器的结构类似jemalloc。内存池中会对内存的大小进行分类，tiny、small、normal之类的线程队列。随后每个线程上也会有一个线程级别的缓存，对公共的线程池进行引用，增加缓存的利用率的同时，避免了线程级别的锁争强。基于这种情况，优化对网络库的堆外内存的使用是一个关键的点。</p>
 </li>
+<li><p>常见的directbytebuffer带来的性能优化，比如零拷贝，究竟是如何实现的？<br>从功能上看，零拷贝主要的使用场景是两个channel或者发送socket期间会存在零拷贝的技术。比如在服务端向一个socket发送数据的时候，或者在两个文件相互进行拷贝的时候。 在没有零拷贝之前，一般的处理策略是，使用一个for循环，从源文件中读取数据到缓存中，随后将缓存中的数据写到目标文件中。这个中间就会涉及到系统调用相关的操作。一般来说，会需要从linux内核中读取文件中的数据，读取到用户态后，再将用户态的数据写入到目标的文件中， 又会有一次用户态到内核态的转化过程。对于用户态和内核态之间的数据转换以及拷贝（消耗高的原理）会带来更多的性能开销，从而导致性能的衰减情况。那么在jdk层面是如何实现零拷贝A，进而通过零拷贝降低系统开销的呢？<br>首先对于DirectByteBuffer来说，会利用堆外内存进行系统优化工作,</p>
+</li>
 </ol>
 
   </div>
@@ -169,7 +171,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-24 14:23:51" itemprop="dateModified" datetime="2023-11-24T14:23:51+08:00">2023-11-24</time>
+    <time title="Modified: 2023-11-30 15:56:48" itemprop="dateModified" datetime="2023-11-30T15:56:48+08:00">2023-11-30</time>
   </span>
 </div>
 
@@ -201,7 +203,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?880971" title="jdk certificate store">
+  <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?654153" title="jdk certificate store">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>jdk certificate store</h3>
