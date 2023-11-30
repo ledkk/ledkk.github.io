@@ -15,13 +15,130 @@ tags:
 3. 常见的堆外内存溢出产生的原因有那些？ 
 在JVM领域中，一般使用堆外内存，用来网络请求中的0copy，避免大量的用户态和内核态之间的内存复制情况。从这个角度上看，网络库是重灾区，Netty内部会有对DirectBuffer的使用，早期的版本中默认不会使用池化的内存分配器，也并不会优先使用堆外内存。但在需要的时候，也会利用堆外内存，这部分堆外内存是属于线程级别的，这部分堆外内存的大小以及数量和netty的线程数有关系，但这种方案下线程的争强会变得很低。后续的版本中netty默认使用池化的方式申请内存，其分配器的结构类似jemalloc。内存池中会对内存的大小进行分类，tiny、small、normal之类的线程队列。随后每个线程上也会有一个线程级别的缓存，对公共的线程池进行引用，增加缓存的利用率的同时，避免了线程级别的锁争强。基于这种情况，优化对网络库的堆外内存的使用是一个关键的点。
 
-<<<<<<< HEAD
 4. 常见的directbytebuffer带来的性能优化，比如零拷贝，究竟是如何实现的？ 
 从功能上看，零拷贝主要的使用场景是两个channel或者发送socket期间会存在零拷贝的技术。比如在服务端向一个socket发送数据的时候，或者在两个文件相互进行拷贝的时候。 在没有零拷贝之前，一般的处理策略是，使用一个for循环，从源文件中读取数据到缓存中，随后将缓存中的数据写到目标文件中。这个中间就会涉及到系统调用相关的操作。一般来说，会需要从linux内核中读取文件中的数据，读取到用户态后，再将用户态的数据写入到目标的文件中， 又会有一次用户态到内核态的转化过程。对于用户态和内核态之间的数据转换以及拷贝（消耗高的原理）会带来更多的性能开销，从而导致性能的衰减情况。那么在jdk层面是如何实现零拷贝A，进而通过零拷贝降低系统开销的呢？ 
-首先对于DirectByteBuffer来说，会利用堆外内存进行系统优化工作, 
-=======
+首先对于DirectByteBuffer来说，会利用堆外内存进行系统优化工作, JVM中关于directBuffer的加速访问，可以统一查看`sun.nio.ch.IOUtil`类中的实现，当读的DirectByteBuffer和写到DirectByteBuffer时，会通过JNI的方式触发数据的读写操作。具体代码逻辑如下：
 
-4. 如果存在动态库的对外内存溢出，应该怎么解决？
+```java
+
+package sun.nio.ch;
+public class IOUtil {
+
+    private static int writeFromNativeBuffer(FileDescriptor fd, ByteBuffer bb,
+                                             long position, boolean directIO,
+                                             int alignment, NativeDispatcher nd)
+        throws IOException
+    {
+        int pos = bb.position();
+        int lim = bb.limit();
+        assert (pos <= lim);
+        int rem = (pos <= lim ? lim - pos : 0);
+
+        if (directIO) {
+            Util.checkBufferPositionAligned(bb, pos, alignment);
+            Util.checkRemainingBufferSizeAligned(rem, alignment);
+        }
+
+        int written = 0;
+        if (rem == 0)
+            return 0;
+        if (position != -1) {
+            written = nd.pwrite(fd,
+                                ((DirectBuffer)bb).address() + pos,
+                                rem, position);
+        } else {
+            written = nd.write(fd, ((DirectBuffer)bb).address() + pos, rem);
+        }
+        if (written > 0)
+            bb.position(pos + written);
+        return written;
+    }
+
+
+
+    private static int readIntoNativeBuffer(FileDescriptor fd, ByteBuffer bb,
+                                            long position, boolean directIO,
+                                            int alignment, NativeDispatcher nd)
+        throws IOException
+    {
+        int pos = bb.position();
+        int lim = bb.limit();
+        assert (pos <= lim);
+        int rem = (pos <= lim ? lim - pos : 0);
+
+        if (directIO) {
+            Util.checkBufferPositionAligned(bb, pos, alignment);
+            Util.checkRemainingBufferSizeAligned(rem, alignment);
+        }
+
+        if (rem == 0)
+            return 0;
+        int n = 0;
+        if (position != -1) {
+            n = nd.pread(fd, ((DirectBuffer)bb).address() + pos, rem, position);
+        } else {
+            n = nd.read(fd, ((DirectBuffer)bb).address() + pos, rem);
+        }
+        if (n > 0)
+            bb.position(pos + n);
+        return n;
+    }
+
+
+}
+
+```
+对于文件和文件之间的转换以及文件的加载操作的过程中，也可以通过零拷贝的机制，加速数据的读取以及转换工作，MappedBuffer实际是一个特殊的DirectByteBuffer, 其内部是通过mmap来加载到内存中的，其在文件和文件之间copy的时候，也可以利用零拷贝加速，详细的代码细节在
+```java
+package sun.nio.ch;
+
+
+public class FileChannelImpl
+    extends FileChannel
+{
+
+    private long transferToDirectlyInternal(long position, int icount,
+                                            WritableByteChannel target,
+                                            FileDescriptor targetFD)
+        throws IOException
+    {
+        assert !nd.transferToDirectlyNeedsPositionLock() ||
+               Thread.holdsLock(positionLock);
+
+        long n = -1;
+        int ti = -1;
+        try {
+            beginBlocking();
+            ti = threads.add();
+            if (!isOpen())
+                return -1;
+            do {
+                n = transferTo0(fd, position, icount, targetFD);
+            } while ((n == IOStatus.INTERRUPTED) && isOpen());
+            if (n == IOStatus.UNSUPPORTED_CASE) {
+                if (target instanceof SinkChannelImpl)
+                    pipeSupported = false;
+                if (target instanceof FileChannelImpl)
+                    fileSupported = false;
+                return IOStatus.UNSUPPORTED_CASE;
+            }
+            if (n == IOStatus.UNSUPPORTED) {
+                // Don't bother trying again
+                transferSupported = false;
+                return IOStatus.UNSUPPORTED;
+            }
+            return IOStatus.normalize(n);
+        } finally {
+            threads.remove(ti);
+            end (n > -1);
+        }
+    }
+
+}
+
+```
+
+5. 如果存在动态库的对外内存溢出，应该怎么解决？
 对于堆外内存的溢出，一般是由于系统依赖的一些动态库产生的分配内存无法得到释放，导致的系统问题。这类问题，一般需要分析整个JVM的内存分配器，进而识别内存占用比较多的系统以及代码路径。常见的工具有两种：jemalloc、tcmalloc。这两个工具均可以作为内存的分配器进行后续的分析。以jemalloc为例：
 
 a）下载并编译jemalloc，由于需要分析起内存产生的prof信息，因此在编译的过程中，需要开启prof能力。
@@ -67,4 +184,3 @@ Total: 0.1 MB
 
 
 
->>>>>>> cadb77dc45e8de43c7cf63f6c8348a0ccc10d1a9
