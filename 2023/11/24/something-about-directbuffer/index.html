@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?604501"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?140178"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?194341"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?932178"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?541756"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?596440"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?674070"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?288927"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?500965"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?729717"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?561801"></li>
+          <li class="item" data-background-image="http://api.muvip.cn/api/bing?857944"></li>
         </ul>
       </div>
     </header>
@@ -157,9 +157,31 @@ Yume Shoka = 小站</title>
 </li>
 <li><p>常见的堆外内存溢出产生的原因有那些？<br>在JVM领域中，一般使用堆外内存，用来网络请求中的0copy，避免大量的用户态和内核态之间的内存复制情况。从这个角度上看，网络库是重灾区，Netty内部会有对DirectBuffer的使用，早期的版本中默认不会使用池化的内存分配器，也并不会优先使用堆外内存。但在需要的时候，也会利用堆外内存，这部分堆外内存是属于线程级别的，这部分堆外内存的大小以及数量和netty的线程数有关系，但这种方案下线程的争强会变得很低。后续的版本中netty默认使用池化的方式申请内存，其分配器的结构类似jemalloc。内存池中会对内存的大小进行分类，tiny、small、normal之类的线程队列。随后每个线程上也会有一个线程级别的缓存，对公共的线程池进行引用，增加缓存的利用率的同时，避免了线程级别的锁争强。基于这种情况，优化对网络库的堆外内存的使用是一个关键的点。</p>
 </li>
-<li><p>常见的directbytebuffer带来的性能优化，比如零拷贝，究竟是如何实现的？<br>从功能上看，零拷贝主要的使用场景是两个channel或者发送socket期间会存在零拷贝的技术。比如在服务端向一个socket发送数据的时候，或者在两个文件相互进行拷贝的时候。 在没有零拷贝之前，一般的处理策略是，使用一个for循环，从源文件中读取数据到缓存中，随后将缓存中的数据写到目标文件中。这个中间就会涉及到系统调用相关的操作。一般来说，会需要从linux内核中读取文件中的数据，读取到用户态后，再将用户态的数据写入到目标的文件中， 又会有一次用户态到内核态的转化过程。对于用户态和内核态之间的数据转换以及拷贝（消耗高的原理）会带来更多的性能开销，从而导致性能的衰减情况。那么在jdk层面是如何实现零拷贝A，进而通过零拷贝降低系统开销的呢？<br>首先对于DirectByteBuffer来说，会利用堆外内存进行系统优化工作,</p>
-</li>
 </ol>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD<br>4. 常见的directbytebuffer带来的性能优化，比如零拷贝，究竟是如何实现的？<br>从功能上看，零拷贝主要的使用场景是两个channel或者发送socket期间会存在零拷贝的技术。比如在服务端向一个socket发送数据的时候，或者在两个文件相互进行拷贝的时候。 在没有零拷贝之前，一般的处理策略是，使用一个for循环，从源文件中读取数据到缓存中，随后将缓存中的数据写到目标文件中。这个中间就会涉及到系统调用相关的操作。一般来说，会需要从linux内核中读取文件中的数据，读取到用户态后，再将用户态的数据写入到目标的文件中， 又会有一次用户态到内核态的转化过程。对于用户态和内核态之间的数据转换以及拷贝（消耗高的原理）会带来更多的性能开销，从而导致性能的衰减情况。那么在jdk层面是如何实现零拷贝A，进而通过零拷贝降低系统开销的呢？<br>首先对于DirectByteBuffer来说，会利用堆外内存进行系统优化工作,<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<ol start="4">
+<li>如果存在动态库的对外内存溢出，应该怎么解决？<br>对于堆外内存的溢出，一般是由于系统依赖的一些动态库产生的分配内存无法得到释放，导致的系统问题。这类问题，一般需要分析整个JVM的内存分配器，进而识别内存占用比较多的系统以及代码路径。常见的工具有两种：jemalloc、tcmalloc。这两个工具均可以作为内存的分配器进行后续的分析。以jemalloc为例：</li>
+</ol>
+<p>a）下载并编译jemalloc，由于需要分析起内存产生的prof信息，因此在编译的过程中，需要开启prof能力。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"> git clone https://github.com/jemalloc/jemalloc.git</span><br><span class="line">git checout 5.3.0</span><br><span class="line">./autogen.sh --enable-prof </span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">the jemalloc lib path is /usr/local/lib/libjemalloc.so</span></span><br><span class="line"></span><br><span class="line">MALLOC_CONF=prof_leak:true,lg_prof_sample:0,prof_final:true \</span><br><span class="line">LD_PRELOAD=/usr/local/lib/libjemalloc.so.2 \</span><br><span class="line">ls</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">分析内存分配信息</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">~/code$ </span><span class="language-bash">jeprof /usr/bin/ls jeprof.1139459.0.f.heap</span></span><br><span class="line">Using local file /usr/bin/ls.</span><br><span class="line">Using local file jeprof.1139459.0.f.heap.</span><br><span class="line">addr2line: DWARF error: section .debug_info is larger than its filesize! (0xc14d2 vs 0x90f38)</span><br><span class="line">addr2line: DWARF error: section .debug_info is larger than its filesize! (0x93ef57 vs 0x530f28)</span><br><span class="line">Welcome to jeprof!  For help, type &#x27;help&#x27;.</span><br><span class="line">(jeprof) top</span><br><span class="line">Total: 0.1 MB</span><br><span class="line">     0.1  99.6%  99.6%      0.1  99.6% prof_backtrace_impl</span><br><span class="line">     0.0   0.4% 100.0%      0.0  29.8% _obstack_begin</span><br><span class="line">     0.0   0.0% 100.0%      0.1  70.2% GLIBC_2.2.5</span><br><span class="line">     0.0   0.0% 100.0%      0.0   0.0% __ctype_init</span><br><span class="line">     0.0   0.0% 100.0%      0.0   0.0% __gconv_destroy_spec</span><br><span class="line">     0.0   0.0% 100.0%      0.0  29.8% __libc_start_main</span><br><span class="line">     0.0   0.0% 100.0%      0.0   0.2% __strdup</span><br><span class="line">     0.0   0.0% 100.0%      0.1  70.2% _dl_rtld_di_serinfo</span><br><span class="line">     0.0   0.0% 100.0%      0.0   0.1% _obstack_memory_used</span><br><span class="line">     0.0   0.0% 100.0%      0.0   0.0% bindtextdomain</span><br><span class="line">(jeprof)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>cadb77dc45e8de43c7cf63f6c8348a0ccc10d1a9</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 
   </div>
 
@@ -171,7 +193,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-30 15:56:48" itemprop="dateModified" datetime="2023-11-30T15:56:48+08:00">2023-11-30</time>
+    <time title="Modified: 2023-11-30 15:57:11" itemprop="dateModified" datetime="2023-11-30T15:57:11+08:00">2023-11-30</time>
   </span>
 </div>
 
@@ -203,7 +225,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?654153" title="jdk certificate store">
+  <a href="/2023/11/21/jdk-certificate-store/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing?737906" title="jdk certificate store">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>jdk certificate store</h3>
