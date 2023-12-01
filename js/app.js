@@ -1666,21 +1666,21 @@ const cardActive = function() {
     $('.index.wrap .item:first-child').addClass("show")
   }
 
-  $.each('.cards .item', function(element, index) {
-    ['mouseenter', 'touchstart'].forEach(function(item){
-      element.addEventListener(item, function(event) {
-        if($('.cards .item.active')) {
-          $('.cards .item.active').removeClass('active')
-        }
-        element.addClass('active')
-      })
-    });
-    ['mouseleave'].forEach(function(item){
-      element.addEventListener(item, function(event) {
-        element.removeClass('active')
-      })
-    });
-  });
+//  $.each('.cards .item', function(element, index) {
+//    ['mouseenter', 'touchstart'].forEach(function(item){
+//      element.addEventListener(item, function(event) {
+//        if($('.cards .item.active')) {
+//          $('.cards .item.active').removeClass('active')
+//        }
+//        element.addClass('active')
+//      })
+//    });
+//    ['mouseleave'].forEach(function(item){
+//      element.addEventListener(item, function(event) {
+//        element.removeClass('active')
+//      })
+//    });
+//  });
 }
 
 const registerExtURL = function() {
