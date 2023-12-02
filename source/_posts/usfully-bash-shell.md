@@ -163,10 +163,23 @@ FRAG: inuse 0 memory 0
 
 
 ```
+14. Linux提供一些通用的系统查看工具，sar就是其中一个比较强大的工具，利用这个工具可以查看网络、IO、Page交换、磁盘IO等信息。以下为相关示例
 
+```shell
 
+#sar -n DEV -B -b 1 1000
+10:44:04 AM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+10:44:05 AM      eth0      2.00     16.00      0.10      2.44      0.00      0.00      0.00      0.00
+10:44:05 AM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
 
+10:44:05 AM  pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s    %vmeff
+10:44:06 AM      0.00      4.00      2.00      0.00      0.00      0.00      0.00      0.00      0.00
 
+10:44:05 AM       tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s
+10:44:06 AM      1.00      0.00      1.00      0.00      0.00      8.00      0.00
 
+10:44:05 AM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+10:44:06 AM      eth0      5.00     12.00      0.29      1.98      0.00      0.00      0.00      0.00
+10:44:06 AM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
 
-
+```
