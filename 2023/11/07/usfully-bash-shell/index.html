@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?870342"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?694475"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?876860"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?497961"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?658718"></li>
-          <li class="item" data-background-image="http://api.muvip.cn/api/bing?174607"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?796934"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?85398"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?587809"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?26757"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?395168"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?535357"></li>
         </ul>
       </div>
     </header>
@@ -203,13 +203,10 @@ Yume Shoka = 小站</title>
 <li>在网络收包的时候，<code>NET_RX_SOFTIRQ</code> 主要是由<code>net_rx_action</code> 处理，<code>receive_mergeable</code> 是和<code>virtio_net</code>驱动有关系。 网络相关的内容，通过ss命令可以快速的分析其网络状态。</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">~# </span><span class="language-bash">ss -s</span></span><br><span class="line">Total: 1165</span><br><span class="line">TCP:   10 (estab 3, closed 1, orphaned 0, timewait 1)</span><br><span class="line"></span><br><span class="line">Transport Total     IP        IPv6</span><br><span class="line">RAW	  1         0         1</span><br><span class="line">UDP	  9         6         3</span><br><span class="line">TCP	  9         6         3</span><br><span class="line">INET	  19        12        7</span><br><span class="line">FRAG	  0         0         0</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">~# </span><span class="language-bash">ss -ltnpamO</span></span><br><span class="line">State                    Recv-Q                Send-Q                                Local Address:Port                                  Peer Address:Port                Process</span><br><span class="line">LISTEN                   0                     4096                                  127.0.0.53%lo:53                                         0.0.0.0:*                    users:((&quot;systemd-resolve&quot;,pid=451,fd=13)) skmem:(r0,rb131072,t0,tb16384,f0,w0,o0,bl0,d0)</span><br><span class="line">LISTEN                   0                     128                                         0.0.0.0:22                                         0.0.0.0:*                    users:((&quot;sshd&quot;,pid=806,fd=3)) skmem:(r0,rb131072,t0,tb16384,f0,w0,o0,bl0,d5837)</span><br><span class="line">LISTEN                   0                     5                                         127.0.0.1:631                                        0.0.0.0:*                    users:((&quot;cupsd&quot;,pid=215026,fd=7)) skmem:(r0,rb131072,t0,tb16384,f0,w0,o0,bl0,d0)</span><br><span class="line">TIME-WAIT                0                     0                                    192.168.10.227:47610                               100.100.45.106:443</span><br><span class="line">ESTAB                    0                     0                                    192.168.10.227:60340                                100.100.30.25:80                   users:((&quot;AliYunDun&quot;,pid=58400,fd=11)) skmem:(r0,rb2519636,t0,tb87040,f0,w0,o0,bl0,d1)</span><br><span class="line">TIME-WAIT                0                     0                                    192.168.10.227:43566                               100.100.45.106:80</span><br><span class="line">ESTAB                    0                     0                                    192.168.10.227:48550                                146.75.114.49:443                  users:((&quot;fwupdmgr&quot;,pid=62734,fd=10)) skmem:(r0,rb847456,t0,tb87040,f8192,w0,o0,bl0,d13)</span><br><span class="line">ESTAB                    0                     0                                    192.168.10.227:22                                   42.120.74.223:56563                users:((&quot;sshd&quot;,pid=215910,fd=4)) skmem:(r0,rb2509544,t0,tb3951616,f4096,w0,o0,bl0,d328)</span><br><span class="line">LISTEN                   0                     2                                                 *:3389                                             *:*                    users:((&quot;xrdp&quot;,pid=54176,fd=11)) skmem:(r0,rb131072,t0,tb65536,f0,w0,o0,bl0,d4685)</span><br><span class="line">LISTEN                   0                     2                                             [::1]:3350                                          [::]:*                    users:((&quot;xrdp-sesman&quot;,pid=54158,fd=7)) skmem:(r0,rb131072,t0,tb65536,f0,w0,o0,bl0,d0)</span><br><span class="line">LISTEN                   0                     5                                             [::1]:631                                           [::]:*                    users:((&quot;cupsd&quot;,pid=215026,fd=6)) skmem:(r0,rb131072,t0,tb16384,f0,w0,o0,bl0,d0)</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">~# </span><span class="language-bash"><span class="built_in">cat</span> /proc/net/sockstat</span></span><br><span class="line">sockets: used 1165</span><br><span class="line">TCP: inuse 6 orphan 0 tw 1 alloc 9 mem 3</span><br><span class="line">UDP: inuse 6 mem 3</span><br><span class="line">UDPLITE: inuse 0</span><br><span class="line">RAW: inuse 0</span><br><span class="line">FRAG: inuse 0 memory 0</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
+<ol start="14">
+<li>Linux提供一些通用的系统查看工具，sar就是其中一个比较强大的工具，利用这个工具可以查看网络、IO、Page交换、磁盘IO等信息。以下为相关示例</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">sar -n DEV -B -b 1 1000</span></span><br><span class="line">10:44:04 AM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil</span><br><span class="line">10:44:05 AM      eth0      2.00     16.00      0.10      2.44      0.00      0.00      0.00      0.00</span><br><span class="line">10:44:05 AM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00</span><br><span class="line"></span><br><span class="line">10:44:05 AM  pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s    %vmeff</span><br><span class="line">10:44:06 AM      0.00      4.00      2.00      0.00      0.00      0.00      0.00      0.00      0.00</span><br><span class="line"></span><br><span class="line">10:44:05 AM       tps      rtps      wtps      dtps   bread/s   bwrtn/s   bdscd/s</span><br><span class="line">10:44:06 AM      1.00      0.00      1.00      0.00      0.00      8.00      0.00</span><br><span class="line"></span><br><span class="line">10:44:05 AM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil</span><br><span class="line">10:44:06 AM      eth0      5.00     12.00      0.29      1.98      0.00      0.00      0.00      0.00</span><br><span class="line">10:44:06 AM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
   </div>
 
@@ -221,7 +218,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-17 20:11:34" itemprop="dateModified" datetime="2023-11-17T20:11:34+08:00">2023-11-17</time>
+    <time title="Modified: 2023-12-02 11:02:52" itemprop="dateModified" datetime="2023-12-02T11:02:52+08:00">2023-12-02</time>
   </span>
 </div>
 
@@ -253,7 +250,7 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/11/07/GNU-m4/" itemprop="url" rel="prev" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing" title="GNU m4">
+  <a href="/2023/11/07/GNU-m4/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;ali.royjo.ltd&#x2F;bing_img" title="GNU m4">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>GNU m4</h3>
@@ -263,7 +260,7 @@ Yume Shoka = 小站</title>
     <div class="item right">
       
 
-  <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" rel="next" data-background-image="http:&#x2F;&#x2F;api.muvip.cn&#x2F;api&#x2F;bing" title="mem ecc error cause sys load high">
+  <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;ali.royjo.ltd&#x2F;bing_img" title="mem ecc error cause sys load high">
   <span class="type">Next Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>mem ecc error cause sys load high</h3>
