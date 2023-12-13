@@ -638,6 +638,8 @@ cscope -qbR
 rm -rf tags
 rm -rf cscope.*
 
+# 在~/.vimrc中添加cs的引用,添加对cs的引用
+cs add cscope.out
 
 	
 ```
