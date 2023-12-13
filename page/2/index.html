@@ -88,12 +88,12 @@
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?344841"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?375796"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?317810"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?994135"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?238629"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?478477"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?629627"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?505203"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?967807"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?282324"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?879"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?842444"></li>
         </ul>
       </div>
     </header>
@@ -119,7 +119,58 @@
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" title="mem ecc error cause sys load high"><img data-src="https://ali.royjo.ltd/bing_img?225261"></a>
+    <a href="/2023/11/08/vimrc-content-list/" itemprop="url" title=".vimrc content list"><img data-src="https://ali.royjo.ltd/bing_img?87455"></a>
+  </div>
+  <div class="info">
+    
+<div class="meta">
+  <span class="item" title="Created: 2023-11-08 22:42:05">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-08T22:42:05+08:00">2023-11-08</time>
+  </span>
+</div>
+
+    <h3><a href="/2023/11/08/vimrc-content-list/" itemprop="url" title=".vimrc content list">.vimrc content list</a></h3>
+    <div class="excerpt">
+        个人使用的vimrc 的配置内容，仅做备份，其他地方可做共享
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263# cat ~/.vimrcset numberset cursorline&amp;quot; set cursorcolumnsyntax onset nocompatiblefiletype offset rtp+=~/.vim/bundle/Vundle.vimcall...
+    </div>
+    <a href="/2023/11/08/vimrc-content-list/" itemprop="url" title=".vimrc content list" class="btn">more...</a>
+  </div>
+</article>
+
+        
+<article class="item">
+  <div class="cover">
+    <a href="/2023/11/08/how-netstat-know-the-socketlist-and-who-use-it/" itemprop="url" title="how netstat know the socketlist and who use it"><img data-src="https://ali.royjo.ltd/bing_img?22170"></a>
+  </div>
+  <div class="info">
+    
+<div class="meta">
+  <span class="item" title="Created: 2023-11-08 17:39:31">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <time itemprop="dateCreated datePublished" datetime="2023-11-08T17:39:31+08:00">2023-11-08</time>
+  </span>
+</div>
+
+    <h3><a href="/2023/11/08/how-netstat-know-the-socketlist-and-who-use-it/" itemprop="url" title="how netstat know the socketlist and who use it">how netstat know the socketlist and who use it</a></h3>
+    <div class="excerpt">
+        在Linux系统下，可以通过netstat -anop 快速查看当前用户可以看到的所有的socket列表，以及这些socket的状态、使用线程id等信息，那么netstat -anop 实际是如何实现该功能的？ 一般来说linux下的proc文件内会有标识系统运行状态的内存文件，与netstat相关的文件有如下几个
+
+&amp;#x2F;proc&amp;#x2F;net&amp;#x2F;tcp , &amp;#x2F;proc&amp;#x2F;net&amp;#x2F;udp 网络相关的文件，这些文件存放了linux系统中tcp&amp;#x2F;udp的socket...
+    </div>
+    <a href="/2023/11/08/how-netstat-know-the-socketlist-and-who-use-it/" itemprop="url" title="how netstat know the socketlist and who use it" class="btn">more...</a>
+  </div>
+</article>
+
+        
+<article class="item">
+  <div class="cover">
+    <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" title="mem ecc error cause sys load high"><img data-src="https://ali.royjo.ltd/bing_img?343154"></a>
   </div>
   <div class="info">
     
@@ -135,11 +186,7 @@
     <h3><a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" title="mem ecc error cause sys load high">mem ecc error cause sys load high</a></h3>
     <div class="excerpt">
         线上应用遇到在业务水位比较低的时候，load相对非常高， 详细表现为sys低、user低，runq相对也不高，但是load非常高。 实际排查下来是由于内存异常导致。 对于该问题需要进一步总结下合适的排查思路
-
-load高的表现一般是runq搞，或者dunq高，runq一般是由于系统的负载比较高导致的问题，这种会同时引起cpu的升高，dunq高，是一般是由于等待io导致的整体cpu高，此时iowait会相对比较稿，磁盘也会比较高。 当两者都不高但load非常高的情况，就说明由于cpu处理缓慢，导致cpu的执行队列慢。
-
-所以排查思路为
-top...
+123456789101112131415161718[Wed Dec 6 21:24:46 2023] EDAC skx MC0: HANDLING MCE MEMORY ERROR[Wed Dec 6 21:24:46 2023] EDAC skx MC0: CPU 0: Machine Check Event: 0x0 Bank 7: 0xdc10000001010090[Wed...
     </div>
     <a href="/2023/11/07/mem-ecc-error-cause-sys-load-high/" itemprop="url" title="mem ecc error cause sys load high" class="btn">more...</a>
   </div>
@@ -148,7 +195,7 @@ top...
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/07/usfully-bash-shell/" itemprop="url" title="usfully bash shell"><img data-src="https://ali.royjo.ltd/bing_img?805368"></a>
+    <a href="/2023/11/07/usfully-bash-shell/" itemprop="url" title="usfully bash shell"><img data-src="https://ali.royjo.ltd/bing_img?915611"></a>
   </div>
   <div class="info">
     
@@ -173,7 +220,7 @@ top...
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/07/GNU-m4/" itemprop="url" title="GNU m4"><img data-src="https://ali.royjo.ltd/bing_img?918091"></a>
+    <a href="/2023/11/07/GNU-m4/" itemprop="url" title="GNU m4"><img data-src="https://ali.royjo.ltd/bing_img?781013"></a>
   </div>
   <div class="info">
     
@@ -198,7 +245,7 @@ top...
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/06/%E5%A6%82%E6%9E%9C%E6%88%91%E6%98%AF%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%E7%9A%84CEO/" itemprop="url" title="如果我是一家公司的CEO"><img data-src="https://ali.royjo.ltd/bing_img?126808"></a>
+    <a href="/2023/11/06/%E5%A6%82%E6%9E%9C%E6%88%91%E6%98%AF%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%E7%9A%84CEO/" itemprop="url" title="如果我是一家公司的CEO"><img data-src="https://ali.royjo.ltd/bing_img?869487"></a>
   </div>
   <div class="info">
     
@@ -223,7 +270,7 @@ top...
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/06/%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8A%A8%E6%95%88%E5%AE%9E%E7%8E%B0-lottie/" itemprop="url" title="客户端动效实现--lottie"><img data-src="https://ali.royjo.ltd/bing_img?648499"></a>
+    <a href="/2023/11/06/%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8A%A8%E6%95%88%E5%AE%9E%E7%8E%B0-lottie/" itemprop="url" title="客户端动效实现--lottie"><img data-src="https://ali.royjo.ltd/bing_img?843020"></a>
   </div>
   <div class="info">
     
@@ -248,7 +295,7 @@ Lottie使用说明Lottie优势
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/04/Linux%E7%9A%84syscall%E7%A9%B6%E7%AB%9F%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84/" itemprop="url" title="Linux的syscall究竟是怎么实现的"><img data-src="https://ali.royjo.ltd/bing_img?701524"></a>
+    <a href="/2023/11/04/Linux%E7%9A%84syscall%E7%A9%B6%E7%AB%9F%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84/" itemprop="url" title="Linux的syscall究竟是怎么实现的"><img data-src="https://ali.royjo.ltd/bing_img?951586"></a>
   </div>
   <div class="info">
     
@@ -273,7 +320,7 @@ Lottie使用说明Lottie优势
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/04/the-xdp-test-with-netns/" itemprop="url" title="the xdp test with netns"><img data-src="https://ali.royjo.ltd/bing_img?670793"></a>
+    <a href="/2023/11/04/the-xdp-test-with-netns/" itemprop="url" title="the xdp test with netns"><img data-src="https://ali.royjo.ltd/bing_img?845070"></a>
   </div>
   <div class="info">
     
@@ -297,7 +344,7 @@ Lottie使用说明Lottie优势
         
 <article class="item">
   <div class="cover">
-    <a href="/2023/11/04/compile-rust-as-static-link/" itemprop="url" title="compile_rust_as_static_link"><img data-src="https://ali.royjo.ltd/bing_img?834491"></a>
+    <a href="/2023/11/04/compile-rust-as-static-link/" itemprop="url" title="compile_rust_as_static_link"><img data-src="https://ali.royjo.ltd/bing_img?186628"></a>
   </div>
   <div class="info">
     
@@ -316,54 +363,6 @@ Lottie使用说明Lottie优势
 123456789101112131415161718#...
     </div>
     <a href="/2023/11/04/compile-rust-as-static-link/" itemprop="url" title="compile_rust_as_static_link" class="btn">more...</a>
-  </div>
-</article>
-
-        
-<article class="item">
-  <div class="cover">
-    <a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" itemprop="url" title="我的重传为什么这么高"><img data-src="https://ali.royjo.ltd/bing_img?647713"></a>
-  </div>
-  <div class="info">
-    
-<div class="meta">
-  <span class="item" title="Created: 2023-11-01 16:07:27">
-    <span class="icon">
-      <i class="ic i-calendar"></i>
-    </span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-01T16:07:27+08:00">2023-11-01</time>
-  </span>
-</div>
-
-    <h3><a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" itemprop="url" title="我的重传为什么这么高">我的重传为什么这么高</a></h3>
-    <div class="excerpt">
-        在实际的系统运行过程中，SRE工程师经常会发现系统存在网络重传的报警，有时候发生在个别机器上，有时候会发生在某些机房里，还有会发生在某些应用中。遇到这类问题的时候，经常有同学会第一时间想拉网络的同学进行排查，询问系统无任何变更的时候，应用为什么会有重传。大部分情况下，网络的同学反馈的都是网络是正常的，和网络关系不大。相关的case发生次数多了之后，就会出现一个现象，网络的同学对类似的问题爱搭不理，业务的同学也会对网络颇有微词。从我的经验来看，两者的观点站在彼此的角度上看，都没有太大的问题，主要还是网络和业务的同学都只对自己本域的内容很清楚，对网络链路上的全局不明了，导致的现象。就这种现象，个人...
-    </div>
-    <a href="/2023/11/01/%E6%88%91%E7%9A%84%E9%87%8D%E4%BC%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%AB%98/" itemprop="url" title="我的重传为什么这么高" class="btn">more...</a>
-  </div>
-</article>
-
-        
-<article class="item">
-  <div class="cover">
-    <a href="/2023/11/01/random-img-api/" itemprop="url" title="random_img_api"><img data-src="https://ali.royjo.ltd/bing_img?221472"></a>
-  </div>
-  <div class="info">
-    
-<div class="meta">
-  <span class="item" title="Created: 2023-11-01 13:34:42">
-    <span class="icon">
-      <i class="ic i-calendar"></i>
-    </span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-01T13:34:42+08:00">2023-11-01</time>
-  </span>
-</div>
-
-    <h3><a href="/2023/11/01/random-img-api/" itemprop="url" title="random_img_api">random_img_api</a></h3>
-    <div class="excerpt">
-        在捣鼓github page的时候，学到了一个新的名词random image server api ， 页面可以利用这些服务随机的展示图片，丰富自己网站的表现形式。第一映像觉得很不现实，在网络上，流量费用是相当贵的，而对于一些高清的图片，费用更贵，不太可能会存在免费的提供图片下载的站点。不然就是做公益了。...
-    </div>
-    <a href="/2023/11/01/random-img-api/" itemprop="url" title="random_img_api" class="btn">more...</a>
   </div>
 </article>
 
@@ -402,7 +401,7 @@ Lottie使用说明Lottie优势
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">32</span>
+        <span class="count">34</span>
         <span class="name">posts</span>
       </a>
     </div>
