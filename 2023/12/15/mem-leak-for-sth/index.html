@@ -25,12 +25,12 @@
 
   
 
-<link rel="canonical" href="https://blog.royjo.ltd/2023/10/31/run-qemu-in-shell/">
+<link rel="canonical" href="https://blog.royjo.ltd/2023/12/15/mem-leak-for-sth/">
 
 
 
   <title>
-run-qemu-in-shell |
+mem leak for sth |
 Yume Shoka = 小站</title>
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -58,16 +58,16 @@ Yume Shoka = 小站</title>
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">run-qemu-in-shell
+  <h1 itemprop="name headline">mem leak for sth
   </h1>
   
 <div class="meta">
-  <span class="item" title="Created: 2023-10-31 15:39:07">
+  <span class="item" title="Created: 2023-12-15 17:45:46">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">Posted on</span>
-    <time itemprop="dateCreated datePublished" datetime="2023-10-31T15:39:07+08:00">2023-10-31</time>
+    <time itemprop="dateCreated datePublished" datetime="2023-12-15T17:45:46+08:00">2023-12-15</time>
   </span>
 </div>
 
@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?287996"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?309948"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?618878"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?27869"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?803348"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?764527"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?53185"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?652385"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?833769"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?603254"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?346419"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?234154"></li>
         </ul>
       </div>
     </header>
@@ -134,7 +134,7 @@ Yume Shoka = 小站</title>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
-  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/10/31/run-qemu-in-shell/">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/12/15/mem-leak-for-sth/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/avatar.jpg">
@@ -149,18 +149,7 @@ Yume Shoka = 小站</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <pre><code>默认情况下，在远程的shell中是无法直接运行gui程序的，这是由于shell链接的过程中，无法使用x-windows，在某些情况下，如果需要通过shell启动gui程序的时候，一方面系统需要安装x-windows，另外一方面还需要设置当前shell链接的显示器程序，对于linux来说，可以通过设置`DISPLAY`变量的值得到。
-### 获取图形界面的DISPLAY值
-在图形窗口中打开一个新的shell窗口，使用`echo $DISPLAY`即可查看当前图形窗口的ID。
-
-### 设置shell使用的窗口
-修改~/.bashrc中的文件，新增DISPLAY环境变量
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export DISPLAY=:11.0</span><br></pre></td></tr></table></figure>
-后续新增的shell即可以直接操作图形界面中的图形界面了。以下以qemu为例。代码如下
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">cpu 8086</span><br><span class="line">org 0x7C00</span><br><span class="line"></span><br><span class="line">mov al, 0x13</span><br><span class="line">mov ah, 0</span><br><span class="line">int 0x10</span><br><span class="line"></span><br><span class="line">mov bx, 0                       ; counter</span><br><span class="line">mov ah, 0x0E                    ; for teletype writing http://www.ctyme.com/intr/rb-0106.htm</span><br><span class="line">.print_char:</span><br><span class="line">    mov al, [string + bx]       ; character of string</span><br><span class="line">    push bx                     ; storing counter in the stack</span><br><span class="line">    mov bx, 0x0009              ; set page (no page) and color light blue (0x09) https://en.wikipedia.org/wiki/BIOS_color_attributes</span><br><span class="line">    int 0x10</span><br><span class="line">    cmp al, 0                   ; is this the end of the string?</span><br><span class="line">    je .exit</span><br><span class="line">    pop bx                      ; restoring from the stack</span><br><span class="line">    inc bx</span><br><span class="line">    jmp .print_char</span><br><span class="line"></span><br><span class="line">.exit:</span><br><span class="line">    ret</span><br><span class="line">hlt</span><br><span class="line">string db &#x27;Wake up Neo...&#x27;, 0</span><br><span class="line"></span><br><span class="line">TIMES 510 - ($ - $$) db 0 ; Fill the rest of sector with 0</span><br><span class="line">dw 0xaa55 ;  MBR (Master Boot Record) magic numbers</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-利用qemu启动上述的程序，用于在启动窗口中打印Wake up Neo。。。,在脚本中，可以看到的现象是程序hang住，在对应的图形界面中，可以看到qemu窗口被打开，并在窗口中打印了`Wake up Neo...`
-</code></pre>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nasm print_string.asm -o main.img</span><br><span class="line">qemu-system-x86_64 -hda main.img</span><br></pre></td></tr></table></figure>
+    <p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1d1QmluZ3poZW5nL21lbWxlYXg=">https://github.com/WuBingzheng/memleax</span> how to attach a runing program and debug it </p>
 
   </div>
 
@@ -172,7 +161,7 @@ Yume Shoka = 小站</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2023-10-31 16:52:51" itemprop="dateModified" datetime="2023-10-31T16:52:51+08:00">2023-10-31</time>
+    <time title="Modified: 2023-12-15 17:46:15" itemprop="dateModified" datetime="2023-12-15T17:46:15+08:00">2023-12-15</time>
   </span>
 </div>
 
@@ -185,7 +174,7 @@ Yume Shoka = 小站</title>
   </li>
   <li class="link">
     <strong>Post link: </strong>
-    <a href="https://blog.royjo.ltd/2023/10/31/run-qemu-in-shell/" title="run-qemu-in-shell">https://blog.royjo.ltd/2023/10/31/run-qemu-in-shell/</a>
+    <a href="https://blog.royjo.ltd/2023/12/15/mem-leak-for-sth/" title="mem leak for sth">https://blog.royjo.ltd/2023/12/15/mem-leak-for-sth/</a>
   </li>
   <li class="license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
@@ -204,22 +193,14 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/01/08/springboot-influx-micrometer-granfana/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;ali.royjo.ltd&#x2F;bing_img?915440" title="springboot_influx_micrometer_granfana">
+  <a href="/2023/12/13/use-blktrace-for-disk-io-debug/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;ali.royjo.ltd&#x2F;bing_img?872674" title="use blktrace for disk io debug">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>springboot_influx_micrometer_granfana</h3>
+  <h3>use blktrace for disk io debug</h3>
   </a>
 
     </div>
     <div class="item right">
-      
-
-  <a href="/2023/11/01/random-img-api/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;ali.royjo.ltd&#x2F;bing_img?129312" title="random_img_api">
-  <span class="type">Next Post</span>
-  <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>random_img_api</h3>
-  </a>
-
     </div>
 </div>
 
@@ -275,12 +256,10 @@ Yume Shoka = 小站</title>
 
   <ul id="quick">
     <li class="prev pjax">
-        <a href="/2023/01/08/springboot-influx-micrometer-granfana/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
-        <a href="/2023/11/01/random-img-api/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -317,7 +296,7 @@ Yume Shoka = 小站</title>
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2023/10/31/run-qemu-in-shell/',
+    path: '2023/12/15/mem-leak-for-sth/',
     favicon: {
       show: "（●´3｀●）Goooood",
       hide: "(´Д｀)Booooom"
