@@ -25,12 +25,12 @@
 
   
 
-<link rel="canonical" href="https://blog.royjo.ltd/2024/01/18/thread-yield-cost-high-load/">
+<link rel="canonical" href="https://blog.royjo.ltd/2024/03/22/host-to-profiler-sec-2/">
 
 
 
   <title>
-thread yield cost high load |
+host to profiler sec 2 |
 Yume Shoka = 小站</title>
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -58,16 +58,16 @@ Yume Shoka = 小站</title>
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">thread yield cost high load
+  <h1 itemprop="name headline">host to profiler sec 2
   </h1>
   
 <div class="meta">
-  <span class="item" title="Created: 2024-01-18 14:20:57">
+  <span class="item" title="Created: 2024-03-22 09:13:03">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">Posted on</span>
-    <time itemprop="dateCreated datePublished" datetime="2024-01-18T14:20:57+08:00">2024-01-18</time>
+    <time itemprop="dateCreated datePublished" datetime="2024-03-22T09:13:03+08:00">2024-03-22</time>
   </span>
 </div>
 
@@ -100,12 +100,12 @@ Yume Shoka = 小站</title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?331302"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?697137"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?605565"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?102373"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?539414"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?110376"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?264712"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?358100"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?433781"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?445361"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?678483"></li>
+          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?251191"></li>
         </ul>
       </div>
     </header>
@@ -134,7 +134,7 @@ Yume Shoka = 小站</title>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
-  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2024/01/18/thread-yield-cost-high-load/">
+  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2024/03/22/host-to-profiler-sec-2/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/avatar.jpg">
@@ -149,21 +149,12 @@ Yume Shoka = 小站</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <p>Thread.yield 会让当前线程从运行状态进入到待运行状态，从而让出当前在在用的cpu资源，但是当大量的线程同时去做yield的时候，从内核看来，是同时有大量的待运行状态的线程在等待调度，从原理上看，表现为突然的load飙升。 同时由于调度的线程数突然增加，也导致应用的sys增加。<br>示例代码程序</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">YieldTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span> ; i &lt; <span class="number">100000</span> ; i++)&#123;</span><br><span class="line">            <span class="type">YieldThread</span> <span class="variable">yieldThread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">YieldThread</span>();</span><br><span class="line">            yieldThread.start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Thread.sleep(<span class="number">1000000</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">YieldThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">            <span class="keyword">try</span>&#123;</span><br><span class="line">                Thread.sleep(<span class="number">1</span>);</span><br><span class="line">            &#125;<span class="keyword">catch</span> (Exception e)&#123;&#125;</span><br><span class="line">            Thread.yield();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+    
   </div>
 
    <footer>
 
     <div class="meta">
-  <span class="item">
-    <span class="icon">
-      <i class="ic i-calendar-check"></i>
-    </span>
-    <span class="text">Edited on</span>
-    <time title="Modified: 2024-01-18 14:23:30" itemprop="dateModified" datetime="2024-01-18T14:23:30+08:00">2024-01-18</time>
-  </span>
 </div>
 
       
@@ -175,7 +166,7 @@ Yume Shoka = 小站</title>
   </li>
   <li class="link">
     <strong>Post link: </strong>
-    <a href="https://blog.royjo.ltd/2024/01/18/thread-yield-cost-high-load/" title="thread yield cost high load">https://blog.royjo.ltd/2024/01/18/thread-yield-cost-high-load/</a>
+    <a href="https://blog.royjo.ltd/2024/03/22/host-to-profiler-sec-2/" title="host to profiler sec 2">https://blog.royjo.ltd/2024/03/22/host-to-profiler-sec-2/</a>
   </li>
   <li class="license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
@@ -194,20 +185,20 @@ Yume Shoka = 小站</title>
     <div class="item left">
       
 
-  <a href="/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;ali.royjo.ltd&#x2F;bing_img?927469" title="ping 127.0.0.1 vs ping self ip">
+  <a href="/2024/03/22/host-to-profiler-sec-1/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;ali.royjo.ltd&#x2F;bing_img?237354" title="host to profiler sec 1">
   <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>ping 127.0.0.1 vs ping self ip</h3>
+  <h3>host to profiler sec 1</h3>
   </a>
 
     </div>
     <div class="item right">
       
 
-  <a href="/2024/02/17/AI-%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E6%80%A7%E8%83%BD%E9%AA%8C%E8%AF%81/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;ali.royjo.ltd&#x2F;bing_img?452509" title="AI 集合通信性能验证">
+  <a href="/2024/03/22/host-to-profiler-sec-3/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;ali.royjo.ltd&#x2F;bing_img?208657" title="host to profiler sec 3">
   <span class="type">Next Post</span>
   <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>AI 集合通信性能验证</h3>
+  <h3>host to profiler sec 3</h3>
   </a>
 
     </div>
@@ -265,12 +256,12 @@ Yume Shoka = 小站</title>
 
   <ul id="quick">
     <li class="prev pjax">
-        <a href="/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
+        <a href="/2024/03/22/host-to-profiler-sec-1/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
-        <a href="/2024/02/17/AI-%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E6%80%A7%E8%83%BD%E9%AA%8C%E8%AF%81/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
+        <a href="/2024/03/22/host-to-profiler-sec-3/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -307,7 +298,7 @@ Yume Shoka = 小站</title>
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2024/01/18/thread-yield-cost-high-load/',
+    path: '2024/03/22/host-to-profiler-sec-2/',
     favicon: {
       show: "（●´3｀●）Goooood",
       hide: "(´Д｀)Booooom"
