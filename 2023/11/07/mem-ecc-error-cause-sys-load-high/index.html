@@ -1,155 +1,162 @@
-
-
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang=en>
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#FFF">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="线上应用遇到在业务水位比较低的时候，load相对非常高， 详细表现为sys低、user低，runq相对也不高，但是load非常高。 实际排查下来是由于内存异常导致。 对于该问题需要进一步总结下合适的排查思路 123456789101112131415161718[Wed Dec  6 21:24:46 2023] EDAC skx MC0: HANDLING MCE MEMORY ERROR[We">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mem ecc error cause sys load high">
+<meta property="og:url" content="https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/index.html">
+<meta property="og:site_name" content="小站">
+<meta property="og:description" content="线上应用遇到在业务水位比较低的时候，load相对非常高， 详细表现为sys低、user低，runq相对也不高，但是load非常高。 实际排查下来是由于内存异常导致。 对于该问题需要进一步总结下合适的排查思路 123456789101112131415161718[Wed Dec  6 21:24:46 2023] EDAC skx MC0: HANDLING MCE MEMORY ERROR[We">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-11-07T13:08:34.000Z">
+<meta property="article:modified_time" content="2024-04-22T06:07:09.790Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>mem ecc error cause sys load high</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
 
-<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+    <!-- Umami Analytics -->
 
 
-<link rel="alternate" type="application/rss+xml" title="小站" href="https://blog.royjo.ltd/rss.xml" />
-<link rel="alternate" type="application/atom+xml" title="小站" href="https://blog.royjo.ltd/atom.xml" />
-<link rel="alternate" type="application/json" title="小站" href="https://blog.royjo.ltd/feed.json" />
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-
-<link rel="stylesheet" href="/css/app.css?v=0.2.5">
-
-  
-
-<link rel="canonical" href="https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/">
-
-
-
-  <title>
-mem ecc error cause sys load high |
-Yume Shoka = 小站</title>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
 <meta name="generator" content="Hexo 6.3.0"></head>
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div id="loading">
-    <div class="cat">
-      <div class="body"></div>
-      <div class="head">
-        <div class="face"></div>
-      </div>
-      <div class="foot">
-        <div class="tummy-end"></div>
-        <div class="bottom"></div>
-        <div class="legs left"></div>
-        <div class="legs right"></div>
-      </div>
-      <div class="paw">
-        <div class="hands left"></div>
-        <div class="hands right"></div>
-      </div>
-    </div>
-  </div>
-  <div id="container">
-    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="inner">
-        <div id="brand">
-          <div class="pjax">
-          
-  <h1 itemprop="name headline">mem ecc error cause sys load high
-  </h1>
-  
-<div class="meta">
-  <span class="item" title="Created: 2023-11-07 21:08:34">
-    <span class="icon">
-      <i class="ic i-calendar"></i>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
     </span>
-    <span class="text">Posted on</span>
-    <time itemprop="dateCreated datePublished" datetime="2023-11-07T21:08:34+08:00">2023-11-07</time>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/11/08/how-netstat-know-the-socketlist-and-who-use-it/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/11/07/usfully-bash-shell/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&text=mem ecc error cause sys load high"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&title=mem ecc error cause sys load high"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&is_video=false&description=mem ecc error cause sys load high"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=mem ecc error cause sys load high&body=Check out this article: https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&title=mem ecc error cause sys load high"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&title=mem ecc error cause sys load high"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&title=mem ecc error cause sys load high"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&title=mem ecc error cause sys load high"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&name=mem ecc error cause sys load high&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&t=mem ecc error cause sys load high"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E"><span class="toc-number">1.</span> <span class="toc-text">说明</span></a></li></ol>
+      </div>
+    
   </span>
 </div>
 
-
-          </div>
-        </div>
-        <nav id="nav">
-  <div class="inner">
-    <div class="toggle">
-      <div class="lines" aria-label="Toggle navigation bar">
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-      </div>
-    </div>
-    <ul class="menu">
-      <li class="item title"><a href="/" rel="start">Yume Shoka</a></li>
-    </ul>
-    <ul class="right">
-      <li class="item theme">
-        <i class="ic i-sun"></i>
-      </li>
-      <li class="item search">
-        <i class="ic i-search"></i>
-      </li>
-    </ul>
-  </div>
-</nav>
-
-      </div>
-      <div id="imgs" class="pjax">
-        <ul>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?301251"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?286116"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?708764"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?601890"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?650537"></li>
-          <li class="item" data-background-image="https://ali.royjo.ltd/bing_img?900276"></li>
-        </ul>
-      </div>
-    </header>
-    <div id="waves">
-      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-        <defs>
-          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-        </defs>
-        <g class="parallax">
-          <use xlink:href="#gentle-wave" x="48" y="0" />
-          <use xlink:href="#gentle-wave" x="48" y="3" />
-          <use xlink:href="#gentle-wave" x="48" y="5" />
-          <use xlink:href="#gentle-wave" x="48" y="7" />
-        </g>
-      </svg>
-    </div>
-    <main>
-      <div class="inner">
-        <div id="main" class="pjax">
-          
-  <div class="article wrap">
     
-<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
-<i class="ic i-home"></i>
-<span><a href="/">Home</a></span>
-</div>
-
-    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
-  <link itemprop="mainEntityOfPage" href="https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/">
-
-  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="image" content="/images/avatar.jpg">
-    <meta itemprop="name" content="John Doe">
-    <meta itemprop="description" content=", ">
-  </span>
-
-  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="小站">
-  </span>
-
-  <div class="body md" itemprop="articleBody">
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
     
+    <h1 class="posttitle p-name" itemprop="name headline">
+        mem ecc error cause sys load high
+    </h1>
 
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">John Doe</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-11-07T13:08:34.000Z" class="dt-published" itemprop="datePublished">2023-11-07</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
     <p>线上应用遇到在业务水位比较低的时候，load相对非常高， 详细表现为sys低、user低，runq相对也不高，但是load非常高。 实际排查下来是由于内存异常导致。 对于该问题需要进一步总结下合适的排查思路</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: HANDLING MCE MEMORY ERROR</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: CPU 0: Machine Check Event: 0x0 Bank 7: 0xdc10000001010090</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: TSC 0x0</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: ADDR 0x20edba94c0</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: MISC 0x200006c307e01086</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: PROCESSOR 0:0x50654 TIME 1701869556 SOCKET 0 APIC 0x0</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC MC0: 16384 CE memory read error on CPU_SrcID#0_MC#0_Chan#0_DIMM#1 (channel:0 slot:1 page:0x20edba9 offset:0x4c0 grain:32 syndrome:0x0 -  OVERFLOW err_code:0x0101:0x0090 socket:0 imc:0 rank:0 bg:3 ba:2 row:0x106ce col:0x258 retry_rd_err_log[0000a20d 00000000 0000ffff 0476f10f 0000fb4b] correrrcnt[0000 0000 0000 0000 a9b4 0000 0000 0000])</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: HANDLING MCE MEMORY ERROR</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: CPU 0: Machine Check Event: 0x0 Bank 13: 0xcc001380000800c0</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: TSC 0x0</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: ADDR 0xd6db0b8c0</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: MISC 0x12213fffffffc086</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC skx MC0: PROCESSOR 0:0x50654 TIME 1701869556 SOCKET 0 APIC 0x0</span><br><span class="line">[Wed Dec  6 21:24:46 2023] EDAC MC0: 78 CE memory scrubbing error on CPU_SrcID#0_MC#0_Chan#0_DIMM#1 (channel:0 slot:1 page:0xd6db0b offset:0x8c0 grain:32 syndrome:0x0 -  OVERFLOW err_code:0x0008:0x00c0 socket:0 imc:0 rank:0 bg:3 ba:2 row:0x6ecc col:0xe8 retry_rd_err_log[0000a20d 00000000 ffff0000 0434f10f 000091dd] correrrcnt[0000 0000 0000 0000 b424 0000 0000 0000])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <ol>
 <li>load高的表现一般是runq搞，或者dunq高，runq一般是由于系统的负载比较高导致的问题，这种会同时引起cpu的升高，dunq高，是一般是由于等待io导致的整体cpu高，此时iowait会相对比较稿，磁盘也会比较高。 当两者都不高但load非常高的情况，就说明由于cpu处理缓慢，导致cpu的执行队列慢。</li>
 </ol>
@@ -158,193 +165,146 @@ Yume Shoka = 小站</title>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">sudo perf stat -a</span><br><span class="line">^C</span><br><span class="line"> Performance counter stats for &#x27;system wide&#x27;:</span><br><span class="line"></span><br><span class="line">     326237.203455      task-clock (msec)         #   16.001 CPUs utilized</span><br><span class="line">           750,189      context-switches          #    0.002 M/sec</span><br><span class="line">            26,724      cpu-migrations            #    0.082 K/sec</span><br><span class="line">           393,003      page-faults               #    0.001 M/sec</span><br><span class="line">   229,354,281,442      cycles                    #    0.703 GHz</span><br><span class="line">   &lt;not supported&gt;      stalled-cycles-frontend</span><br><span class="line">   &lt;not supported&gt;      stalled-cycles-backend</span><br><span class="line">   154,354,075,229      instructions              #    0.67  insns per cycle</span><br><span class="line">    36,761,887,530      branches                  #  112.685 M/sec</span><br><span class="line">       271,931,138      branch-misses             #    0.74% of all branches</span><br><span class="line"></span><br><span class="line">      20.388467618 seconds time elapsed</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>查看当前任务的进程状态分布情况 <code>ps axl  | awk &#39;&#123;print $10&#125;&#39;  | sort | uniq -c | sort -n</code> ， 查看处于D状态的进程信息<code>ps axl | awk &#39;$10 ~/D/ &#123;print $0&#125;&#39;</code><br>查看某一个进程的当前在执行的线程栈情况<code>cat /proc/pid/stack</code></p>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p><code>ps aux </code> 和 <code>ps -axu </code> 是存在差异的，<code>ps aux</code> 会添加线程stat信息，而<code>ps -aux</code>并不会</p>
+<p><code>top -H -b -d 1 -n 10 | awk &#39;$3~/(^0$)|(^10$)|(-51)/&#39;  | awk &#39;$8~/D|R/&#39;</code></p>
 
   </div>
-
-   <footer>
-
-    <div class="meta">
-  <span class="item">
-    <span class="icon">
-      <i class="ic i-calendar-check"></i>
-    </span>
-    <span class="text">Edited on</span>
-    <time title="Modified: 2023-11-17 20:11:34" itemprop="dateModified" datetime="2023-11-17T20:11:34+08:00">2023-11-17</time>
-  </span>
-</div>
-
-      
-
-<div id="copyright">
-<ul>
-  <li class="author">
-    <strong>Post author:  </strong>John Doe <i class="ic i-at"><em>@</em></i>小站
-  </li>
-  <li class="link">
-    <strong>Post link: </strong>
-    <a href="https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/" title="mem ecc error cause sys load high">https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/</a>
-  </li>
-  <li class="license">
-    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
-  </li>
-</ul>
-</div>
-
-  </footer>
-
 </article>
 
-  </div>
-  
 
-<div class="post-nav">
-    <div class="item left">
-      
 
-  <a href="/2023/11/07/usfully-bash-shell/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;ali.royjo.ltd&#x2F;bing_img" title="usfully bash shell">
-  <span class="type">Previous Post</span>
-  <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>usfully bash shell</h3>
-  </a>
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
 
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+        
+      </ul>
     </div>
-    <div class="item right">
-      
 
-  <a href="/2023/11/08/how-netstat-know-the-socketlist-and-who-use-it/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;ali.royjo.ltd&#x2F;bing_img" title="how netstat know the socketlist and who use it">
-  <span class="type">Next Post</span>
-  <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>how netstat know the socketlist and who use it</h3>
-  </a>
-
-    </div>
-</div>
-
-  
-  <div class="wrap" id="comments"></div>
-
-
-        </div>
-        <div id="sidebar">
-          
-
-<div class="inner">
-
-  <div class="panels">
-    <div class="inner">
-      <div class="contents panel pjax" data-title="Contents">
-      </div>
-      <div class="related panel pjax" data-title="Related">
-      </div>
-      <div class="overview panel" data-title="Overview">
-        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <img class="image" itemprop="image" alt="John Doe"
-      data-src="/images/avatar.jpg">
-  <p class="name" itemprop="name">John Doe</p>
-  <div class="description" itemprop="description"></div>
-</div>
-
-<nav class="state">
-    <div class="item posts">
-      <a href="/archives/">
-        <span class="count">30</span>
-        <span class="name">posts</span>
-      </a>
-    </div>
-</nav>
-
-<div class="social">
-</div>
-
-<ul class="menu">
-  
     
-  <li class="item">
-    <a href="/" rel="section"><i class="ic i-home"></i>Home</a>
-  </li>
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E"><span class="toc-number">1.</span> <span class="toc-text">说明</span></a></li></ol>
+      </div>
+    
 
-
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&text=mem ecc error cause sys load high"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&title=mem ecc error cause sys load high"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&is_video=false&description=mem ecc error cause sys load high"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=mem ecc error cause sys load high&body=Check out this article: https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&title=mem ecc error cause sys load high"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&title=mem ecc error cause sys load high"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&title=mem ecc error cause sys load high"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&title=mem ecc error cause sys load high"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&name=mem ecc error cause sys load high&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.royjo.ltd/2023/11/07/mem-ecc-error-cause-sys-load-high/&t=mem ecc error cause sys load high"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
-      </div>
     </div>
-  </div>
 
-  <ul id="quick">
-    <li class="prev pjax">
-        <a href="/2023/11/07/usfully-bash-shell/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a>
-    </li>
-    <li class="up"><i class="ic i-arrow-up"></i></li>
-    <li class="down"><i class="ic i-arrow-down"></i></li>
-    <li class="next pjax">
-        <a href="/2023/11/08/how-netstat-know-the-socketlist-and-who-use-it/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a>
-    </li>
-    <li class="percent"></li>
-  </ul>
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
 </div>
 
-
-        </div>
-        <div class="dimmer"></div>
-      </div>
-    </main>
-    <footer id="footer">
-      <div class="inner">
-        <div class="widgets">
-          
-
-        </div>
-        <div class="status">
-  <div class="copyright">
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
     
-    &copy; 2010 – 
-    <span itemprop="copyrightYear">2023</span>
-    <span class="with-love">
-      <i class="ic i-sakura rotate"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">John Doe @ Yume Shoka</span>
+    
+    2016-2024
+    John Doe
   </div>
-  <div class="powered-by">
-    Powered by <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
   </div>
-</div>
+</footer>
 
-      </div>
-    </footer>
-  </div>
-<script data-config type="text/javascript">
-  var LOCAL = {
-    path: '2023/11/07/mem-ecc-error-cause-sys-load-high/',
-    favicon: {
-      show: "（●´3｀●）Goooood",
-      hide: "(´Д｀)Booooom"
-    },
-    search : {
-      placeholder: "Search for Posts",
-      empty: "We didn't find any results for the search: ${query}",
-      stats: "${hits} results found in ${time} ms"
-    },
-    valine: true,fancybox: true,
-    copyright: 'Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.',
-    ignores : [
-      function(uri) {
-        return uri.includes('#');
-      },
-      function(uri) {
-        return new RegExp(LOCAL.path+"$").test(uri);
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
       }
-    ]
-  };
-</script>
-
-<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
-
-<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
-
-<script src="/js/app.js?v=0.2.5"></script>
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
 
 
+<script src="/js/main.js"></script>
 
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
 
 </body>
 </html>

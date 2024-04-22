@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="一直有一个疑问，ping 127.0.0.1 vs ping local ip  的差异是什么？ 这两个操作是不是都会走网络栈？ 是不是都会触发软中断的请求？ 带着这些疑问持续了很久时间，内心有一个答案，但又没有实锤的证据。直到某一天脑子突然开窍了，可以简单的通过如下的方式来快速准确的直到两者的差异究竟是什么？大概的思路如下：1） perf可以采集各种事件，也包括内核调用的事件，在记录下来后，通过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ping 127.0.0.1 vs ping self ip">
+<meta property="og:url" content="https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/index.html">
+<meta property="og:site_name" content="小站">
+<meta property="og:description" content="一直有一个疑问，ping 127.0.0.1 vs ping local ip  的差异是什么？ 这两个操作是不是都会走网络栈？ 是不是都会触发软中断的请求？ 带着这些疑问持续了很久时间，内心有一个答案，但又没有实锤的证据。直到某一天脑子突然开窍了，可以简单的通过如下的方式来快速准确的直到两者的差异究竟是什么？大概的思路如下：1） perf可以采集各种事件，也包括内核调用的事件，在记录下来后，通过">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-22T10:53:17.000Z">
+<meta property="article:modified_time" content="2024-04-22T06:07:09.790Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>ping 127.0.0.1 vs ping self ip</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/01/18/thread-yield-cost-high-load/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/12/15/mem-leak-for-sth/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&text=ping 127.0.0.1 vs ping self ip"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&title=ping 127.0.0.1 vs ping self ip"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&is_video=false&description=ping 127.0.0.1 vs ping self ip"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ping 127.0.0.1 vs ping self ip&body=Check out this article: https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&title=ping 127.0.0.1 vs ping self ip"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&title=ping 127.0.0.1 vs ping self ip"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&title=ping 127.0.0.1 vs ping self ip"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&title=ping 127.0.0.1 vs ping self ip"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&name=ping 127.0.0.1 vs ping self ip&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&t=ping 127.0.0.1 vs ping self ip"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        ping 127.0.0.1 vs ping self ip
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">John Doe</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-12-22T10:53:17.000Z" class="dt-published" itemprop="datePublished">2023-12-22</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>一直有一个疑问，<code>ping 127.0.0.1</code> vs <code>ping local ip </code> 的差异是什么？ 这两个操作是不是都会走网络栈？ 是不是都会触发软中断的请求？ 带着这些疑问持续了很久时间，内心有一个答案，但又没有实锤的证据。直到某一天脑子突然开窍了，可以简单的通过如下的方式来快速准确的直到两者的差异究竟是什么？大概的思路如下：<br>1） perf可以采集各种事件，也包括内核调用的事件，在记录下来后，通过<code>perf script</code> 可以很直观的看到程序的调用栈<br>2） 分别采集<code>ping 127.0.0.1</code> 和 <code>ping localip</code> 的内核调用事件， 即可以很清楚的知道内部做了什么事情。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&text=ping 127.0.0.1 vs ping self ip"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&title=ping 127.0.0.1 vs ping self ip"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&is_video=false&description=ping 127.0.0.1 vs ping self ip"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ping 127.0.0.1 vs ping self ip&body=Check out this article: https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&title=ping 127.0.0.1 vs ping self ip"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&title=ping 127.0.0.1 vs ping self ip"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&title=ping 127.0.0.1 vs ping self ip"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&title=ping 127.0.0.1 vs ping self ip"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&name=ping 127.0.0.1 vs ping self ip&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.royjo.ltd/2023/12/22/ping-127-0-0-1-vs-ping-self-ip/&t=ping 127.0.0.1 vs ping self ip"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

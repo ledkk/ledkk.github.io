@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="查看Linux系统的性能数据，可以从procfs文件中获得cat &#x2F;proc&#x2F;stat .其内包含了系统的基本信息，包括CPU、运行情况、中断、IO等。 12345678910111213# cat &#x2F;proc&#x2F;statcpu  2475801 26920 1543326 831255053 126353 0 8014 0 0 0cpu0 1200337 13938 770224 4157193">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sth about linux">
+<meta property="og:url" content="https://blog.royjo.ltd/2023/12/04/sth-about-linux/index.html">
+<meta property="og:site_name" content="小站">
+<meta property="og:description" content="查看Linux系统的性能数据，可以从procfs文件中获得cat &#x2F;proc&#x2F;stat .其内包含了系统的基本信息，包括CPU、运行情况、中断、IO等。 12345678910111213# cat &#x2F;proc&#x2F;statcpu  2475801 26920 1543326 831255053 126353 0 8014 0 0 0cpu0 1200337 13938 770224 4157193">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-04T03:25:39.000Z">
+<meta property="article:modified_time" content="2024-04-22T06:07:09.790Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>sth about linux</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/12/07/sth-about-oomkiller/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/12/03/%E6%89%BE%E6%9C%88%E5%AB%82%E9%9C%80%E8%A6%81%E4%B8%BB%E6%84%8F%E4%BB%80%E4%B9%88%EF%BC%9F/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.royjo.ltd/2023/12/04/sth-about-linux/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&text=sth about linux"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&title=sth about linux"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&is_video=false&description=sth about linux"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=sth about linux&body=Check out this article: https://blog.royjo.ltd/2023/12/04/sth-about-linux/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&title=sth about linux"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&title=sth about linux"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&title=sth about linux"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&title=sth about linux"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&name=sth about linux&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&t=sth about linux"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        sth about linux
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">John Doe</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-12-04T03:25:39.000Z" class="dt-published" itemprop="datePublished">2023-12-04</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <ol>
+<li><p>查看Linux系统的性能数据，可以从procfs文件中获得<code>cat /proc/stat</code> .其内包含了系统的基本信息，包括CPU、运行情况、中断、IO等。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">cat</span> /proc/stat</span></span><br><span class="line">cpu  2475801 26920 1543326 831255053 126353 0 8014 0 0 0</span><br><span class="line">cpu0 1200337 13938 770224 415719375 48294 0 4445 0 0 0</span><br><span class="line">cpu1 1275464 12981 773101 415535678 78058 0 3569 0 0 0</span><br><span class="line">intr 3162925830 0 9 0 0 1257 0 3 0 0 0 0 34 15 0 0 0 0 0 0 0 0 0 0 0 0 50 0 4238742 0 1802026 2956565 1456602 992957 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</span><br><span class="line">ctxt 5997613057</span><br><span class="line">btime 1697473419</span><br><span class="line">processes 298842</span><br><span class="line">procs_running 1</span><br><span class="line">procs_blocked 0</span><br><span class="line">softirq 783883930 0 284012127 16 7265487 4208089 0 37801 284186406 19679 204154325</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>打印当前CPU在执行的内容<code>echo &quot;l&quot; &gt; /proc/sysrq-trigger</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">dmesg -T</span></span><br><span class="line"></span><br><span class="line">[Mon Dec  4 11:23:21 2023] sysrq: Show backtrace of all active CPUs</span><br><span class="line">[Mon Dec  4 11:23:21 2023] NMI backtrace for cpu 0</span><br><span class="line">[Mon Dec  4 11:23:21 2023] CPU: 0 PID: 298644 Comm: bash Tainted: G           OE     5.4.0-162-generic #179-Ubuntu</span><br><span class="line">[Mon Dec  4 11:23:21 2023] Hardware name: Alibaba Cloud Alibaba Cloud ECS, BIOS 449e491 04/01/2014</span><br><span class="line">[Mon Dec  4 11:23:21 2023] Call Trace:</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  dump_stack+0x6d/0x8b</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  ? lapic_can_unplug_cpu+0x80/0x80</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  nmi_cpu_backtrace.cold+0x14/0x53</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  nmi_trigger_cpumask_backtrace+0xe8/0xf0</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  arch_trigger_cpumask_backtrace+0x19/0x20</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  sysrq_handle_showallcpus+0x17/0x20</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  __handle_sysrq.cold+0x48/0x107</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  write_sysrq_trigger+0x28/0x40</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  proc_reg_write+0x43/0x70</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  __vfs_write+0x1b/0x40</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  vfs_write+0xb9/0x1a0</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  ksys_write+0x67/0xe0</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  __x64_sys_write+0x1a/0x20</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  do_syscall_64+0x57/0x190</span><br><span class="line">[Mon Dec  4 11:23:21 2023]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1</span><br><span class="line">[Mon Dec  4 11:23:21 2023] RIP: 0033:0x7fbb5987c077</span><br><span class="line">[Mon Dec  4 11:23:21 2023] Code: 64 89 02 48 c7 c0 ff ff ff ff eb bb 0f 1f 80 00 00 00 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 &lt;48&gt; 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24</span><br><span class="line">[Mon Dec  4 11:23:21 2023] RSP: 002b:00007ffff3a8dae8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001</span><br><span class="line">[Mon Dec  4 11:23:21 2023] RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007fbb5987c077</span><br><span class="line">[Mon Dec  4 11:23:21 2023] RDX: 0000000000000002 RSI: 00005560583b0020 RDI: 0000000000000001</span><br><span class="line">[Mon Dec  4 11:23:21 2023] RBP: 00005560583b0020 R08: 000000000000000a R09: 0000000000000001</span><br><span class="line">[Mon Dec  4 11:23:21 2023] R10: 0000556056fc9017 R11: 0000000000000246 R12: 0000000000000002</span><br><span class="line">[Mon Dec  4 11:23:21 2023] R13: 00007fbb5995b6a0 R14: 00007fbb599574a0 R15: 00007fbb599568a0</span><br><span class="line">[Mon Dec  4 11:23:21 2023] Sending NMI from CPU 0 to CPUs 1:</span><br><span class="line">[Mon Dec  4 11:23:21 2023] NMI backtrace for cpu 1 skipped: idling at native_safe_halt+0xe/0x10</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>向内核中输出内容<code>echo &quot;sth &quot; &gt; /dev/kmsg </code></p>
+</li>
+<li><p>查看procfs文件的描述信息  <code>man procfs</code></p>
+</li>
+</ol>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.royjo.ltd/2023/12/04/sth-about-linux/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&text=sth about linux"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&title=sth about linux"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&is_video=false&description=sth about linux"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=sth about linux&body=Check out this article: https://blog.royjo.ltd/2023/12/04/sth-about-linux/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&title=sth about linux"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&title=sth about linux"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&title=sth about linux"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&title=sth about linux"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&name=sth about linux&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.royjo.ltd/2023/12/04/sth-about-linux/&t=sth about linux"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
