@@ -14,7 +14,7 @@
 <meta property="og:description" content="没有产生coredump文件，但有segfault的异常的问题排查思路。一般情况下，出现segfault后，内核会打印异常日志，内核打印的异常日志会里会打印出现异常的IP、SP等信息。基于这些信息可以大概知道出现异常的指令，如果有相应代码的源码是，可以直接通过源码查看segfault的原因，如果没有源码，则可以通过objdump反汇编，查看对应的反汇编代码。 1234567891011121314">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-05-08T04:11:35.000Z">
-<meta property="article:modified_time" content="2024-05-11T03:49:36.818Z">
+<meta property="article:modified_time" content="2024-05-13T01:59:51.268Z">
 <meta property="article:author" content="郑先生">
 <meta name="twitter:card" content="summary">
     
@@ -111,6 +111,10 @@
     </div>
     
     
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ASLR-Address-Space-Layout-Randomization"><span class="toc-number">1.</span> <span class="toc-text">ASLR (Address Space Layout Randomization)</span></a></li></ol>
+      </div>
+    
   </span>
 </div>
 
@@ -181,6 +185,12 @@
 <li><p>利用gdbdebug分析</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">johnzb@johnzb-GK45:~/code$ gdb a</span><br><span class="line">GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2</span><br><span class="line">Copyright (C) 2020 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br><span class="line">Type &quot;show copying&quot; and &quot;show warranty&quot; for details.</span><br><span class="line">This GDB was configured as &quot;x86_64-linux-gnu&quot;.</span><br><span class="line">Type &quot;show configuration&quot; for configuration details.</span><br><span class="line">For bug reporting instructions, please see:</span><br><span class="line">&lt;http://www.gnu.org/software/gdb/bugs/&gt;.</span><br><span class="line">Find the GDB manual and other documentation resources online at:</span><br><span class="line">    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.</span><br><span class="line"></span><br><span class="line">For help, type &quot;help&quot;.</span><br><span class="line">Type &quot;apropos word&quot; to search for commands related to &quot;word&quot;...</span><br><span class="line">Reading symbols from a...</span><br><span class="line">(No debugging symbols found in a)</span><br><span class="line">(gdb) run</span><br><span class="line">Starting program: /home/johnzb/code/a</span><br><span class="line">NULL</span><br><span class="line"></span><br><span class="line">Program received signal SIGSEGV, Segmentation fault.</span><br><span class="line">__strrchr_sse2 () at ../sysdeps/x86_64/multiarch/../strrchr.S:32</span><br><span class="line">32	../sysdeps/x86_64/multiarch/../strrchr.S: 没有那个文件或目录.</span><br><span class="line">(gdb)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
 </ol>
+<h1 id="ASLR-Address-Space-Layout-Randomization"><a href="#ASLR-Address-Space-Layout-Randomization" class="headerlink" title="ASLR (Address Space Layout Randomization)"></a>ASLR (Address Space Layout Randomization)</h1><p>细心的人可能看出来了，上述的方式来查找代码在动态库中的位置，貌似实际找到的并不对，这个主要的原因是使用的linux开启了ASLR技术，ASLR技术主要是为了防止内存溢出类攻击的一种技术，其技术原理是在每次应用启动或者动态库载入的时候，他会随机安全一些关键数据区域的地址，包括栈（Stack）、堆（Heap）、共享库和执行文件映射区域。这种随机化使得攻击者难以找到编写的恶意代码或者存在漏洞的特定函数及数据结构体的准确位置，增加攻击者成功所需的成本。</p>
+<ul>
+<li>查看是否开启了ASLR <code>cat /proc/sys/kernel/randomize_va_space</code>  如果其中的值是0，代表关闭了ASLR，否则就是开启了ASLR。</li>
+<li>临时关闭ASLR， <code>echo 0 | sudo tee /proc/sys/kernel/randomize_va_space</code> 只对当前会话有用，重启或关闭当前会话后失效。</li>
+<li>永久关闭ASLR， 编辑<code>/etc/sysctl.conf</code> ， 添加<code>kernel.randomize_va_space=0</code> , 随后运行<code>sudo sysctl -p </code> 来重新加载系统配置文件。</li>
+</ul>
 
   </div>
 </article>
@@ -205,6 +215,10 @@
 
     
     
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ASLR-Address-Space-Layout-Randomization"><span class="toc-number">1.</span> <span class="toc-text">ASLR (Address Space Layout Randomization)</span></a></li></ol>
+      </div>
+    
 
     <div id="share-footer" style="display: none">
       <ul>
@@ -225,6 +239,8 @@
 
     <div id="actions-footer">
         <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
         
         <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
         <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
