@@ -135,4 +135,19 @@ __strrchr_sse2 () at ../sysdeps/x86_64/multiarch/../strrchr.S:32
 
 ```
 
+# ASLR (Address Space Layout Randomization) 
+
+细心的人可能看出来了，上述的方式来查找代码在动态库中的位置，貌似实际找到的并不对，这个主要的原因是使用的linux开启了ASLR技术，ASLR技术主要是为了防止内存溢出类攻击的一种技术，其技术原理是在每次应用启动或者动态库载入的时候，他会随机安全一些关键数据区域的地址，包括栈（Stack）、堆（Heap）、共享库和执行文件映射区域。这种随机化使得攻击者难以找到编写的恶意代码或者存在漏洞的特定函数及数据结构体的准确位置，增加攻击者成功所需的成本。
+
+- 查看是否开启了ASLR `cat /proc/sys/kernel/randomize_va_space`  如果其中的值是0，代表关闭了ASLR，否则就是开启了ASLR。
+- 临时关闭ASLR， `echo 0 | sudo tee /proc/sys/kernel/randomize_va_space` 只对当前会话有用，重启或关闭当前会话后失效。
+- 永久关闭ASLR， 编辑`/etc/sysctl.conf` ， 添加`kernel.randomize_va_space=0` , 随后运行`sudo sysctl -p ` 来重新加载系统配置文件。
+
+
+
+
+
+
+
+
 
