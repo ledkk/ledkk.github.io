@@ -42,7 +42,7 @@ $JAVA_HOME/bin/java -Dmanagement.endpoint.health.probes.add-additional-paths="tr
 
 ### 恢复过程中的异常
 
-如果恢复过程中，程序使用的pid已经被占了，会导致恢复不出来，此时可以通过unshare -p -m --fork --mount-proc 来启动恢复的程序
+如果恢复过程中，程序使用的pid已经被占了，会导致恢复不出来，此时可以通过unshare -p -m --fork --mount-proc 来启动恢复的程序。详细参考： https://criu.org/When_C/R_fails
 
 ```
 
