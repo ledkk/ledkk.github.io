@@ -41,6 +41,45 @@ $JAVA_HOME/bin/java -Dmanagement.endpoint.health.probes.add-additional-paths="tr
 
 ```
 
+### checkpoint和恢复的示例
+```shell
+
+johnzb@DESKTOP-2RFOQOL:~/code/spring-boot-crac-demo$ $JAVA_HOME/bin/java -Dspring.context.checkpoint=onRefresh -Dmanagement.endpoint.health.probes.add-additional-paths="true" -Dmanagement.health.probes.enabled="true"  -XX:CRaCCheckpointTo=/tmp/cr -jar ./target/spring-boot-crac-demo-1.0.0-SNAPSHOT.jar
+----- the begin ------
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.2)
+
+2024-05-25T23:22:09.070+08:00  INFO 862 --- [           main] com.example.Application                  : Starting Application v1.0.0-SNAPSHOT using Java 17.0.8.1 with PID 862 (/home/johnzb/code/spring-boot-crac-demo/target/spring-boot-crac-demo-1.0.0-SNAPSHOT.jar started by johnzb in /home/johnzb/code/spring-boot-crac-demo)
+2024-05-25T23:22:09.074+08:00  INFO 862 --- [           main] com.example.Application                  : No active profile set, falling back to 1 default profile: "default"
+2024-05-25T23:22:10.153+08:00  INFO 862 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-05-25T23:22:10.165+08:00  INFO 862 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-05-25T23:22:10.165+08:00  INFO 862 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.18]
+2024-05-25T23:22:10.197+08:00  INFO 862 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-05-25T23:22:10.199+08:00  INFO 862 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1038 ms
+2024-05-25T23:22:10.652+08:00  INFO 862 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2024-05-25T23:22:10.682+08:00  INFO 862 --- [           main] o.s.c.support.DefaultLifecycleProcessor  : Triggering JVM checkpoint/restore
+2024-05-25T23:22:10.685+08:00  INFO 862 --- [           main] jdk.crac                                 : /home/johnzb/code/spring-boot-crac-demo/target/spring-boot-crac-demo-1.0.0-SNAPSHOT.jar is recorded as always available on restore
+CR: Checkpoint ...
+Killed
+johnzb@DESKTOP-2RFOQOL:~/code/spring-boot-crac-demo$ $JAVA_HOME/bin/java -Dmanagement.endpoint.health.probes.add-additional-paths="true" -Dmanagement.health.probes.enabled="true" -XX:CRaCRestoreFrom=/tmp/cr
+Error (criu/cr-restore.c:1518): Can't fork for 862: Operation not permitted
+Error (criu/cr-restore.c:2605): Restoring FAILED.
+johnzb@DESKTOP-2RFOQOL:~/code/spring-boot-crac-demo$ sudo $JAVA_HOME/bin/java -Dmanagement.endpoint.health.probes.add-additional-paths="true" -Dmanagement.health.probes.enabled="true" -XX:CRaCRestoreFrom=/tmp/cr
+[sudo] password for johnzb:
+shm_open: Permission denied
+2024-05-25T23:22:24.331+08:00  INFO 862 --- [           main] o.s.c.support.DefaultLifecycleProcessor  : Restarting Spring-managed lifecycle beans after JVM restore
+2024-05-25T23:22:24.390+08:00  INFO 862 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2024-05-25T23:22:24.409+08:00  INFO 862 --- [           main] com.example.Application                  : Restored Application in 0.096 seconds (process running for 0.096)
+^Cjohnzb@DESKTOP-2RFOQOL:~/code/spring-boot-crac-demo$ ^C
+
+```
+
 
 ### 快照的内容
 
