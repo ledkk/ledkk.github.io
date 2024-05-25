@@ -38,8 +38,18 @@ $JAVA_HOME/bin/java -Dspring.context.checkpoint=onRefresh -Dmanagement.endpoint.
 
 $JAVA_HOME/bin/java -Dmanagement.endpoint.health.probes.add-additional-paths="true" -Dmanagement.health.probes.enabled="true" -XX:CRaCRestoreFrom=/tmp/cr
 
+```
+
+### 恢复过程中的异常
+
+如果恢复过程中，程序使用的pid已经被占了，会导致恢复不出来，此时可以通过unshare -p -m --fork --mount-proc 来启动恢复的程序
 
 ```
+
+sudo unshare -p -m --fork --mount-proc $JAVA_HOME/bin/java -Dmanagement.endpoint.health.probes.add-additional-paths="true" -Dmanagement.health.probes.enabled="true" -XX:CRaCRestoreFrom=/tmp/cr
+
+```
+
 
 ### checkpoint和恢复的示例
 ```shell
