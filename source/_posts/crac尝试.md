@@ -284,4 +284,4 @@ drwxrwxrwt 20 root   root        4096 May 25 23:02 ../
 ### 参考资料：
 1. https://docs.spring.io/spring-framework/reference/integration/checkpoint-restore.html
 2. https://github.com/sdeleuze/spring-boot-crac-demo
-
+3. https://openjdk.org/projects/leyden/notes/02-shift-and-constrain
