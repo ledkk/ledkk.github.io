@@ -23,3 +23,9 @@ sudo brctl add bridge testbridge
 
 
 Openvswitch VS linux bridge : https://kumul.us/switches-ovs-vs-linux-bridge-simplicity-rules/
+
+
+openswitch: https://pve.proxmox.com/wiki/Open_vSwitch
+
+vs : https://ioflood.com/s3-5-callegati-performance.pdf
+
