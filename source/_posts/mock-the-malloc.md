@@ -127,4 +127,9 @@ LD_PRELOAD=./malloc_mock.so java
 
 ```
 
-
+参考：
+- https://stackoverflow.com/questions/2053029/how-exactly-does-attribute-constructor-work
+- https://stackoverflow.com/questions/10448254/how-to-use-gdb-with-ld-preload
+- https://stackoverflow.com/questions/6083337/overriding-malloc-using-the-ld-preload-mechanism
+- https://stackoverflow.com/questions/105659/how-can-one-grab-a-stack-trace-in-c
+- https://stackoverflow.com/questions/11043313/im-getting-invalid-initializer-what-am-i-doing-wrong
