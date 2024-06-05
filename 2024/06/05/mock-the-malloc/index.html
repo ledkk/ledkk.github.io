@@ -14,7 +14,7 @@
 <meta property="og:description" content="有时候为了排查malloc内存分配相关的问题，需要对malloc的分配逻辑进行打印埋点，用于分析分配出来的内存是不是被正常释放掉，以及特定的大块内存分配的堆栈来源。基于这个问题，有了本文的一些尝试。 先看代码。 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-06-05T15:10:00.000Z">
-<meta property="article:modified_time" content="2024-06-05T15:37:01.380Z">
+<meta property="article:modified_time" content="2024-06-05T15:38:59.277Z">
 <meta property="article:author" content="郑先生">
 <meta name="twitter:card" content="summary">
     
@@ -162,7 +162,14 @@
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">LD_PRELOAD=./malloc_mock.so java</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2053029/how-exactly-does-attribute-constructor-work">https://stackoverflow.com/questions/2053029/how-exactly-does-attribute-constructor-work</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/10448254/how-to-use-gdb-with-ld-preload">https://stackoverflow.com/questions/10448254/how-to-use-gdb-with-ld-preload</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/6083337/overriding-malloc-using-the-ld-preload-mechanism">https://stackoverflow.com/questions/6083337/overriding-malloc-using-the-ld-preload-mechanism</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/105659/how-can-one-grab-a-stack-trace-in-c">https://stackoverflow.com/questions/105659/how-can-one-grab-a-stack-trace-in-c</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11043313/im-getting-invalid-initializer-what-am-i-doing-wrong">https://stackoverflow.com/questions/11043313/im-getting-invalid-initializer-what-am-i-doing-wrong</a></li>
+</ul>
 
   </div>
 </article>
