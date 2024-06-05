@@ -39,10 +39,11 @@ void *malloc(size_t size)
         init();
     }
     pid_t pid = getpid();
+    pid_t tid = gettid();
     void *addr = (*real_malloc)(size);
-    fprintf(stderr, "malloc(%ld) = %p , pid : %d \r\n", size, addr, pid);
     if(size >  MAX_LOG_SIZE)
     {
+        fprintf(stderr, "malloc(%ld) = %p , pid : %d , tid : %d \r\n", size, addr, pid, tid);
         void *array[BACKTRACE_SIZE];
         int i , s = backtrace(array, BACKTRACE_SIZE);
         char **stacks = backtrace_symbols(array,s);
