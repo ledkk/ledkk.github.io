@@ -7,7 +7,6 @@ tags:
 
 ```c
 //malloc_mock.c
-
 #define _GNU_SOURCE
 #include <stdlib.h>
 #include <stddef.h>
@@ -16,40 +15,59 @@ tags:
 #include <unistd.h>
 #include <stdio.h>
 #include <execinfo.h>
+#include <string.h>
 
 static void *(*real_malloc)(size_t) = NULL;
 
 static void (*real_free)(void *) = NULL;
 
-#define MAX_LOG_SIZE 1024*1024
+#define MAX_LOG_SIZE 1024 * 1024
 #define BACKTRACE_SIZE 10
+
+static int isdigitstr(char *str)
+{
+    return (strspn(str, "0123456789") == strlen(str));
+}
+
+int p_size = 0;
 
 // void __attribute__((constructor)) init()
 void init()
 {
+    char *max_log_size = getenv("MAX_LOG_SIZE");
+    if (max_log_size == NULL || isdigitstr(max_log_size) == 0)
+    {
+        p_size = MAX_LOG_SIZE;
+    }
+    else
+    {
+        p_size = atoi(max_log_size);
+    }
+    fprintf(stderr, "the MAX_LOG_SIZE is %d \n", p_size);
     real_malloc = (void *(*)(size_t))dlsym(RTLD_NEXT, "malloc");
     real_free = (void (*)(void *))dlsym(RTLD_NEXT, "free");
-    printf("has init the malloc/free func , the real_malloc addr is %p , the real_free addr is %p \r\n ", real_malloc, real_free);
+    printf("has init the malloc/free func , the real_malloc addr is %p , the real_free addr is %p \n ", real_malloc, real_free);
 }
 
 void *malloc(size_t size)
 {
-    if(real_malloc == NULL)
+    if (real_malloc == NULL)
     {
         init();
     }
-    pid_t pid = getpid();
-    pid_t tid = gettid();
+
     void *addr = (*real_malloc)(size);
-    if(size >  MAX_LOG_SIZE)
+    if (size > p_size)
     {
-        fprintf(stderr, "malloc(%ld) = %p , pid : %d , tid : %d \r\n", size, addr, pid, tid);
+        pid_t pid = getpid();
+        pid_t tid = gettid();
+        fprintf(stderr, "malloc(%ld) = %p , pid : %d, tid : %d  \n", size, addr, pid, tid);
         void *array[BACKTRACE_SIZE];
-        int i , s = backtrace(array, BACKTRACE_SIZE);
-        char **stacks = backtrace_symbols(array,s);
-        for(i = 0 ; i < s ; i++)
+        int i, s = backtrace(array, BACKTRACE_SIZE);
+        char **stacks = backtrace_symbols(array, s);
+        for (i = 0; i < s; i++)
         {
-            printf("%s\n", stacks[i]);
+            printf("-  %s \n", stacks[i]);
         }
     }
     return addr;
@@ -57,9 +75,6 @@ void *malloc(size_t size)
 
 void free(void *ptr)
 {
-    pid_t pid = getpid();
-    fprintf(stderr, "free(%p) , pid : %d \r\n", ptr, pid);
-
     return (*real_free)(ptr);
 }
 
