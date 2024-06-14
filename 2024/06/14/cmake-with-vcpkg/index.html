@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="vcpkg 可以非常方便的管理c++的库，配合cmake，整个使用会比较轻松，可以实现类似maven之于java的效果。这里做一下记录 vcpkg 安装123456789101112131415git clone https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;vcpkg.&#x2F;vcpkg&#x2F;bootstrap-vcpkg.sh# 安装成功后，配置vcpkg的路径到path上，方便使用vcpk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cmake with vcpkg">
+<meta property="og:url" content="https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/index.html">
+<meta property="og:site_name" content="小站">
+<meta property="og:description" content="vcpkg 可以非常方便的管理c++的库，配合cmake，整个使用会比较轻松，可以实现类似maven之于java的效果。这里做一下记录 vcpkg 安装123456789101112131415git clone https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;vcpkg.&#x2F;vcpkg&#x2F;bootstrap-vcpkg.sh# 安装成功后，配置vcpkg的路径到path上，方便使用vcpk">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-14T10:36:23.000Z">
+<meta property="article:modified_time" content="2024-06-14T10:47:44.722Z">
+<meta property="article:author" content="郑先生">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>cmake with vcpkg</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/06/12/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%B9%B3%E6%BB%91%E6%95%B0%E6%8D%AE%E6%9B%B2%E7%BA%BF/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&text=cmake with vcpkg"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&title=cmake with vcpkg"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&is_video=false&description=cmake with vcpkg"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=cmake with vcpkg&body=Check out this article: https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&title=cmake with vcpkg"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&title=cmake with vcpkg"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&title=cmake with vcpkg"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&title=cmake with vcpkg"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&name=cmake with vcpkg&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&t=cmake with vcpkg"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vcpkg-%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">vcpkg 安装</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        cmake with vcpkg
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">郑先生</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-14T10:36:23.000Z" class="dt-published" itemprop="datePublished">2024-06-14</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>vcpkg 可以非常方便的管理c++的库，配合cmake，整个使用会比较轻松，可以实现类似maven之于java的效果。这里做一下记录</p>
+<h2 id="vcpkg-安装"><a href="#vcpkg-安装" class="headerlink" title="vcpkg 安装"></a>vcpkg 安装</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/microsoft/vcpkg</span><br><span class="line"></span><br><span class="line">./vcpkg/bootstrap-vcpkg.sh</span><br><span class="line"></span><br><span class="line"># 安装成功后，配置vcpkg的路径到path上，方便使用vcpkg安装</span><br><span class="line"># 在非x86环境下需要配置这个环境变量</span><br><span class="line">export VCPKG_FORCE_SYSTEM_BINARIES=1</span><br><span class="line">PATH=$HOME/vcpkg/:$PATH</span><br><span class="line"></span><br><span class="line">cmake -B ./build/ -S . &quot;-DCMAKE_TOOLCHAIN_FILE=/home/lima.linux/vcpkg/scripts/buildsystems/vcpkg.cmake&quot;</span><br><span class="line"></span><br><span class="line">cmake -B ./build/</span><br><span class="line"></span><br><span class="line"># 也可以直接在cmakelist.txt 文件中主动制定CMAKE_TOOLCHAIN_FILE的内容  `# include(/home/lima.linux/vcpkg/scripts/buildsystems/vcpkg.cmake)`</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>demo cmakelists.txt </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cmake_minimum_required(VERSION 3.8)</span><br><span class="line">project(c C CXX)</span><br><span class="line"></span><br><span class="line"># include(/home/lima.linux/vcpkg/scripts/buildsystems/vcpkg.cmake)</span><br><span class="line"></span><br><span class="line">find_package(Threads REQUIRED)</span><br><span class="line"></span><br><span class="line">option(protobuf_MODULE_COMPATIBLE TRUE)</span><br><span class="line">find_package(Protobuf REQUIRED)</span><br><span class="line">message(STATUS &quot;Using protobuf $&#123;Protobuf_VERSION&#125;&quot;)</span><br><span class="line"></span><br><span class="line">set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)</span><br><span class="line">set(_REFLECTION gRPC::grpc++_reflection)</span><br><span class="line">find_program(_PROTOBUF_PROTOC protoc)</span><br><span class="line"></span><br><span class="line">  # Find gRPC installation</span><br><span class="line">  # Looks for gRPCConfig.cmake file installed by gRPC&#x27;s cmake installation.</span><br><span class="line"># find_package(PkgConfig REQUIRED)</span><br><span class="line"># pkg_check_modules(grpc REQUIRED grpc&gt;=1.22.0)</span><br><span class="line">find_package(GRPC REQUIRED)</span><br><span class="line">message(STATUS &quot;Using gRPC $&#123;gRPC_VERSION&#125;&quot;)</span><br><span class="line"></span><br><span class="line">set(_GRPC_GRPCPP gRPC::grpc++)</span><br><span class="line">find_program(_GRPC_CPP_PLUGIN_EXECUTABLE grpc_cpp_plugin)</span><br><span class="line"></span><br><span class="line">get_filename_component(hw_proto &quot;./protos/helloworld.proto&quot; ABSOLUTE)</span><br><span class="line">get_filename_component(hw_proto_path &quot;$&#123;hw_proto&#125;&quot; PATH)</span><br><span class="line"></span><br><span class="line">message(&quot;$&#123;CMAKE_CURRENT_BINARY_DIR&#125;, $&#123;_PROTOBUF_PROTOC&#125; , $&#123;hw_proto&#125; , &quot;)</span><br><span class="line"></span><br><span class="line">set(hw_proto_srcs &quot;$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/helloworld.pb.cc&quot;)</span><br><span class="line">set(hw_proto_hdrs &quot;$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/helloworld.pb.h&quot;)</span><br><span class="line">set(hw_grpc_srcs &quot;$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/helloworld.grpc.pb.cc&quot;)</span><br><span class="line">set(hw_grpc_hdrs &quot;$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/helloworld.grpc.pb.h&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">add_custom_command(</span><br><span class="line">    OUTPUT &quot;$&#123;hw_proto_srcs&#125;&quot; &quot;$&#123;hw_proto_hdrs&#125;&quot; &quot;$&#123;hw_grpc_srcs&#125;&quot; &quot;$&#123;hw_grpc_hdrs&#125;&quot;</span><br><span class="line">      COMMAND $&#123;_PROTOBUF_PROTOC&#125;</span><br><span class="line">      ARGS --grpc_out &quot;$&#123;CMAKE_CURRENT_BINARY_DIR&#125;&quot;</span><br><span class="line">        --cpp_out &quot;$&#123;CMAKE_CURRENT_BINARY_DIR&#125;&quot;</span><br><span class="line">        -I &quot;$&#123;hw_proto_path&#125;&quot;</span><br><span class="line">        --plugin=protoc-gen-grpc=&quot;$&#123;_GRPC_CPP_PLUGIN_EXECUTABLE&#125;&quot;</span><br><span class="line">        &quot;$&#123;hw_proto&#125;&quot;</span><br><span class="line">      DEPENDS &quot;$&#123;hw_proto&#125;&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># message(&quot;$&#123;hw_proto_path&#125; $&#123;_GRPC_CPP_PLUGIN_EXECUTABLE&#125; $&#123;hw_proto_srcs&#125; , $&#123;hw_proto_hdrs&#125;, $&#123;hw_grpc_srcs&#125;, $&#123;hw_grpc_hdrs&#125;&quot;)</span><br><span class="line"></span><br><span class="line">include_directories(&quot;$&#123;CMAKE_CURRENT_BINARY_DIR&#125;&quot;)</span><br><span class="line"></span><br><span class="line">add_library(hw_grpc_proto</span><br><span class="line">  $&#123;hw_grpc_srcs&#125;</span><br><span class="line">  $&#123;hw_grpc_hdrs&#125;</span><br><span class="line">  $&#123;hw_proto_srcs&#125;</span><br><span class="line">  $&#123;hw_proto_hdrs&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target_link_libraries(hw_grpc_proto</span><br><span class="line">  absl::check</span><br><span class="line">  $&#123;_REFLECTION&#125;</span><br><span class="line">  $&#123;_GRPC_GRPCPP&#125;</span><br><span class="line">  $&#123;_PROTOBUF_LIBPROTOBUF&#125;)</span><br><span class="line"></span><br><span class="line"># Targets greeter_[async_](client|server)</span><br><span class="line">foreach(_target</span><br><span class="line">  greeter_client greeter_server</span><br><span class="line">  # greeter_callback_client greeter_callback_server</span><br><span class="line">  # greeter_async_client greeter_async_client2 greeter_async_server</span><br><span class="line">  )</span><br><span class="line">  add_executable($&#123;_target&#125; &quot;$&#123;_target&#125;.cc&quot;)</span><br><span class="line">  target_link_libraries($&#123;_target&#125;</span><br><span class="line">    hw_grpc_proto</span><br><span class="line">    absl::check</span><br><span class="line">    absl::flags</span><br><span class="line">    absl::flags_parse</span><br><span class="line">    absl::log</span><br><span class="line">    $&#123;_REFLECTION&#125;</span><br><span class="line">    $&#123;_GRPC_GRPCPP&#125;</span><br><span class="line">    $&#123;_PROTOBUF_LIBPROTOBUF&#125;)</span><br><span class="line">endforeach()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>vcpkg.json </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;name&quot; : &quot;c&quot;,</span><br><span class="line">    &quot;version&quot; : &quot;0.1.0&quot;,</span><br><span class="line">    &quot;dependencies&quot; : [  &#123;</span><br><span class="line">      &quot;name&quot; : &quot;grpc&quot;,</span><br><span class="line">      &quot;version&gt;=&quot; : &quot;1.51.1#2&quot;</span><br><span class="line">    &#125; ,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;name&quot; : &quot;protobuf&quot;,</span><br><span class="line">      &quot;version&gt;=&quot; : &quot;3.21.12#1&quot;</span><br><span class="line">    &#125;],</span><br><span class="line">    &quot;builtin-baseline&quot; : &quot;9765877106f7c179995e8010bb7427a865a6bd1d&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vcpkg-%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">vcpkg 安装</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&text=cmake with vcpkg"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&title=cmake with vcpkg"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&is_video=false&description=cmake with vcpkg"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=cmake with vcpkg&body=Check out this article: https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&title=cmake with vcpkg"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&title=cmake with vcpkg"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&title=cmake with vcpkg"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&title=cmake with vcpkg"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&name=cmake with vcpkg&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://blog.royjo.ltd/2024/06/14/cmake-with-vcpkg/&t=cmake with vcpkg"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    郑先生
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
