@@ -32,4 +32,4 @@ lock file = /var/run/rsyncd.lock
 
 3. rsync client 
 
-rsync -vrtaz rsync://johnzb@10.0.8.1/note ./
+rsync -vrtaz rsync://userb@10.0.8.1/note ./
